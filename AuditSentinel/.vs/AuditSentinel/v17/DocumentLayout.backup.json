@@ -1,0 +1,496 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\pages\\servidores\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\pages\\servidores\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\pages\\servidores\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\pages\\servidores\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\pages\\servidores\\delete.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\pages\\servidores\\delete.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\pages\\servidores\\details.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\pages\\servidores\\details.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\pages\\servidores\\edit.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\pages\\servidores\\edit.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\pages\\servidores\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\pages\\servidores\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\pages\\servidores\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\pages\\servidores\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\pages\\servidores\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\pages\\servidores\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\pages\\servidores\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\pages\\servidores\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\pages\\servidores\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\pages\\servidores\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\escaneos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\escaneos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\escaneosvulnerabilidades.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\escaneosvulnerabilidades.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\vulnerabilidades.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\vulnerabilidades.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\usuariosroles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\usuariosroles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\roles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\roles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\reportes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\reportes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\plantillas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\plantillas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\plantillasvulnerabilidades.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\plantillasvulnerabilidades.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\usuarios.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\usuarios.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Migrations\\20251122182403_CreacionModelosDB.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:AuditSentinel\\Migrations\\20251122182403_CreacionModelosDB.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\pages\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\pages\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\escaneosservidores.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\escaneosservidores.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\escaneosreportes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\escaneosreportes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\escaneosplantillas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\escaneosplantillas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|c:\\users\\orteg\\source\\repos\\auditsentinel\\auditsentinel\\models\\servidores.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}|AuditSentinel\\AuditSentinel.csproj|solutionrelative:auditsentinel\\models\\servidores.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Index.cshtml",
+              "RelativeDocumentMoniker": "AuditSentinel\\Pages\\Servidores\\Index.cshtml",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Index.cshtml",
+              "RelativeToolTip": "AuditSentinel\\Pages\\Servidores\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-22T22:37:37.511Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Edit.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Edit.cshtml.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Pages\\Servidores\\Edit.cshtml.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Edit.cshtml.cs",
+              "RelativeToolTip": "AuditSentinel\\Pages\\Servidores\\Edit.cshtml.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAkwBcAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T22:37:36.695Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Details.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Details.cshtml.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Pages\\Servidores\\Details.cshtml.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Details.cshtml.cs",
+              "RelativeToolTip": "AuditSentinel\\Pages\\Servidores\\Details.cshtml.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA5wBUAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T22:37:37.014Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Delete.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Delete.cshtml.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Pages\\Servidores\\Delete.cshtml.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Delete.cshtml.cs",
+              "RelativeToolTip": "AuditSentinel\\Pages\\Servidores\\Delete.cshtml.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAkwBYAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T22:37:37.35Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Create.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Create.cshtml.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Pages\\Servidores\\Create.cshtml.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Create.cshtml.cs",
+              "RelativeToolTip": "AuditSentinel\\Pages\\Servidores\\Create.cshtml.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAkwCEAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T22:37:36.346Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ApplicationDBContext.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Data\\ApplicationDBContext.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Data\\ApplicationDBContext.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Data\\ApplicationDBContext.cs",
+              "RelativeToolTip": "AuditSentinel\\Data\\ApplicationDBContext.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwAwAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T16:36:43.104Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Delete.cshtml",
+              "RelativeDocumentMoniker": "AuditSentinel\\Pages\\Servidores\\Delete.cshtml",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Delete.cshtml",
+              "RelativeToolTip": "AuditSentinel\\Pages\\Servidores\\Delete.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-22T22:37:37.203Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Create.cshtml",
+              "RelativeDocumentMoniker": "AuditSentinel\\Pages\\Servidores\\Create.cshtml",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Create.cshtml",
+              "RelativeToolTip": "AuditSentinel\\Pages\\Servidores\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-22T22:37:36.136Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Index.cshtml.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Pages\\Servidores\\Index.cshtml.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Index.cshtml.cs",
+              "RelativeToolTip": "AuditSentinel\\Pages\\Servidores\\Index.cshtml.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA5wBUAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T22:37:37.661Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Details.cshtml",
+              "RelativeDocumentMoniker": "AuditSentinel\\Pages\\Servidores\\Details.cshtml",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Details.cshtml",
+              "RelativeToolTip": "AuditSentinel\\Pages\\Servidores\\Details.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-22T22:37:36.874Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Edit.cshtml",
+              "RelativeDocumentMoniker": "AuditSentinel\\Pages\\Servidores\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Servidores\\Edit.cshtml",
+              "RelativeToolTip": "AuditSentinel\\Pages\\Servidores\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-22T22:37:36.558Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\appsettings.json",
+              "RelativeDocumentMoniker": "AuditSentinel\\appsettings.json",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\appsettings.json",
+              "RelativeToolTip": "AuditSentinel\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-22T22:26:48.314Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Roles.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Roles.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\Roles.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Roles.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\Roles.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T20:27:00.832Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "UsuariosRoles.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\UsuariosRoles.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\UsuariosRoles.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\UsuariosRoles.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\UsuariosRoles.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T20:26:51.122Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Escaneos.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Escaneos.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\Escaneos.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Escaneos.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\Escaneos.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T17:57:13.025Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "AuditSentinel\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\appsettings.Development.json",
+              "RelativeToolTip": "AuditSentinel\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-22T18:23:22.623Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Reportes.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Reportes.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\Reportes.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Reportes.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\Reportes.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T18:00:51.399Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Plantillas.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Plantillas.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\Plantillas.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Plantillas.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\Plantillas.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T17:59:06.747Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "PlantillasVulnerabilidades.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\PlantillasVulnerabilidades.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\PlantillasVulnerabilidades.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\PlantillasVulnerabilidades.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\PlantillasVulnerabilidades.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T18:02:01.664Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Vulnerabilidades.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Vulnerabilidades.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\Vulnerabilidades.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Vulnerabilidades.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\Vulnerabilidades.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwA4AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T18:00:53.678Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "EscaneosVulnerabilidades.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\EscaneosVulnerabilidades.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\EscaneosVulnerabilidades.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\EscaneosVulnerabilidades.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\EscaneosVulnerabilidades.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAxwAsAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T18:01:42.623Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Usuarios.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Usuarios.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\Usuarios.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Usuarios.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\Usuarios.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T20:26:22.495Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "20251122182403_CreacionModelosDB.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Migrations\\20251122182403_CreacionModelosDB.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Migrations\\20251122182403_CreacionModelosDB.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Migrations\\20251122182403_CreacionModelosDB.cs",
+              "RelativeToolTip": "AuditSentinel\\Migrations\\20251122182403_CreacionModelosDB.cs",
+              "ViewState": "AgIAAH8AAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T18:24:03.42Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "AuditSentinel\\Pages\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Pages\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "AuditSentinel\\Pages\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAACcAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-22T18:34:13.625Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "EscaneosServidores.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\EscaneosServidores.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\EscaneosServidores.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\EscaneosServidores.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\EscaneosServidores.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T18:01:38.385Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "EscaneosReportes.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\EscaneosReportes.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\EscaneosReportes.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\EscaneosReportes.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\EscaneosReportes.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T18:01:33.857Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "EscaneosPlantillas.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\EscaneosPlantillas.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\EscaneosPlantillas.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\EscaneosPlantillas.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\EscaneosPlantillas.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T18:01:28.476Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "Servidores.cs",
+              "DocumentMoniker": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Servidores.cs",
+              "RelativeDocumentMoniker": "AuditSentinel\\Models\\Servidores.cs",
+              "ToolTip": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\Models\\Servidores.cs",
+              "RelativeToolTip": "AuditSentinel\\Models\\Servidores.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwAYAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T17:55:12.823Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
