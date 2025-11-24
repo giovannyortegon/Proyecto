@@ -1,0 +1,54 @@
+﻿@page
+@model AuditSentinel.Pages.Servidores.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Servidores[0].NombreServidor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Servidores[0].IP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Servidores[0].SistemaOperativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Servidores[0].Create_is)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Servidores) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreServidor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SistemaOperativo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Create_is)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.IdServidor">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.IdServidor">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.IdServidor">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
