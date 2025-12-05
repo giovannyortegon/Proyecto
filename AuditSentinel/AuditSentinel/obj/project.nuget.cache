@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NZ+SFH5Uw5k=",
+  "dgSpecHash": "+A/rOh0JQcM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\orteg\\source\\repos\\AuditSentinel\\AuditSentinel\\AuditSentinel.csproj",
+  "projectFilePath": "C:\\Users\\orteg\\Documents\\Proyecto\\AuditSentinel\\AuditSentinel\\AuditSentinel.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\orteg\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\orteg\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
