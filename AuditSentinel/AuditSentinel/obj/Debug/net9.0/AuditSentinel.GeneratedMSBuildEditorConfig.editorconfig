@@ -17,61 +17,181 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = AuditSentinel
 build_property.RootNamespace = AuditSentinel
-build_property.ProjectDir = C:\Users\orteg\source\repos\AuditSentinel\AuditSentinel\
+build_property.ProjectDir = C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\orteg\source\repos\AuditSentinel\AuditSentinel
+build_property.MSBuildProjectDirectory = C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/orteg/source/repos/AuditSentinel/AuditSentinel/Pages/Error.cshtml]
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/orteg/source/repos/AuditSentinel/AuditSentinel/Pages/Index.cshtml]
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/EscaneoPlantilla/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb1BsYW50aWxsYVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/EscaneoPlantilla/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb1BsYW50aWxsYVxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/EscaneoPlantilla/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb1BsYW50aWxsYVxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/EscaneoPlantilla/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb1BsYW50aWxsYVxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/EscaneoPlantilla/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb1BsYW50aWxsYVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/EscaneosServidores/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb3NTZXJ2aWRvcmVzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/EscaneosServidores/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb3NTZXJ2aWRvcmVzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/EscaneosServidores/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb3NTZXJ2aWRvcmVzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/EscaneosServidores/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb3NTZXJ2aWRvcmVzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/EscaneosServidores/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb3NTZXJ2aWRvcmVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Escaneos/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb3NcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Escaneos/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb3NcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Escaneos/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb3NcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Escaneos/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb3NcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Escaneos/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXNjYW5lb3NcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/orteg/source/repos/AuditSentinel/AuditSentinel/Pages/Privacy.cshtml]
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Plantillas/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGxhbnRpbGxhc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Plantillas/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGxhbnRpbGxhc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Plantillas/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGxhbnRpbGxhc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Plantillas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGxhbnRpbGxhc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Plantillas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGxhbnRpbGxhc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/orteg/source/repos/AuditSentinel/AuditSentinel/Pages/Servidores/Create.cshtml]
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Reportes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Reportes/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Reportes/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Reportes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Reportes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Servidores/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2Vydmlkb3Jlc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/orteg/source/repos/AuditSentinel/AuditSentinel/Pages/Servidores/Delete.cshtml]
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Servidores/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2Vydmlkb3Jlc1xEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/orteg/source/repos/AuditSentinel/AuditSentinel/Pages/Servidores/Details.cshtml]
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Servidores/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2Vydmlkb3Jlc1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/orteg/source/repos/AuditSentinel/AuditSentinel/Pages/Servidores/Edit.cshtml]
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Servidores/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2Vydmlkb3Jlc1xFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/orteg/source/repos/AuditSentinel/AuditSentinel/Pages/Servidores/Index.cshtml]
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Servidores/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2Vydmlkb3Jlc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/orteg/source/repos/AuditSentinel/AuditSentinel/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/orteg/source/repos/AuditSentinel/AuditSentinel/Pages/_ViewImports.cshtml]
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Vulnerabilidades/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVnVsbmVyYWJpbGlkYWRlc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Vulnerabilidades/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVnVsbmVyYWJpbGlkYWRlc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Vulnerabilidades/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVnVsbmVyYWJpbGlkYWRlc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Vulnerabilidades/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVnVsbmVyYWJpbGlkYWRlc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Vulnerabilidades/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVnVsbmVyYWJpbGlkYWRlc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/orteg/source/repos/AuditSentinel/AuditSentinel/Pages/_ViewStart.cshtml]
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/orteg/source/repos/AuditSentinel/AuditSentinel/Pages/Shared/_Layout.cshtml]
+[C:/Users/orteg/Documents/Proyecto/AuditSentinel/AuditSentinel/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-g24ts6cn2u

@@ -1,6 +1,13 @@
 ﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
-
+main img {
+    background-size: cover; /* Cubre todo el div */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita repeticiones */
+    width: 100vw; /* O el ancho que necesites */
+    height: 100vh;
+    opacity: 0.5;
+}
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -45,4 +52,105 @@ button.accept-policy {
   width: 100%;
   white-space: nowrap;
   line-height: 60px;
+}
+.sidebar {
+    height: 100vh;
+    width: 60px;
+    background-color: #3557be;
+    transition: width 0.3s;
+    overflow-x: hidden;
+    position: fixed;
+}
+
+    .sidebar.expanded {
+        width: 200px;
+        transition: width 0.3s;
+    }
+
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        color: white;
+        padding: 16px;
+        text-decoration: none;
+    }
+
+        .sidebar a i {
+            font-size: 1.2rem;
+            margin-right: 10px;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .sidebar a span {
+            display: none;
+        }
+
+
+
+    .sidebar span {
+        display: none;
+        white-space: nowrap;
+    }
+
+    .sidebar.expanded span {
+        display: inline;
+    }
+
+.toggle-btn {
+    background-color: #3557be;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+/* navbar */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar {
+    height: 100vh;
+    width: 60px;
+    background-color: #3557be;
+    transition: width 0.3s;
+    overflow-x: hidden;
+    position: fixed;
+}
+
+    .sidebar.expanded {
+        width: 200px;
+    }
+
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        color: white;
+        padding: 16px;
+        text-decoration: none;
+    }
+
+        .sidebar a i {
+            font-size: 1.2rem;
+            margin-right: 10px;
+            min-width: 24px;
+            text-align: center;
+        }
+
+    .sidebar span {
+        display: none;
+        white-space: nowrap;
+    }
+
+    .sidebar.expanded span {
+        display: inline;
+    }
+
+.toggle-btn {
+    background-color: #3557be;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
 }
