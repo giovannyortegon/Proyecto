@@ -1,0 +1,50 @@
+﻿@page
+@model AuditSentinel.Pages.Escaneos.CreateModel
+using AuditSentinel.Models;
+
+        @{
+        ViewData["Title"] = "Create";
+        }
+        
+        <h1>Create</h1>
+        
+    <h4>Escaneos</h4>
+    <hr />
+    <div class="row">
+    <div class="col-md-4">
+    <form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Escaneos.NombreEscaneo" class="control-label"></label>
+                <input asp-for="Escaneos.NombreEscaneo" class="form-control" />
+                <span asp-validation-for="Escaneos.NombreEscaneo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Escaneos.Estado" class="control-label"></label>
+                <Select @@bind-value="EscaneoEstado" class="form-control">
+                    @foreach (var estado in Enum.GetValues(typeof(AuditSentinel.Models.EstadoEscaneo)))
+                    {
+                        <option value="@estado">@estado</option>
+                    }
+                </Select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Escaneos.FechaEscaneo" class="control-label"></label>
+                <input asp-for="Escaneos.FechaEscaneo" class="form-control" />
+                <span asp-validation-for="Escaneos.FechaEscaneo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

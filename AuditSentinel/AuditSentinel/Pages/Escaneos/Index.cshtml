@@ -1,0 +1,48 @@
+﻿@page
+@model AuditSentinel.Pages.Escaneos.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Escaneos[0].NombreEscaneo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Escaneos[0].Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Escaneos[0].FechaEscaneo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Escaneos) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreEscaneo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaEscaneo)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.IdEscaneo">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.IdEscaneo">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.IdEscaneo">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
