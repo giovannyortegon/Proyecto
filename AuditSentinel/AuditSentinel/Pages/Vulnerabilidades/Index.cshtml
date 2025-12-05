@@ -1,0 +1,66 @@
+﻿@page
+@model AuditSentinel.Pages.Vulnerabilidades.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Vulnerabilidades[0].NombreVulnerabilidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vulnerabilidades[0].NivelRiesgo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vulnerabilidades[0].Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vulnerabilidades[0].Comando)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vulnerabilidades[0].ResultadoEsperado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vulnerabilidades[0].FechaDetectada)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Vulnerabilidades) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreVulnerabilidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NivelRiesgo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comando)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ResultadoEsperado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaDetectada)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.IdVulnerabilidad">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.IdVulnerabilidad">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.IdVulnerabilidad">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
