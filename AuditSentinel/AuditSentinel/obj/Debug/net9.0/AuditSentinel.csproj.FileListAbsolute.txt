@@ -671,5 +671,5 @@ C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\obj\Debug\net9.0\r
 C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\obj\Debug\net9.0\AuditSentinel.pdb
 C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\obj\Debug\net9.0\AuditSentinel.genruntimeconfig.cache
 C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\obj\Debug\net9.0\ref\AuditSentinel.dll
-C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\obj\Debug\net9.0\compressed\5ac61wyj7o-ntyedhp9ks.gz
-C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\obj\Debug\net9.0\compressed\7blxp76iiq-ntyedhp9ks.gz
+C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\obj\Debug\net9.0\compressed\5ac61wyj7o-jy2102xmyg.gz
+C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\obj\Debug\net9.0\compressed\7blxp76iiq-jy2102xmyg.gz
