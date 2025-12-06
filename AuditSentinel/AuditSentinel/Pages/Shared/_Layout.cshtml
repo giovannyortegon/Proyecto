@@ -5,66 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AuditSentinel</title>
     <script type="importmap"></script>
+
+    <!-- Si ya usas bootstrap local, puedes mantenerlo. Si quieres CDN: -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <!-- Site CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="~/css/sidebar.css" asp-append-version="true" />
+
     <link rel="stylesheet" href="~/AuditSentinel.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <div class="sidebar" id="navbar" onmouseover="document.getElementById('navbar').classList.toggle('expanded');">
-        <div class="toggle-btn bg-primary text-white">
-            ☰ <a class="navbar-brand" asp-area="" asp-page="/Index"><span>AuditSentinel</span></a>
-        </div>
-        <a href="#" ><i class="bi bi-house-door-fill" ></i><span>Inicio</span></a>
-        <a href="#"><i class="bi bi-hdd-network"></i><span>Servidores</span></a>
-        <a href="#"><i class="bi bi-upc-scan"></i><span>Escaneo</span></a>
-        <a href="#"><i class="bi bi-file-earmark-bar-graph"></i><span>Reporte</span></a>
-        <a href="#"><i class="bi bi-gear"></i><span>Configuracion</span></a>
-    </div>
-    <header>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  border-bottom box-shadow mb-3">
-            
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index"></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Servidores/Index">Servidores</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Escaneos/Index">Escaneos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Reportes/Index">Reportes</a>
-                        </li>
-                        <li class="nav-item">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Plantillas/Index">Plantillas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    
-    <main role="main" class="pb-3">
-    <div class="container">
-          
-            @RenderBody()
-        </main>
+<body>
+    @* Sidebar y contenido principal en dos columnas flex *@
+    <div class="d-flex">
+        @* Incluir partial del sidebar *@
+        @await Html.PartialAsync("_Sidebar")
+
+        @* Contenido principal (página) *@
+        <div class="flex-grow-1 p-3">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
-    
-       
+
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2025 - AuditSentinel - <a asp-area="" asp-page="/Privacy">Privacy</a>
@@ -73,6 +42,26 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script local (o añadirlo en site.js) -->
+    <script>
+        (function () {
+            const toggleBtn = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('app-sidebar');
+            if (!toggleBtn || !sidebar) return;
+
+            toggleBtn.addEventListener('click', function () {
+                if (sidebar.classList.contains('collapsed')) {
+                    sidebar.classList.remove('collapsed');
+                    sidebar.classList.add('expanded');
+                } else {
+                    sidebar.classList.remove('expanded');
+                    sidebar.classList.add('collapsed');
+                }
+            });
+        })();
+    </script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)

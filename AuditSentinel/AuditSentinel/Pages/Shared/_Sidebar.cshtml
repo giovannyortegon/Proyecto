@@ -1,0 +1,48 @@
+﻿@* Pages/Shared/_Sidebar.cshtml *@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div id="app-sidebar" class="sidebar collapsed d-flex flex-column p-2">
+    <!-- Botón menú -->
+    <button id="sidebar-toggle" type="button" class="btn btn-sm btn-outline-light mb-3">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Título (solo visible en expanded) -->
+    <div class="brand-title mb-3 d-none d-md-block">Audit Sentinel</div>
+
+    <!-- Navegación -->
+    <nav class="nav flex-column">
+        <a asp-page="/Index" class="nav-link d-flex align-items-center text-white">
+            <i class="bi bi-house-door"></i>
+            <span class="menu-text">Inicio</span>
+        </a>
+
+        <a asp-page="/Servidores" class="nav-link d-flex align-items-center text-white">
+            <i class="bi bi-hdd-network"></i>
+            <span class="menu-text">Servidores</span>
+        </a>
+
+        <a asp-page="/Escaneos" class="nav-link d-flex align-items-center text-white">
+            <i class="bi bi-upc-scan"></i>
+            <span class="menu-text">Escaneos</span>
+        </a>
+
+        <a asp-page="/Reportes" class="nav-link d-flex align-items-center text-white">
+            <i class="bi bi-clipboard-data"></i>
+            <span class="menu-text">Reportes</span>
+        </a>
+
+        <a asp-page="/Configuracion" class="nav-link d-flex align-items-center text-white">
+            <i class="bi bi-gear"></i>
+            <span class="menu-text">Configuración</span>
+        </a>
+    </nav>
+
+    <div class="mt-auto" id="LoginInferior">
+        <button class="btn login-btn d-flex align-items-center">
+            <i class="bi bi-person-fill"></i>
+            <span class="login-text">LOGIN</span>
+        </button>
+    </div>
+
+</div>

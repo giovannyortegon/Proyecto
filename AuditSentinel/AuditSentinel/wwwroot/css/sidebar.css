@@ -1,0 +1,91 @@
+﻿/* wwwroot/css/sidebar.css */
+.sidebar {
+    height: 100vh;
+    background-color: #000066;
+    transition: width 0.25s ease, transform 0.25s ease;
+    overflow: hidden;
+    color: white;
+}
+
+    /* Tamaño cuando está colapsado (solo iconos) */
+    .sidebar.collapsed {
+        width: 55px;
+    }
+
+    /* Tamaño cuando está expandido (iconos + texto) */
+    .sidebar.expanded {
+        width: 220px;
+    }
+
+    /* Enlaces */
+    .sidebar a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .sidebar .nav-link {
+        border-radius: 8px;
+        margin: 4px 0;
+        padding: 8px;
+    }
+
+        .sidebar .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+    .sidebar.collapsed .brand-title {
+        display: none !important;
+    }
+
+    /* Al colapsarse, ocultar el texto LOGIN y mostrar solo el icono */
+    .sidebar.collapsed .login-text {
+        display: none !important;
+    }
+
+    /* En modo expandido, mostrar texto y ocultar el icono extra si deseas */
+    .sidebar.expanded .login-icon {
+        display: inline-block;
+    }
+
+    /* En colapsado, centrar el icono */
+    .sidebar.collapsed #LoginInferior .btn {
+        justify-content: center;
+    }
+
+
+/* Texto del menú (oculto en colapsado) */
+.menu-text {
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
+/* Ocultar el texto cuando esté colapsado usando la clase en el contenedor padre */
+.sidebar.collapsed .menu-text {
+    display: none;
+}
+
+/* Marca/título */
+.brand-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+}
+
+/* Botón login al fondo */
+.login-btn {
+    width: 100%;
+    background-color: #1a1aff;
+    color: white;
+    border: none;
+    margin-top: 10px;
+}
+
+/* Ajustes responsivos (si deseas) */
+@media (max-width: 576px) {
+    .sidebar.expanded {
+        position: fixed;
+        z-index: 1040;
+        left: 0;
+        top: 0;
+    }
+}

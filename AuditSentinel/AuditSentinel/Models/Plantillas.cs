@@ -7,10 +7,14 @@ namespace AuditSentinel.Models
         [Key]
         public int IdPlantilla { get; set; }
         [Required]
-        [MaxLength(100)]
+        [MaxLength(80)]
+        [StringLength(80, MinimumLength = 5, ErrorMessage = "El nombre debe tener entre 5 y 80 caracteres.")]
+        [RegularExpression(@"^(?!\d+$).+", ErrorMessage = "El nombre de usuario no puede ser solo números.")]
         public string NombrePlantilla { get; set; }
         [Required]
-        [MaxLength(20)]
+        [MaxLength(80)]
+        [StringLength(80, MinimumLength = 5, ErrorMessage = "El nombre debe tener entre 5 y 80 caracteres.")]
+        [RegularExpression(@"^(?!\d+$).+", ErrorMessage = "El nombre de usuario no puede ser solo números.")]
         public string Version { get; set; }
 
         public ICollection<EscaneosPlantillas> EscaneosPlantillas { get; set; }

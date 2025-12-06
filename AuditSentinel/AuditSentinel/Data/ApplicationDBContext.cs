@@ -20,6 +20,9 @@ namespace AuditSentinel.Data
         public DbSet<AuditSentinel.Models.Reportes> Reportes { get; set; }
         public DbSet<AuditSentinel.Models.EscaneosReportes> EscaneosReportes { get; set; }
         public DbSet<AuditSentinel.Models.EscaneosVulnerabilidades> EscaneosVulnerabilidades { get; set; }
+        public DbSet<AuditSentinel.Models.Usuarios> Usuarios { get; set; }
+        public DbSet<AuditSentinel.Models.Roles> Roles { get; set; }
+        public DbSet<AuditSentinel.Models.UsuariosRoles> UsuariosRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +44,11 @@ namespace AuditSentinel.Data
                 .Property(es => es.estado)
                 .HasConversion<string>();
 
+            modelBuilder.Entity<Roles>()
+                .Property(r => r.NombreRol)
+                .HasConversion<string>();
+
+
             // Configurar clave primaria en las plantillas
             modelBuilder.Entity<AuditSentinel.Models.EscaneosServidores>()
                 .HasKey(es => new { es.IdEscaneo, es.IdServidor });
@@ -56,6 +64,8 @@ namespace AuditSentinel.Data
 
             modelBuilder.Entity<AuditSentinel.Models.PlantillasVulnerabilidades>()
                 .HasKey(pv => new { pv.IdPlantilla, pv.IdVulnerabilidad });
+            modelBuilder.Entity<UsuariosRoles>()
+               .HasKey(ur => new { ur.IdUsuario, ur.IdRol });
 
             // establecer las relacion entre las tablas
             modelBuilder.Entity<AuditSentinel.Models.EscaneosServidores>()
@@ -110,6 +120,16 @@ namespace AuditSentinel.Data
                 .HasOne(pv => pv.Vulnerabilidades)
                 .WithMany(v => v.PlantillasVulnerabilidades)
                 .HasForeignKey(pv => pv.IdVulnerabilidad);
+
+            modelBuilder.Entity<AuditSentinel.Models.UsuariosRoles>()
+                .HasOne(ur => ur.usuarios)
+                .WithMany(u => u.UsuariosRoles)
+                .HasForeignKey(ur => ur.IdUsuario);
+
+            modelBuilder.Entity<AuditSentinel.Models.UsuariosRoles>()
+                .HasOne(ur => ur.roles)
+                .WithMany(u => u.UsuariosRoles)
+                .HasForeignKey(ur => ur.IdRol);
         }
     }
 }
