@@ -2,12 +2,12 @@
 @model AuditSentinel.Pages.Servidores.DeleteModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar";
 }
 
-<h1>Delete</h1>
+<h1>ELIMINAR</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>¿Esta seguro que desea eliminarlo?</h3>
 <div>
     <h4>Servidores</h4>
     <hr />
@@ -37,10 +37,10 @@
             @Html.DisplayFor(model => model.Servidores.Create_is)
         </dd>
     </dl>
-    
+    <br>
     <form method="post">
         <input type="hidden" asp-for="Servidores.IdServidor" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-page="./Index" class="btn btn-primary" >Volver</a>
     </form>
 </div>

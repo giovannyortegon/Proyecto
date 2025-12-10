@@ -1,3 +1,4 @@
+wwwroot\css\sidebar.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\img\estadistica.png
@@ -124,3 +125,4 @@ C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\wwwroot\lib\jquery
 C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\wwwroot\lib\jquery\dist\jquery.slim.min.js
 C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\wwwroot\lib\jquery\dist\jquery.slim.min.map
 C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\wwwroot\lib\jquery\LICENSE.txt
+C:\Users\orteg\Documents\Proyecto\AuditSentinel\AuditSentinel\wwwroot\css\sidebar.css

@@ -2,10 +2,10 @@
 @model AuditSentinel.Pages.Servidores.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles";
 }
 
-<h1>Details</h1>
+<h1>DETALLES</h1>
 
 <div>
     <h4>Servidores</h4>
@@ -37,7 +37,8 @@
         </dd>
     </dl>
 </div>
+<br>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Servidores.IdServidor">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Servidores.IdServidor">Editar</a> |
+    <a asp-page="./Index">Volver</a>
 </div>
