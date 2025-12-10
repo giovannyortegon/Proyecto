@@ -4,6 +4,7 @@ using AuditSentinel.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuditSentinel.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251206163958_DBLogin")]
+    partial class DBLogin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,23 +180,6 @@ namespace AuditSentinel.Migrations
                     b.ToTable("Reportes");
                 });
 
-            modelBuilder.Entity("AuditSentinel.Models.Roles", b =>
-                {
-                    b.Property<int>("IdRole")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRole"));
-
-                    b.Property<string>("NombreRol")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdRole");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("AuditSentinel.Models.Servidores", b =>
                 {
                     b.Property<int>("IdServidor")
@@ -223,51 +209,6 @@ namespace AuditSentinel.Migrations
                     b.HasKey("IdServidor");
 
                     b.ToTable("Servidores");
-                });
-
-            modelBuilder.Entity("AuditSentinel.Models.Usuarios", b =>
-                {
-                    b.Property<int>("IdUsuario")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsuario"));
-
-                    b.Property<DateTime>("FechaEscaneo")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("contresena")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("correo")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.Property<string>("nombreUsuario")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.HasKey("IdUsuario");
-
-                    b.ToTable("Usuarios");
-                });
-
-            modelBuilder.Entity("AuditSentinel.Models.UsuariosRoles", b =>
-                {
-                    b.Property<int>("IdUsuario")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdRol")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdUsuario", "IdRol");
-
-                    b.HasIndex("IdRol");
-
-                    b.ToTable("UsuariosRoles");
                 });
 
             modelBuilder.Entity("AuditSentinel.Models.Vulnerabilidades", b =>
@@ -405,25 +346,6 @@ namespace AuditSentinel.Migrations
                     b.Navigation("Vulnerabilidades");
                 });
 
-            modelBuilder.Entity("AuditSentinel.Models.UsuariosRoles", b =>
-                {
-                    b.HasOne("AuditSentinel.Models.Roles", "roles")
-                        .WithMany("UsuariosRoles")
-                        .HasForeignKey("IdRol")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AuditSentinel.Models.Usuarios", "usuarios")
-                        .WithMany("UsuariosRoles")
-                        .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("roles");
-
-                    b.Navigation("usuarios");
-                });
-
             modelBuilder.Entity("AuditSentinel.Models.Escaneos", b =>
                 {
                     b.Navigation("EscaneosPlantillas");
@@ -447,19 +369,9 @@ namespace AuditSentinel.Migrations
                     b.Navigation("EscaneosReportes");
                 });
 
-            modelBuilder.Entity("AuditSentinel.Models.Roles", b =>
-                {
-                    b.Navigation("UsuariosRoles");
-                });
-
             modelBuilder.Entity("AuditSentinel.Models.Servidores", b =>
                 {
                     b.Navigation("EscaneosServidores");
-                });
-
-            modelBuilder.Entity("AuditSentinel.Models.Usuarios", b =>
-                {
-                    b.Navigation("UsuariosRoles");
                 });
 
             modelBuilder.Entity("AuditSentinel.Models.Vulnerabilidades", b =>
