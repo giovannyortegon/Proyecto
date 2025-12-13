@@ -1,5 +1,7 @@
 ﻿@page
 @model AuditSentinel.Pages.Servidores.DeleteModel
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Analista,Administrador")]
 
 @{
     ViewData["Title"] = "Eliminar";

@@ -1,0 +1,19 @@
+﻿@page
+@model AuditSentinel.Pages.Error.ServerErrorModel
+@{
+    ViewData["Title"] = "Error interno (500)";
+}
+
+<section class="container py-5">
+    <h1 class="display-6">Se produjo un error en el servidor</h1>
+    <p class="lead">
+        Lo sentimos, ocurrió un problema procesando tu solicitud. Nuestro equipo ya fue notificado (si tienes logging/telemetría).
+    </p>
+
+    @if (Model.RequestId is not null)
+    {
+        <p><strong>ID de solicitud:</strong> @Model.RequestId</p>
+    }
+
+    <a class="btn btn-primary" asp-page="/Index">Volver al inicio</a>
+</section>
