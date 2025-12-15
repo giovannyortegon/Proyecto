@@ -17,8 +17,12 @@ namespace AuditSentinel.Models
         [MaxLength(80)]
         [StringLength(80, MinimumLength = 5, ErrorMessage = "El nombre debe tener entre 5 y 80 caracteres.")]
         [RegularExpression(@"^(?!\d+$).+", ErrorMessage = "El nombre de usuario no puede ser solo números.")]
+        [Display(Name = "Nombre Escaneo")]
         public string NombreEscaneo { get; set; }
-        public EstadoEscaneo Estado { get; set; }  
+
+        [Display(Name = "Estado")]
+        public EstadoEscaneo Estado { get; set; }
+        [Display(Name = "Fecha Escaneo")]
         public DateTime FechaEscaneo { get; set; } = DateTime.Now;
 
         public ICollection<EscaneosServidores> EscaneosServidores { get; set; }

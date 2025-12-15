@@ -1,5 +1,6 @@
 ﻿using AuditSentinel.Data;
 using AuditSentinel.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace AuditSentinel.Pages.Escaneos
 {
+    [Authorize(Roles = "Analista,Administrador")]
     public class IndexModel : PageModel
     {
         private readonly AuditSentinel.Data.ApplicationDBContext _context;

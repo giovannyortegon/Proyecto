@@ -1,0 +1,51 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Administrador")]
+@model AuditSentinel.Pages.Registrar.RegistrarModel
+@{
+    ViewData["Title"] = "Registrar";
+}
+
+<h2 class="mb-4"> Registro</h2>
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <label>Nombre</label>
+            <input asp-for="Registro.Nombre" class="form-control" />
+            <span asp-validation-for="Registro.Nombre" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label>Email</label>
+            <input asp-for="Registro.Email" class="form-control" />
+            <span asp-validation-for="Registro.Email" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label>Contraseña</label>
+            <input asp-for="Registro.Password" class="form-control" type="password" />
+            <span asp-validation-for="Registro.Password" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label>Confirmar Contraseña</label>
+            <input asp-for="Registro.ConfirmacionPassword" class="form-control" type="password" />
+            <span asp-validation-for="Registro.ConfirmacionPassword" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label>Rol</label>
+            <select asp-for="Registro.Rol" class="form-control">
+                <option value="Administrador">Administrador</option>
+                <option value="Analista">Analista</option>
+                <option value="Analista">Auditor</option>
+            </select>
+        </div>
+    </div>
+    <button class="btn btn-success" type="submit">Crear</button>
+
+    <p class="text-success">@Model.SuccessMessage</p>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

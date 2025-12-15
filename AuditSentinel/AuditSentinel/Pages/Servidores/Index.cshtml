@@ -1,11 +1,13 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Administrador,Analista")]
 @model AuditSentinel.Pages.Servidores.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista Servidores";
 }
 
-<h1>Index</h1>
+<h1>Lista Servidores</h1>
 
 <p>
     <a asp-page="Create" class="btn btn-primary">Nuevo Servidor</a>

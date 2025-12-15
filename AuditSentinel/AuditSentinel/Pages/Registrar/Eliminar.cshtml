@@ -1,0 +1,22 @@
+﻿@page "{id}"
+@model AuditSentinel.Pages.Usuarios.DeleteModel
+@{
+    ViewData["Title"] = "Eliminar usuario";
+}
+
+<h2>Eliminar usuario</h2>
+
+<div class="alert alert-warning">
+    ¿Seguro que deseas eliminar al usuario <strong>@Model.UserName</strong>?
+</div>
+
+<form method="post">
+    <input type="hidden" asp-for="UserId" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (Model.ErrorMessage is not null)
+{
+    <div class="alert alert-danger mt-3">@Model.ErrorMessage</div>
+}
