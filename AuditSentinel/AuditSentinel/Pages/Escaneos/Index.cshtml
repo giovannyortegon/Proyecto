@@ -1,14 +1,16 @@
 ﻿@page
 @model AuditSentinel.Pages.Escaneos.IndexModel
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Analista,Administrador")]
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista Escaneos";
 }
 
-<h1>Index</h1>
+<h1>Lista Escaneos</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create" class="btn btn-primary">Nuevo Escaneo</a>
 </p>
 <table class="table">
     <thead>
@@ -38,9 +40,9 @@
                 @Html.DisplayFor(modelItem => item.FechaEscaneo)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.IdEscaneo">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.IdEscaneo">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.IdEscaneo">Delete</a>
+                <a asp-page="./Edit" asp-route-id="@item.IdEscaneo" class="btn btn-primary">Editar</a> |
+                    <a asp-page="./Details" asp-route-id="@item.IdEscaneo" class="btn btn-secondary">Detalles</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.IdEscaneo" class="btn btn-danger">Eliminar</a>
             </td>
         </tr>
 }

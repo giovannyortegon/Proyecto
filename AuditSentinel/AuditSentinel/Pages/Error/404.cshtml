@@ -1,0 +1,23 @@
+﻿@page
+@model AuditSentinel.Pages.Error.NotFoundModel
+@{
+    ViewData["Title"] = "Página no encontrada (404)";
+}
+
+<section class="container py-5">
+    <h1 class="display-6">404 - Página no encontrada</h1>
+    <p class="lead">
+        La URL solicitada no existe o fue movida. Verifica la dirección o usa el menú de navegación.
+    </p>
+
+    @if (!string.IsNullOrEmpty(Model.OriginalPath))
+    {
+        <p><strong>Ruta original:</strong> @Model.OriginalPath</p>
+    }
+    @if (!string.IsNullOrEmpty(Model.OriginalQueryString))
+    {
+        <p><strong>Query:</strong> @Model.OriginalQueryString</p>
+    }
+
+    <a class="btn btn-primary" asp-page="/Index">Ir al inicio</a>
+</section>

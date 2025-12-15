@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AuditSentinel")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16d64ff60934b2b8052c15066224abc4c2670a40")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9a610f94f53fe7f96629b18e77a06c988292692e")]
 [assembly: System.Reflection.AssemblyProductAttribute("AuditSentinel")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AuditSentinel")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -40,6 +40,19 @@
         </div>
     </footer>
 
+@*     <footer class="footer mt-auto py-2 bg-transparent">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <span class="text-muted">
+                &copy; @DateTime.Now.Year - <strong>AuditSentinel</strong>
+            </span>
+            <nav class="d-flex gap-3">
+                <a asp-page="/Privacy" class="text-decoration-none text-muted">Privacidad</a>
+                <a href="/Terms" class="text-decorationContacto</a>
+            </nav>
+        </div>
+    </footer> *@
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -50,7 +63,7 @@
             const sidebar = document.getElementById('app-sidebar');
             if (!toggleBtn || !sidebar) return;
 
-            toggleBtn.addEventListener('click', function () {
+            toggleBtn.addEventListener('mouseover', function () {
                 if (sidebar.classList.contains('collapsed')) {
                     sidebar.classList.remove('collapsed');
                     sidebar.classList.add('expanded');

@@ -1,8 +1,10 @@
 ﻿@page
 @model AuditSentinel.Pages.Servidores.CreateModel
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Analista,Administrador")]
 
         @{
-        ViewData["Title"] = "Create";
+        ViewData["Title"] = "Crear";
         }
         
         <h1>Crear</h1>
