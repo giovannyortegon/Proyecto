@@ -1,37 +1,28 @@
-﻿@page
+﻿
+@page "{id:int}"
 @model AuditSentinel.Pages.Reportes.DetailsModel
-
 @{
-    ViewData["Title"] = "Detalles";
+    ViewData["Title"] = "Detalles del Reporte";
 }
+<h2>Detalles</h2>
 
-<h1>Detalles</h1>
-
-<div>
-    <h4>Reportes</h4>
-    <hr />
+<div class="card p-3">
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Reportes.NombreReporte)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Reportes.NombreReporte)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Reportes.cumplimiento)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Reportes.cumplimiento)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Reportes.Creado)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Reportes.Creado)
-        </dd>
+        <dt class="col-sm-3">Nombre</dt><dd class="col-sm-9">@Model.Reporte.NombreReporte</dd>
+        <dt class="col-sm-3">Cumplimiento</dt><dd class="col-sm-9">@Model.Reporte.cumplimiento</dd>
+        <dt class="col-sm-3">Creado</dt><dd class="col-sm-9">@Model.Reporte.Creado</dd>
     </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Reportes.IdReporte" class="btn btn-primary">Editar</a> |
-    <a asp-page="./Index" class="btn btn-secondary">Volver</a>
+    <hr />
+    <h5>Escaneos asociados</h5>
+    <ul>
+        @foreach (var x in Model.Reporte.EscaneosReportes)
+        {
+            <li>@x.Escaneos?.NombreEscaneo (@x.Escaneos?.Estado)</li>
+        }
+    </ul>
+
+    <div class="mt-3 d-flex gap-2">
+        <a asp-page="Edit" asp-route-id="@Model.Reporte.IdReporte" class="btn btn-primary">Editar</a>
+        <a asp-page="Index" class="btn btn-secondary">Volver</a>
+    </div>
 </div>

@@ -1,29 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+﻿
 using AuditSentinel.Data;
 using AuditSentinel.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuditSentinel.Pages.Vulnerabilidades
 {
+    [Authorize(Roles = "Auditor,Analista,Administrador")]
     public class IndexModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
+        public IndexModel(ApplicationDBContext context) => _context = context;
 
-        public IndexModel(AuditSentinel.Data.ApplicationDBContext context)
+        public IList<AuditSentinel.Models.Vulnerabilidades> Items { get; set; } = new List<AuditSentinel.Models.Vulnerabilidades>();
+
+        // (Opcional) filtros simples
+        public string? Search { get; set; }
+        public NivelRiesgo? Riesgo { get; set; }
+
+        public async Task OnGetAsync(string? search, NivelRiesgo? riesgo)
         {
-            _context = context;
-        }
+            Search = search;
+            Riesgo = riesgo;
 
-        public IList<AuditSentinel.Models.Vulnerabilidades> Vulnerabilidades { get;set; } = default!;
+            var query = _context.Vulnerabilidades.AsQueryable();
 
-        public async Task OnGetAsync()
-        {
-            Vulnerabilidades = await _context.Vulnerabilidades.ToListAsync();
+            if (!string.IsNullOrWhiteSpace(Search))
+                query = query.Where(v => v.NombreVulnerabilidad.Contains(Search) || (v.Descripcion != null && v.Descripcion.Contains(Search)));
+
+            if (Riesgo.HasValue)
+                query = query.Where(v => v.NivelRiesgo == Riesgo.Value);
+
+            Items = await query
+                .OrderByDescending(v => v.FechaDetectada)
+                .ToListAsync();
         }
     }
 }

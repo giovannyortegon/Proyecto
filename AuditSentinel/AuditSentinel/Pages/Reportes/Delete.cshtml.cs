@@ -1,62 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+using AuditSentinel.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AuditSentinel.Data;
-using AuditSentinel.Models;
 
 namespace AuditSentinel.Pages.Reportes
 {
+    [Authorize(Roles = "Auditor,Analista,Administrador")]
     public class DeleteModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
+        public DeleteModel(ApplicationDBContext context) => _context = context;
 
-        public DeleteModel(AuditSentinel.Data.ApplicationDBContext context)
+        // Se muestra en la vista de confirmación
+        [BindProperty]
+        public AuditSentinel.Models.Reportes Reporte { get; set; } = new();
+
+        // GET: Confirmación de eliminación
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            _context = context;
+            // Incluimos la relación para mostrar cuántos escaneos tiene asociados
+            Reporte = await _context.Reportes
+                .Include(r => r.EscaneosReportes) // -> colección puente
+                .FirstOrDefaultAsync(r => r.IdReporte == id);
+
+            if (Reporte == null)
+                return NotFound();
+
+            return Page();
         }
 
-        [BindProperty]
-        public AuditSentinel.Models.Reportes Reportes { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        // POST: Eliminación definitiva
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (id == null)
-            {
+            // Cargar el reporte (puente opcional, solo si quieres tratar manualmente las relaciones)
+            var entity = await _context.Reportes
+                .Include(r => r.EscaneosReportes)
+                .FirstOrDefaultAsync(r => r.IdReporte == id);
+
+            if (entity == null)
                 return NotFound();
-            }
 
-            var reportes = await _context.Reportes.FirstOrDefaultAsync(m => m.IdReporte == id);
+            // Si tu mapeo tiene Cascade en EscaneosReportes ↔ Reportes (como en tu DbContext), 
+            // no es necesario borrar manualmente las filas del puente.
+            // Si NO tuvieras Cascade, descomenta la siguiente línea:
+            // _context.EscaneosReportes.RemoveRange(entity.EscaneosReportes);
 
-            if (reportes is not null)
+            _context.Reportes.Remove(entity);
+
+            try
             {
-                Reportes = reportes;
-
+                await _context.SaveChangesAsync();
+                return RedirectToPage("Index");
+            }
+            catch (DbUpdateException ex)
+            {
+                ModelState.AddModelError(string.Empty, $"No se pudo eliminar el reporte. Detalle: {ex.Message}");
                 return Page();
             }
-
-            return NotFound();
-        }
-
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var reportes = await _context.Reportes.FindAsync(id);
-            if (reportes != null)
-            {
-                Reportes = reportes;
-                _context.Reportes.Remove(Reportes);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToPage("./Index");
         }
     }
 }

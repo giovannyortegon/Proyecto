@@ -1,0 +1,38 @@
+﻿@page
+@model AuditSentinel.Pages.ConfiguracionModel
+@{
+}
+@{
+    ViewData["Title"] = "Lista Servidores";
+}
+
+<h1>Configuracion</h1>
+
+
+<div class="container-fluid">
+    <div class="row bg-transparent align-items-center">
+        <!-- Columna izquierda -->
+        <div class="col-6 border d-flex flex-column align-items-center justify-content-evenly p-4 bg-light">
+            <h2>Usuarios</h2>
+            <p>Lista, Crear y Actualiza los usuarios disponibles</p>
+            <a asp-page="Registrar/Index" class="btn btn-secondary">Crear Usuario</a>
+            
+        </div>
+
+        <!-- Columna derecha -->
+        <div class="col-6 border d-flex flex-column align-items-center justify-content-evenly p-4 bg-light">
+            <h2>Plantillas</h2>
+            <p>Listar, Crear y Editar las plantillas </p>
+            <a asp-page="Plantillas/Index" class="btn btn-secondary">Plantillas</a>
+        </div>
+        <div class="col-6 border d-flex flex-column align-items-center justify-content-evenly p-4 bg-light">
+            <h2>Vulnerabilidades</h2>
+            <p>Listar, Crear, Editar y Actualizar las vulnerabilidaes.</p>
+            <a asp-page="Vulnerabilidades/Index" class="btn btn-secondary">Actualizar Vulnerabilidades</a>
+        </div>
+        <div class="col-6 d-flex flex-column align-items-center justify-content-evenly p-4 bg-transparent">
+            <h2></h2>
+            <p></p>
+            <a asp-page="Index" class="btn btn-secondary">Volver</a>
+        </div>
+    </div>

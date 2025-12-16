@@ -1,44 +1,37 @@
-﻿@page
+﻿
+@page
 @model AuditSentinel.Pages.Plantillas.IndexModel
-@using Microsoft.AspNetCore.Authorization
-@attribute [Authorize(Roles = "Analista,Administrador")]
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Plantillas";
 }
+<h2>Plantillas</h2>
+<p><a class="btn btn-primary" asp-page="Create">Nueva Plantilla</a></p>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Plantillas[0].NombrePlantilla)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Plantillas[0].Version)
-            </th>
+            <th>Nombre</th>
+            <th>Versión</th>
+            <th># Vulnerabilidades</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Plantillas) {
+    @foreach (var p in Model.Items)
+    {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombrePlantilla)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Version)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.IdPlantilla">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.IdPlantilla">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.IdPlantilla">Delete</a>
+            <td>@p.NombrePlantilla</td>
+            <td>@p.Version</td>
+            <td>@(p.PlantillasVulnerabilidades?.Count ?? 0)</td>
+            <td class="text-end">
+                <a asp-page="Edit" asp-route-id="@p.IdPlantilla" class="btn btn-sm btn-primary">Editar</a>
+                <a asp-page="Details" asp-route-id="@p.IdPlantilla" class="btn btn-sm btn-secondary">Detalles</a>
+                <a asp-page="Delete" asp-route-id="@p.IdPlantilla" class="btn btn-sm btn-danger">Eliminar</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+<div>
+        <a asp-page="/Configuracion" class="btn btn-secondary">Volver</a>
+</div>

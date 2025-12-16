@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+﻿
 using AuditSentinel.Data;
 using AuditSentinel.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuditSentinel.Pages.Plantillas
 {
+    [Authorize(Roles = "Auditor,Analista,Administrador")]
     public class IndexModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
+        public IndexModel(ApplicationDBContext context) => _context = context;
 
-        public IndexModel(AuditSentinel.Data.ApplicationDBContext context)
-        {
-            _context = context;
-        }
-
-        public IList<AuditSentinel.Models.Plantillas> Plantillas { get;set; } = default!;
+        public IList<AuditSentinel.Models.Plantillas> Items { get; set; } = new List<AuditSentinel.Models.Plantillas>();
 
         public async Task OnGetAsync()
         {
-            Plantillas = await _context.Plantillas.ToListAsync();
+            Items = await _context.Plantillas
+                .Include(p => p.PlantillasVulnerabilidades)
+                .OrderBy(p => p.NombrePlantilla)
+                .ToListAsync();
         }
     }
 }

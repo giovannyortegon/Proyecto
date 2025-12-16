@@ -1,6 +1,6 @@
 ﻿/* wwwroot/css/sidebar.css */
 .sidebar {
-    height: 100vh;
+    height: 93.3vh;
     background-color: #000066;
     transition: width 0.25s ease, transform 0.25s ease;
     overflow: hidden;
