@@ -1,44 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AuditSentinel.Data;
+using AuditSentinel.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using AuditSentinel.Data;
-using AuditSentinel.Models;
 
 namespace AuditSentinel.Pages.Escaneos
 {
     public class CreateModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
 
-        public CreateModel(AuditSentinel.Data.ApplicationDBContext context)
+        public CreateModel(ApplicationDBContext context)
         {
             _context = context;
         }
 
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
+        [BindProperty]
+        public AuditSentinel.Models.Escaneos Escaneo { get; set; }
 
         [BindProperty]
-        public AuditSentinel.Models.Escaneos Escaneos { get; set; } = default!;
+        public List<int> ServidoresSeleccionados { get; set; } = new();
 
-        // For more information, see https://aka.ms/RazorPagesCRUD.
+        [BindProperty]
+        public List<int> PlantillasSeleccionadas { get; set; } = new();
+
+        public List<SelectListItem> Servidores { get; set; }
+        public List<SelectListItem> Plantillas { get; set; }
+
+        public void OnGet()
+        {
+            Servidores = _context.Servidores
+                .Select(s => new SelectListItem
+                {
+                    Value = s.IdServidor.ToString(),
+                    Text = $"{s.NombreServidor}-{s.IP}-{s.SistemaOperativo}"
+                }).ToList();
+
+            Plantillas = _context.Plantillas
+                .Select(p => new SelectListItem
+                {
+                    Value = p.IdPlantilla.ToString(),
+                    Text = p.NombrePlantilla
+                }).ToList();
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    OnGet();
+            //    return Page();
+            //}
 
-            _context.Escaneos.Add(Escaneos);
+            _context.Escaneos.Add(Escaneo);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            foreach (var idServidor in ServidoresSeleccionados)
+            {
+                _context.EscaneosServidores.Add(new AuditSentinel.Models.EscaneosServidores
+                {
+                    IdEscaneo = Escaneo.IdEscaneo,
+                    IdServidor = idServidor
+                });
+            }
+
+            foreach (var idPlantilla in PlantillasSeleccionadas)
+            {
+                _context.EscaneosPlantillas.Add(new EscaneosPlantillas
+                {
+                    IdEscaneo = Escaneo.IdEscaneo,
+                    IdPlantilla = idPlantilla
+                });
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToPage("Index");
         }
     }
 }

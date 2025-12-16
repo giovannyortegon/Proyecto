@@ -59,6 +59,7 @@ using (var scope = app.Services.CreateScope())
 if(app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseExceptionHandler("/Error/500");
     app.UseStatusCodePagesWithRedirects("/Error/{0}");
 
 }
@@ -66,7 +67,6 @@ else
 {
     // Manejo de excepciones 500 (redirige a /Error/500)
     app.UseExceptionHandler("Pages/Error/500");
-
     // Manejo de códigos de estado (ej. 404, 403, 401). Re-ejecuta la ruta /Error/{codigo}
     app.UseStatusCodePagesWithReExecute(pathFormat: """Pages/Error/{0}""");
     app.UseHsts();

@@ -1,43 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AuditSentinel.Data;
+using AuditSentinel.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AuditSentinel.Data;
-using AuditSentinel.Models;
 
 namespace AuditSentinel.Pages.Plantillas
 {
+    [Authorize(Roles = "Auditor,Analista,Administrador")]
     public class DetailsModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
+        public DetailsModel(ApplicationDBContext context) => _context = context;
 
-        public DetailsModel(AuditSentinel.Data.ApplicationDBContext context)
+        public AuditSentinel.Models.Plantillas Plantilla { get; set; } = new();
+
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            _context = context;
-        }
+            Plantilla = await _context.Plantillas
+                .Include(p => p.PlantillasVulnerabilidades)
+                .ThenInclude(pv => pv.Vulnerabilidades)
+                .FirstOrDefaultAsync(p => p.IdPlantilla == id);
 
-        public AuditSentinel.Models.Plantillas Plantillas { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var plantillas = await _context.Plantillas.FirstOrDefaultAsync(m => m.IdPlantilla == id);
-
-            if (plantillas is not null)
-            {
-                Plantillas = plantillas;
-
-                return Page();
-            }
-
-            return NotFound();
+            if (Plantilla == null) return NotFound();
+            return Page();
         }
     }
 }

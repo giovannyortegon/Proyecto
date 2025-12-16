@@ -1,48 +1,48 @@
-﻿@page
+﻿@page "{id:int}"
+@using AuditSentinel.Models
 @model AuditSentinel.Pages.Escaneos.EditModel
 
-@{
-    ViewData["Title"] = "Editar";
-}
+<h2>Editar Escaneo</h2>
 
-<h1>Editar</h1>
-
-<h4>Escaneos</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Escaneos.IdEscaneo" />
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Escaneos.NombreEscaneo" class="control-label"></label>
-                <input asp-for="Escaneos.NombreEscaneo" class="form-control" />
-                <span asp-validation-for="Escaneos.NombreEscaneo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="Escaneos.Estado" class="control-label"></label>
-                <select asp-for="Escaneos.Estado" class="form-control"></select>
-                <span asp-validation-for="Escaneos.Estado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="Escaneos.FechaEscaneo" class="control-label"></label>
-                <input asp-for="Escaneos.FechaEscaneo" class="form-control" />
-                <span asp-validation-for="Escaneos.FechaEscaneo" class="text-danger"></span>
-            </div>
-            <br>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
-            </div>
-        </form>
+<form method="post">
+    <input type="hidden" asp-for="Escaneo.IdEscaneo" />
+    <div class="card p-3">
+    <div class="mb-3">
+        <label asp-for="Escaneo.NombreEscaneo"></label>
+        <input asp-for="Escaneo.NombreEscaneo" class="form-control" />
     </div>
-</div>
 
+        <div class="mb-3">
+        <label asp-for="Escaneo.Estado"></label>
+        <select asp-for="Escaneo.Estado"
+                asp-items="Html.GetEnumSelectList<EstadoEscaneo>()"
+                class="form-control">
+        </select>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-6 mb-3">
+        <label>Servidores</label>
+        <select asp-for="ServidoresSeleccionados"
+                asp-items="Model.Servidores"
+                multiple
+                class="form-control">
+        </select>
+    </div>
 
+        <div class="col-md-6 mb-3">
+        <label>Plantillas</label>
+        <select asp-for="PlantillasSeleccionadas"
+                asp-items="Model.Plantillas"
+                multiple
+                class="form-control">
+        </select>
+    </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
 }

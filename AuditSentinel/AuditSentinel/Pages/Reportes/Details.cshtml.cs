@@ -1,43 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+using AuditSentinel.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AuditSentinel.Data;
-using AuditSentinel.Models;
 
 namespace AuditSentinel.Pages.Reportes
 {
+    [Authorize(Roles = "Auditor,Analista,Administrador")]
     public class DetailsModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
+        public DetailsModel(ApplicationDBContext context) => _context = context;
 
-        public DetailsModel(AuditSentinel.Data.ApplicationDBContext context)
+        public AuditSentinel.Models.Reportes Reporte { get; set; } = new();
+
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            _context = context;
-        }
+            Reporte = await _context.Reportes
+                .Include(r => r.EscaneosReportes)
+                .ThenInclude(er => er.Escaneos)
+                .FirstOrDefaultAsync(r => r.IdReporte == id);
 
-        public AuditSentinel.Models.Reportes Reportes { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var reportes = await _context.Reportes.FirstOrDefaultAsync(m => m.IdReporte == id);
-
-            if (reportes is not null)
-            {
-                Reportes = reportes;
-
-                return Page();
-            }
-
-            return NotFound();
+            if (Reporte == null) return NotFound();
+            return Page();
         }
     }
 }

@@ -9,10 +9,21 @@
 
 <h1>Lista Servidores</h1>
 
-<p>
-    <a asp-page="Create" class="btn btn-primary">Nuevo Servidor</a>
-</p>
-<table class="table">
+<form method="get" class="row g-3 mb-3">
+    <div class="col-md-4">
+        <input name="search" value="@Model.Search" class="form-control" placeholder="Buscar por nombre o descripción..." />
+    </div>
+     <div class="col-md-2">
+        <button class="btn btn-outline-primary w-100" type="submit">Filtrar</button>
+    </div>
+    <div class="col-md-3 text-end">
+        <a asp-page="Create" class="btn btn-primary">Nuevo Servidor</a>
+    </div>
+</form>
+
+
+<div class="card mb-md-3 ">
+    <table class="table">
     <thead>
         <tr>
             <th>
@@ -54,3 +65,4 @@
 }
     </tbody>
 </table>
+</div>
