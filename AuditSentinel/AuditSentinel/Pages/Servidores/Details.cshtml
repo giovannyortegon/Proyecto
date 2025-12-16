@@ -1,5 +1,7 @@
 ﻿@page
 @model AuditSentinel.Pages.Servidores.DetailsModel
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Analista,Administrador")]
 
 @{
     ViewData["Title"] = "Detalles";
@@ -39,6 +41,6 @@
 </div>
 <br>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Servidores.IdServidor">Editar</a> |
-    <a asp-page="./Index">Volver</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Servidores.IdServidor" class="btn btn-primary">Editar</a> |
+    <a asp-page="./Index" class="btn btn-secondary">Volver</a>
 </div>

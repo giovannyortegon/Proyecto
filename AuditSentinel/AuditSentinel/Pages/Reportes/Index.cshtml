@@ -1,48 +1,35 @@
 ﻿@page
 @model AuditSentinel.Pages.Reportes.IndexModel
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Reportes";
 }
+<h2>Reportes</h2>
+<p><a class="btn btn-primary" asp-page="Create">Nuevo Reporte</a></p>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Reportes[0].NombreReporte)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reportes[0].cumplimiento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reportes[0].Creado)
-            </th>
+            <th>Nombre</th>
+            <th>Cumplimiento</th>
+            <th>Fecha</th>
+            <th># Escaneos</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Reportes) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreReporte)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.cumplimiento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Creado)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.IdReporte">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.IdReporte">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.IdReporte">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var r in Model.Items)
+        {
+            <tr>
+                <td>@r.NombreReporte</td>
+                <td>@r.cumplimiento</td>
+                <td>@r.Creado.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@(r.EscaneosReportes?.Count ?? 0)</td>
+                <td class="text-end">
+                    <a asp-page="Edit" asp-route-id="@r.IdReporte" class="btn btn-sm btn-primary">Editar</a>
+                    <a asp-page="Details" asp-route-id="@r.IdReporte" class="btn btn-sm btn-secondary">Detalles</a>
+                    <a asp-page="Delete" asp-route-id="@r.IdReporte" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

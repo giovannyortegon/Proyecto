@@ -1,5 +1,7 @@
-﻿@* Pages/Shared/_Sidebar.cshtml *@
+﻿@using Microsoft.AspNetCore.Identity
+@* Pages/Shared/_Sidebar.cshtml *@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject SignInManager<IdentityUser> SignInManager
 
 <div id="app-sidebar" class="sidebar collapsed d-flex flex-column p-2">
     <!-- Botón menú -->
@@ -8,7 +10,7 @@
     </button>
 
     <!-- Título (solo visible en expanded) -->
-    <div class="brand-title mb-3 d-none d-md-block">Audit Sentinel</div>
+    <div class="brand-title mb-3 d-none d-md-block text-center">Audit Sentinel</div>
 
     <!-- Navegación -->
     <nav class="nav flex-column">
@@ -17,17 +19,17 @@
             <span class="menu-text">Inicio</span>
         </a>
 
-        <a asp-page="/Servidores" class="nav-link d-flex align-items-center text-white">
+        <a asp-page="/Servidores/Index" class="nav-link d-flex align-items-center text-white">
             <i class="bi bi-hdd-network"></i>
             <span class="menu-text">Servidores</span>
         </a>
 
-        <a asp-page="/Escaneos" class="nav-link d-flex align-items-center text-white">
+        <a asp-page="/Escaneos/Index" class="nav-link d-flex align-items-center text-white">
             <i class="bi bi-upc-scan"></i>
             <span class="menu-text">Escaneos</span>
         </a>
 
-        <a asp-page="/Reportes" class="nav-link d-flex align-items-center text-white">
+        <a asp-page="/Reportes/Index" class="nav-link d-flex align-items-center text-white">
             <i class="bi bi-clipboard-data"></i>
             <span class="menu-text">Reportes</span>
         </a>
@@ -38,11 +40,33 @@
         </a>
     </nav>
 
-    <div class="mt-auto" id="LoginInferior">
-        <button class="btn login-btn d-flex align-items-center">
+    <div class="mt-auto flex-column" id="LoginInferior">
+
+        
+    @if (SignInManager.IsSignedIn(User))
+        {
+
             <i class="bi bi-person-fill"></i>
-            <span class="login-text">LOGIN</span>
-        </button>
+            @if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                <span class="menu-text">@User.Identity.Name</span>
+            }
+
+            <br>
+            <a method="post" asp-page="/Cuenta/Logout" asp-route-returnUrl="@Url.Page("/Index")" class="nav-link justify-content-center d-flex text-white">
+                <span type="submit" class="menu-text align-items-center" style="cursor:pointer">Cerrar sesión</span>
+            </a>
+            
+
+        }else
+        {
+            <a asp-page="/Cuenta/Login" class="nav-link d-flex align-items-center text-white">
+                @* <button class="btn login-btn d-flex align-items-center"> *@
+                <i class="bi bi-person-fill"></i>
+                <span class="menu-text">Inicio Sesion</span>
+                @* </button> *@
+            </a>
+        }       
     </div>
 
 </div>

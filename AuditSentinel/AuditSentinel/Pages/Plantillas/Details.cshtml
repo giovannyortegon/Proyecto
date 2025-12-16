@@ -1,31 +1,27 @@
-﻿@page
+﻿
+@page "{id:int}"
 @model AuditSentinel.Pages.Plantillas.DetailsModel
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles de Plantilla";
 }
+<h2>Detalles</h2>
 
-<h1>Details</h1>
-
-<div>
-    <h4>Plantillas</h4>
-    <hr />
+<div class="card p-3">
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Plantillas.NombrePlantilla)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Plantillas.NombrePlantilla)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Plantillas.Version)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Plantillas.Version)
-        </dd>
+        <dt class="col-sm-3">Nombre</dt><dd class="col-sm-9">@Model.Plantilla.NombrePlantilla</dd>
+        <dt class="col-sm-3">Versión</dt><dd class="col-sm-9">@Model.Plantilla.Version</dd>
     </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Plantillas.IdPlantilla">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+
+    <h5>Vulnerabilidades relacionadas</h5>
+    <ul>
+        @foreach (var x in Model.Plantilla.PlantillasVulnerabilidades)
+        {
+            <li>@x.Vulnerabilidades?.NombreVulnerabilidad (@x.Vulnerabilidades?.NivelRiesgo)</li>
+        }
+    </ul>
+
+    <div class="mt-3 d-flex gap-2">
+        <a asp-page="Edit" asp-route-id="@Model.Plantilla.IdPlantilla" class="btn btn-warning">Editar</a>
+        <a asp-page="Index" class="btn btn-secondary">Volver</a>
+    </div>
 </div>

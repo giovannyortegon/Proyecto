@@ -1,62 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AuditSentinel.Data;
+using AuditSentinel.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AuditSentinel.Data;
-using AuditSentinel.Models;
 
 namespace AuditSentinel.Pages.Escaneos
 {
     public class DeleteModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
 
-        public DeleteModel(AuditSentinel.Data.ApplicationDBContext context)
+        public DeleteModel(ApplicationDBContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public AuditSentinel.Models.Escaneos Escaneos { get; set; } = default!;
+        public AuditSentinel.Models.Escaneos Escaneo { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null)
-            {
+            Escaneo = await _context.Escaneos
+                .FirstOrDefaultAsync(e => e.IdEscaneo == id);
+
+            if (Escaneo == null)
                 return NotFound();
-            }
 
-            var escaneos = await _context.Escaneos.FirstOrDefaultAsync(m => m.IdEscaneo == id);
-
-            if (escaneos is not null)
-            {
-                Escaneos = escaneos;
-
-                return Page();
-            }
-
-            return NotFound();
+            return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            Escaneo = await _context.Escaneos.FindAsync(id);
 
-            var escaneos = await _context.Escaneos.FindAsync(id);
-            if (escaneos != null)
+            if (Escaneo != null)
             {
-                Escaneos = escaneos;
-                _context.Escaneos.Remove(Escaneos);
+                _context.Escaneos.Remove(Escaneo);
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("Index");
         }
     }
 }

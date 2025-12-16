@@ -1,77 +1,114 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AuditSentinel.Data;
+using AuditSentinel.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AuditSentinel.Data;
-using AuditSentinel.Models;
 
 namespace AuditSentinel.Pages.Escaneos
 {
     public class EditModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
 
-        public EditModel(AuditSentinel.Data.ApplicationDBContext context)
+        public EditModel(ApplicationDBContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public AuditSentinel.Models.Escaneos Escaneos { get; set; } = default!;
+        public AuditSentinel.Models.Escaneos Escaneo { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        [BindProperty]
+        public List<int> ServidoresSeleccionados { get; set; } = new();
+
+        [BindProperty]
+        public List<int> PlantillasSeleccionadas { get; set; } = new();
+
+        public List<SelectListItem> Servidores { get; set; }
+        public List<SelectListItem> Plantillas { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            Escaneo = await _context.Escaneos
+                .Include(e => e.EscaneosServidores)
+                .Include(e => e.EscaneosPlantillas)
+                .FirstOrDefaultAsync(e => e.IdEscaneo == id);
 
-            var escaneos =  await _context.Escaneos.FirstOrDefaultAsync(m => m.IdEscaneo == id);
-            if (escaneos == null)
-            {
+            if (Escaneo == null)
                 return NotFound();
-            }
-            Escaneos = escaneos;
+
+            ServidoresSeleccionados = Escaneo.EscaneosServidores
+                .Select(es => es.IdServidor)
+                .ToList();
+
+            PlantillasSeleccionadas = Escaneo.EscaneosPlantillas
+                .Select(ep => ep.IdPlantilla)
+                .ToList();
+
+            CargarCombos();
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                CargarCombos();
                 return Page();
             }
 
-            _context.Attach(Escaneos).State = EntityState.Modified;
+            var escaneoDb = await _context.Escaneos
+                .Include(e => e.EscaneosServidores)
+                .Include(e => e.EscaneosPlantillas)
+                .FirstOrDefaultAsync(e => e.IdEscaneo == Escaneo.IdEscaneo);
 
-            try
+            if (escaneoDb == null)
+                return NotFound();
+
+            escaneoDb.NombreEscaneo = Escaneo.NombreEscaneo;
+            escaneoDb.Estado = Escaneo.Estado;
+
+            _context.EscaneosServidores.RemoveRange(escaneoDb.EscaneosServidores);
+            _context.EscaneosPlantillas.RemoveRange(escaneoDb.EscaneosPlantillas);
+
+            foreach (var idServidor in ServidoresSeleccionados)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EscaneosExists(Escaneos.IdEscaneo))
+                _context.EscaneosServidores.Add(new AuditSentinel.Models.EscaneosServidores
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    IdEscaneo = Escaneo.IdEscaneo,
+                    IdServidor = idServidor
+                });
             }
 
-            return RedirectToPage("./Index");
+            foreach (var idPlantilla in PlantillasSeleccionadas)
+            {
+                _context.EscaneosPlantillas.Add(new EscaneosPlantillas
+                {
+                    IdEscaneo = Escaneo.IdEscaneo,
+                    IdPlantilla = idPlantilla
+                });
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToPage("Index");
         }
 
-        private bool EscaneosExists(int id)
+        private void CargarCombos()
         {
-            return _context.Escaneos.Any(e => e.IdEscaneo == id);
+            Servidores = _context.Servidores
+                .Select(s => new SelectListItem
+                {
+                    Value = s.IdServidor.ToString(),
+                    Text = $"{s.NombreServidor}-{s.IP}-{s.SistemaOperativo})"
+                }).ToList();
+
+            Plantillas = _context.Plantillas
+                .Select(p => new SelectListItem
+                {
+                    Value = p.IdPlantilla.ToString(),
+                    Text = p.NombrePlantilla
+                }).ToList();
         }
     }
 }

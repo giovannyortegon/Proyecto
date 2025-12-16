@@ -1,48 +1,50 @@
-﻿@page
+﻿@page "{id:int}"
 @model AuditSentinel.Pages.Reportes.EditModel
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Reporte";
 }
+<h2>Editar Reporte</h2>
 
-<h1>Edit</h1>
+<form method="post">
+    <input type="hidden" asp-for="Reporte.IdReporte" />
+    <div class="card p-3">
+        <div class="mb-3">
+            <label asp-for="Reporte.NombreReporte" class="form-label"></label>
+            <input asp-for="Reporte.NombreReporte" class="form-control" />
+            <span asp-validation-for="Reporte.NombreReporte" class="text-danger"></span>
+        </div>
 
-<h4>Reportes</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Reportes.IdReporte" />
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Reportes.NombreReporte" class="control-label"></label>
-                <input asp-for="Reportes.NombreReporte" class="form-control" />
-                <span asp-validation-for="Reportes.NombreReporte" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="Reportes.cumplimiento" class="control-label"></label>
-                <select asp-for="Reportes.cumplimiento" class="form-control"></select>
-                <span asp-validation-for="Reportes.cumplimiento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="Reportes.Creado" class="control-label"></label>
-                <input asp-for="Reportes.Creado" class="form-control" />
-                <span asp-validation-for="Reportes.Creado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        <div class="mb-3">
+            <label asp-for="Reporte.cumplimiento" class="form-label"></label>
+            <select asp-for="Reporte.cumplimiento" class="form-select"
+                    asp-items="Html.GetEnumSelectList<AuditSentinel.Models.Cumplimiento>()"></select>
+            <span asp-validation-for="Reporte.cumplimiento" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Reporte.Creado" class="form-label"></label>
+            <input asp-for="Reporte.Creado" type="datetime-local" class="form-control"
+                   value="@Model.Reporte.Creado.ToString("yyyy-MM-ddTHH:mm")" />
+            <span asp-validation-for="Reporte.Creado" class="text-danger"></span>
+        </div>
+
+        <hr />
+        <h5>Relacionar Escaneos</h5>
+        <div class="mb-3">
+            <label class="form-label">Escaneos</label>
+            <select multiple class="form-select"
+                    asp-for="SelectedEscaneos"
+                    asp-items="Model.EscaneosList"></select>
+            <span asp-validation-for="SelectedEscaneos" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
 }

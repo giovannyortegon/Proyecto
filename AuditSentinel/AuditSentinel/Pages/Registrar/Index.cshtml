@@ -1,0 +1,43 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@model AuditSentinel.Pages.Usuarios.IndexModel
+@attribute [Authorize(Roles = "Administrador")]
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<h2>Usuarios</h2>
+
+<p>
+    <!-- Si ya tienes tu página de registro en Pages/Registrar/Index.cshtml, enlázala -->
+    <a class="btn btn-primary" asp-page="/Registrar/Registrar">Crear usuario</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th class="text-end">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model.Users)
+        {
+            <tr>
+                <td>@u.UserName</td>
+                <td>@u.Email</td>
+                <td>@string.Join(", ", u.Roles)</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-secondary" asp-page="Editar" asp-route-id="@u.Id">Editar</a>
+                    <a class="btn btn-sm btn-danger" asp-page="Eliminar" asp-route-id="@u.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-page="/Configuracion" class="btn btn-secondary">Volver</a>
+</div>

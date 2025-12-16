@@ -1,37 +1,82 @@
-﻿@page
+﻿@page "{id:int}"
 @model AuditSentinel.Pages.Escaneos.DetailsModel
 
-@{
-    ViewData["Title"] = "Details";
-}
+<h2>Detalle del Escaneo</h2>
 
-<h1>Details</h1>
+<div class="card mb-3">
+    <div class="card-body">
+        <h4 class="card-title">@Model.Escaneo.NombreEscaneo</h4>
 
-<div>
-    <h4>Escaneos</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Escaneos.NombreEscaneo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Escaneos.NombreEscaneo)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Escaneos.Estado)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Escaneos.Estado)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Escaneos.FechaEscaneo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Escaneos.FechaEscaneo)
-        </dd>
-    </dl>
+        <p>
+            <strong>Estado:</strong> @Model.Escaneo.Estado <br />
+            <strong>Fecha:</strong> @Model.Escaneo.FechaEscaneo.ToString("dd/MM/yyyy HH:mm")
+        </p>
+    </div>
 </div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Escaneos.IdEscaneo">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+
+<div class="row">
+
+    <!-- SERVIDORES -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <strong>Servidores Asociados</strong>
+            </div>
+            <ul class="list-group list-group-flush">
+                @if (Model.Escaneo.EscaneosServidores.Any())
+                {
+                    @foreach (var s in Model.Escaneo.EscaneosServidores)
+                    {
+                        <li class="list-group-item">
+                            <strong>@s.Servidores.NombreServidor</strong><br />
+                            IP: @s.Servidores.IP <br />
+                            SO: @s.Servidores.SistemaOperativo
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li class="list-group-item text-muted">
+                        No hay servidores asociados.
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <!-- PLANTILLAS -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <strong>Plantillas Aplicadas</strong>
+            </div>
+            <ul class="list-group list-group-flush">
+                @if (Model.Escaneo.EscaneosPlantillas.Any())
+                {
+                    @foreach (var p in Model.Escaneo.EscaneosPlantillas)
+                    {
+                        <li class="list-group-item">
+                            @p.Plantillas.NombrePlantilla
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li class="list-group-item text-muted">
+                        No hay plantillas asociadas.
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<div class="mt-3">
+    <a asp-page="Edit" asp-route-id="@Model.Escaneo.IdEscaneo" class="btn btn-primary">
+        Editar
+    </a>
+    <a asp-page="Index" class="btn btn-secondary">
+        Volver
+    </a>
 </div>

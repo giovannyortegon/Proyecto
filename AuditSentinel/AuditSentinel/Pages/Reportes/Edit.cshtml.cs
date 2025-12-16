@@ -1,77 +1,105 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+using AuditSentinel.Data;
+using AuditSentinel.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AuditSentinel.Data;
-using AuditSentinel.Models;
 
 namespace AuditSentinel.Pages.Reportes
 {
+    [Authorize(Roles = "Auditor,Analista,Administrador")]
     public class EditModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
+        public EditModel(ApplicationDBContext context) => _context = context;
 
-        public EditModel(AuditSentinel.Data.ApplicationDBContext context)
+        [BindProperty] public AuditSentinel.Models.Reportes Reporte { get; set; } = new();
+        public List<SelectListItem> EscaneosList { get; set; } = new();
+        [BindProperty] public int[] SelectedEscaneos { get; set; } = Array.Empty<int>();
+
+        private async Task LoadEscaneosAsync()
         {
-            _context = context;
+            EscaneosList = await _context.Escaneos
+                .OrderBy(e => e.NombreEscaneo)
+                .Select(e => new SelectListItem
+                {
+                    Value = e.IdEscaneo.ToString(),
+                    Text = $"{e.NombreEscaneo} ({e.Estado})"
+                })
+                .ToListAsync();
         }
 
-        [BindProperty]
-        public AuditSentinel.Models.Reportes Reportes { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            Reporte = await _context.Reportes
+                .Include(r => r.EscaneosReportes)
+                .FirstOrDefaultAsync(r => r.IdReporte == id);
 
-            var reportes =  await _context.Reportes.FirstOrDefaultAsync(m => m.IdReporte == id);
-            if (reportes == null)
-            {
-                return NotFound();
-            }
-            Reportes = reportes;
+            if (Reporte == null) return NotFound();
+
+            await LoadEscaneosAsync();
+
+            SelectedEscaneos = Reporte.EscaneosReportes
+                .Select(er => er.IdEscaneo)
+                .ToArray();
+
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            await LoadEscaneosAsync();
+
+            if (!ModelState.IsValid) return Page();
+
+            var dbReporte = await _context.Reportes
+                .Include(r => r.EscaneosReportes)
+                .FirstOrDefaultAsync(r => r.IdReporte == Reporte.IdReporte);
+
+            if (dbReporte == null) return NotFound();
+
+            // Actualizar campos simples
+            dbReporte.NombreReporte = Reporte.NombreReporte;
+            dbReporte.cumplimiento = Reporte.cumplimiento;
+            dbReporte.Creado = Reporte.Creado;
+
+            // Validar existencia de escaneos seleccionados
+            var escaneosValidos = await _context.Escaneos
+                .Where(e => SelectedEscaneos.Contains(e.IdEscaneo))
+                .Select(e => e.IdEscaneo).ToListAsync();
+
+            var faltantes = SelectedEscaneos.Except(escaneosValidos).ToArray();
+            if (faltantes.Any())
             {
+                ModelState.AddModelError(nameof(SelectedEscaneos),
+                    $"Hay escaneos seleccionados que no existen: {string.Join(",", faltantes)}");
                 return Page();
             }
 
-            _context.Attach(Reportes).State = EntityState.Modified;
+            // Sincronizar join (add/remove)
+            var actuales = dbReporte.EscaneosReportes.Select(er => er.IdEscaneo).ToHashSet();
+            var seleccion = SelectedEscaneos.ToHashSet();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ReportesExists(Reportes.IdReporte))
+            var aAgregar = seleccion.Except(actuales);
+            var aEliminar = actuales.Except(seleccion);
+
+            foreach (var idEsc in aAgregar)
+                _context.EscaneosReportes.Add(new EscaneosReportes
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    IdReporte = dbReporte.IdReporte,
+                    IdEscaneo = idEsc
+                });
+
+            foreach (var idEsc in aEliminar)
+            {
+                var entity = dbReporte.EscaneosReportes.First(er => er.IdEscaneo == idEsc);
+                _context.EscaneosReportes.Remove(entity);
             }
 
-            return RedirectToPage("./Index");
-        }
-
-        private bool ReportesExists(int id)
-        {
-            return _context.Reportes.Any(e => e.IdReporte == id);
+            await _context.SaveChangesAsync();
+            return RedirectToPage("Index");
         }
     }
 }

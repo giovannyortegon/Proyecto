@@ -1,9 +1,11 @@
 ﻿using AuditSentinel.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuditSentinel.Data
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
@@ -20,9 +22,9 @@ namespace AuditSentinel.Data
         public DbSet<AuditSentinel.Models.Reportes> Reportes { get; set; }
         public DbSet<AuditSentinel.Models.EscaneosReportes> EscaneosReportes { get; set; }
         public DbSet<AuditSentinel.Models.EscaneosVulnerabilidades> EscaneosVulnerabilidades { get; set; }
-        public DbSet<AuditSentinel.Models.Usuarios> Usuarios { get; set; }
-        public DbSet<AuditSentinel.Models.Roles> Roles { get; set; }
-        public DbSet<AuditSentinel.Models.UsuariosRoles> UsuariosRoles { get; set; }
+        //public DbSet<AuditSentinel.Models.Registro> Registros { get; set; }
+        //public DbSet<AuditSentinel.Models.Roles> Roles { get; set; }
+        //public DbSet<AuditSentinel.Models.UsuariosRoles> UsuariosRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,9 +46,9 @@ namespace AuditSentinel.Data
                 .Property(es => es.estado)
                 .HasConversion<string>();
 
-            modelBuilder.Entity<Roles>()
-                .Property(r => r.NombreRol)
-                .HasConversion<string>();
+            //modelBuilder.Entity<Roles>()
+            //    .Property(r => r.NombreRol)
+            //    .HasConversion<string>();
 
 
             // Configurar clave primaria en las plantillas
@@ -64,72 +66,83 @@ namespace AuditSentinel.Data
 
             modelBuilder.Entity<AuditSentinel.Models.PlantillasVulnerabilidades>()
                 .HasKey(pv => new { pv.IdPlantilla, pv.IdVulnerabilidad });
-            modelBuilder.Entity<UsuariosRoles>()
-               .HasKey(ur => new { ur.IdUsuario, ur.IdRol });
+
+            //modelBuilder.Entity<UsuariosRoles>()
+            //   .HasKey(ur => new { ur.IdUsuario, ur.IdRol });
 
             // establecer las relacion entre las tablas
             modelBuilder.Entity<AuditSentinel.Models.EscaneosServidores>()
                 .HasOne(es => es.Escaneos)
                 .WithMany(e => e.EscaneosServidores)
-                .HasForeignKey(es => es.IdEscaneo);
+                .HasForeignKey(es => es.IdEscaneo)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AuditSentinel.Models.EscaneosServidores>()
                 .HasOne(es => es.Servidores)
                 .WithMany(s => s.EscaneosServidores)
-                .HasForeignKey(es => es.IdServidor);
+                .HasForeignKey(es => es.IdServidor)
+                .OnDelete(DeleteBehavior.Cascade);
             //EscaneosPlantillas
             modelBuilder.Entity<AuditSentinel.Models.EscaneosPlantillas>()
                 .HasOne(ep => ep.Escaneos)
                 .WithMany(e => e.EscaneosPlantillas)
-                .HasForeignKey(ep => ep.IdEscaneo);
+                .HasForeignKey(ep => ep.IdEscaneo)
+                .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<AuditSentinel.Models.EscaneosPlantillas>()
                 .HasOne(ep => ep.Plantillas)
                 .WithMany(p => p.EscaneosPlantillas)
-                .HasForeignKey(ep => ep.IdPlantilla);
+                .HasForeignKey(ep => ep.IdPlantilla)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //EscaneosReportes>
             modelBuilder.Entity<AuditSentinel.Models.EscaneosReportes>()
                 .HasOne(er => er.Escaneos)
                 .WithMany(e => e.EscaneosReportes)
-                .HasForeignKey(er => er.IdEscaneo);
+                .HasForeignKey(er => er.IdEscaneo)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AuditSentinel.Models.EscaneosReportes>()
                 .HasOne(er => er.Reportes)
                 .WithMany(r => r.EscaneosReportes)
-                .HasForeignKey(er => er.IdReporte);
+                .HasForeignKey(er => er.IdReporte)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // EscaneosVulnerabilidades
             modelBuilder.Entity<AuditSentinel.Models.EscaneosVulnerabilidades>()
                 .HasOne(ev => ev.Escaneos)
                 .WithMany(e => e.EscaneosVulnerabilidades)
-                .HasForeignKey(ev => ev.IdEscaneo);
+                .HasForeignKey(ev => ev.IdEscaneo)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AuditSentinel.Models.EscaneosVulnerabilidades>()
                 .HasOne(ev => ev.Vulnerabilidades)
                 .WithMany(v => v.EscaneosVulnerabilidades)
-                .HasForeignKey(ev => ev.IdVulnerabilidad);
+                .HasForeignKey(ev => ev.IdVulnerabilidad)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // PlantillasVulnerabilidades
             modelBuilder.Entity<AuditSentinel.Models.PlantillasVulnerabilidades>()
                 .HasOne(pv => pv.Plantillas)
                 .WithMany(p => p.PlantillasVulnerabilidades)
-                .HasForeignKey(pv => pv.IdPlantilla);
+                .HasForeignKey(pv => pv.IdPlantilla)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AuditSentinel.Models.PlantillasVulnerabilidades>()
                 .HasOne(pv => pv.Vulnerabilidades)
                 .WithMany(v => v.PlantillasVulnerabilidades)
-                .HasForeignKey(pv => pv.IdVulnerabilidad);
+                .HasForeignKey(pv => pv.IdVulnerabilidad)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<AuditSentinel.Models.UsuariosRoles>()
-                .HasOne(ur => ur.usuarios)
-                .WithMany(u => u.UsuariosRoles)
-                .HasForeignKey(ur => ur.IdUsuario);
+            //modelBuilder.Entity<AuditSentinel.Models.UsuariosRoles>()
+            //    .HasOne(ur => ur.usuarios)
+            //    .WithMany(u => u.UsuariosRoles)
+            //    .HasForeignKey(ur => ur.IdUsuario);
 
-            modelBuilder.Entity<AuditSentinel.Models.UsuariosRoles>()
-                .HasOne(ur => ur.roles)
-                .WithMany(u => u.UsuariosRoles)
-                .HasForeignKey(ur => ur.IdRol);
+            //modelBuilder.Entity<AuditSentinel.Models.UsuariosRoles>()
+            //    .HasOne(ur => ur.roles)
+            //    .WithMany(u => u.UsuariosRoles)
+            //    .HasForeignKey(ur => ur.IdRol);
         }
     }
 }

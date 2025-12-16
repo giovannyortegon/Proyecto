@@ -1,43 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+using AuditSentinel.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AuditSentinel.Data;
-using AuditSentinel.Models;
 
 namespace AuditSentinel.Pages.Vulnerabilidades
 {
+    [Authorize(Roles = "Auditor,Analista,Administrador")]
     public class DetailsModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
+        public DetailsModel(ApplicationDBContext context) => _context = context;
 
-        public DetailsModel(AuditSentinel.Data.ApplicationDBContext context)
+        public AuditSentinel.Models.Vulnerabilidades Vulnerabilidad { get; set; } = new();
+
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            _context = context;
-        }
+            Vulnerabilidad = await _context.Vulnerabilidades
+                .Include(v => v.EscaneosVulnerabilidades)
+                .ThenInclude(ev => ev.Escaneos)
+                .Include(v => v.PlantillasVulnerabilidades)
+                .ThenInclude(pv => pv.Plantillas)
+                .FirstOrDefaultAsync(v => v.IdVulnerabilidad == id);
 
-        public AuditSentinel.Models.Vulnerabilidades Vulnerabilidades { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var vulnerabilidades = await _context.Vulnerabilidades.FirstOrDefaultAsync(m => m.IdVulnerabilidad == id);
-
-            if (vulnerabilidades is not null)
-            {
-                Vulnerabilidades = vulnerabilidades;
-
-                return Page();
-            }
-
-            return NotFound();
+            if (Vulnerabilidad == null) return NotFound();
+            return Page();
         }
     }
 }

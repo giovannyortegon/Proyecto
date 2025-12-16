@@ -1,10 +1,14 @@
 ﻿/* wwwroot/css/sidebar.css */
 .sidebar {
-    height: 100vh;
+    height: 93.3vh;
     background-color: #000066;
     transition: width 0.25s ease, transform 0.25s ease;
     overflow: hidden;
     color: white;
+    /*position: sticky;*/ /* o fixed si lo necesitas siempre visible */
+    /*top: var(--navbar-height);
+    height: calc(100vh - var(--navbar-height));
+    z-index: 1029;*/
 }
 
     /* Tamaño cuando está colapsado (solo iconos) */
@@ -80,6 +84,8 @@
     margin-top: 10px;
 }
 
+
+
 /* Ajustes responsivos (si deseas) */
 @media (max-width: 576px) {
     .sidebar.expanded {
@@ -88,4 +94,7 @@
         left: 0;
         top: 0;
     }
+
+
+
 }

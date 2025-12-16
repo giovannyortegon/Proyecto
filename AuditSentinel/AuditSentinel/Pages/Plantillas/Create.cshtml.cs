@@ -1,44 +1,90 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+using AuditSentinel.Data;
+using AuditSentinel.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using AuditSentinel.Data;
-using AuditSentinel.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuditSentinel.Pages.Plantillas
 {
+    [Authorize(Roles = "Auditor,Analista,Administrador")]
     public class CreateModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
+        public CreateModel(ApplicationDBContext context) => _context = context;
 
-        public CreateModel(AuditSentinel.Data.ApplicationDBContext context)
+        [BindProperty] public AuditSentinel.Models.Plantillas Plantilla { get; set; } = new();
+
+        public List<SelectListItem> VulnerabilidadesList { get; set; } = new();
+
+        [BindProperty] public int[] SelectedVulnerabilidades { get; set; } = Array.Empty<int>();
+
+        private async Task LoadVulsAsync()
         {
-            _context = context;
+            VulnerabilidadesList = await _context.Vulnerabilidades
+                .OrderBy(v => v.NombreVulnerabilidad)
+                .Select(v => new SelectListItem
+                {
+                    Value = v.IdVulnerabilidad.ToString(),
+                    Text = $"{v.NombreVulnerabilidad} ({v.NivelRiesgo.ToString()})"
+                }).ToListAsync(); // Nombre, enum NivelRiesgo, IdVulnerabilidad
         }
 
-        public IActionResult OnGet()
+        public async Task OnGetAsync()
         {
-           return Page();
+            await LoadVulsAsync();
         }
 
-        [BindProperty]
-        public AuditSentinel.Models.Plantillas Plantillas { get; set; } = default!;
-
-        // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            await LoadVulsAsync();
+
             //if (!ModelState.IsValid)
-            //{
             //    return Page();
-            //}
 
-            _context.Plantillas.Add(Plantillas);
-            await _context.SaveChangesAsync();
+            // Validar existencia de vulnerabilidades seleccionadas
+            var vulsValidas = await _context.Vulnerabilidades
+                .Where(v => SelectedVulnerabilidades.Contains(v.IdVulnerabilidad))
+                .Select(v => v.IdVulnerabilidad)
+                .ToListAsync();
 
-            return RedirectToPage("./Index");
+            var faltantes = SelectedVulnerabilidades.Except(vulsValidas).ToArray();
+            if (faltantes.Any())
+            {
+                ModelState.AddModelError(nameof(SelectedVulnerabilidades),
+                    $"Hay vulnerabilidades seleccionadas que no existen: {string.Join(",", faltantes)}");
+                return Page();
+            }
+
+            using var tx = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // 1) Crear Plantilla
+                _context.Plantillas.Add(Plantilla);
+                await _context.SaveChangesAsync(); // genera IdPlantilla
+
+                // 2) Crear relaciones en tabla puente (evitar duplicados)
+                foreach (var idVul in SelectedVulnerabilidades.Distinct())
+                {
+                    _context.PlantillasVulnerabilidades.Add(new PlantillasVulnerabilidades
+                    {
+                        IdPlantilla = Plantilla.IdPlantilla,
+                        IdVulnerabilidad = idVul
+                    });
+                }
+
+                await _context.SaveChangesAsync();
+                await tx.CommitAsync();
+                return RedirectToPage("Index");
+            }
+            catch (DbUpdateException ex)
+            {
+                await tx.RollbackAsync();
+                ModelState.AddModelError(string.Empty, $"No se pudo guardar la plantilla. Error: {ex.Message}");
+                return Page();
+            }
         }
     }
 }
