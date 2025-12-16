@@ -1,66 +1,50 @@
 ﻿@page
 @model AuditSentinel.Pages.Vulnerabilidades.IndexModel
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Vulnerabilidades";
 }
+<h2>Vulnerabilidades</h2>
 
-<h1>Index</h1>
+<form method="get" class="row g-3 mb-3">
+    <div class="col-md-4">
+        <input name="search" value="@Model.Search" class="form-control" placeholder="Buscar por nombre o descripción..." />
+    </div>
+    <div class="col-md-3">
+        <select name="riesgo" class="form-select"
+                asp-items="Html.GetEnumSelectList<AuditSentinel.Models.NivelRiesgo>()">
+            <option value="">-- Riesgo (todos) --</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-outline-primary w-100" type="submit">Filtrar</button>
+    </div>
+    <div class="col-md-3 text-end">
+        <a class="btn btn-primary" asp-page="Create">Nueva Vulnerabilidad</a>
+    </div>
+</form>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Vulnerabilidades[0].NombreVulnerabilidad)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vulnerabilidades[0].NivelRiesgo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vulnerabilidades[0].Descripcion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vulnerabilidades[0].Comando)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vulnerabilidades[0].ResultadoEsperado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vulnerabilidades[0].FechaDetectada)
-            </th>
+            <th>Nombre</th>
+            <th>Riesgo</th>
+            <th>Fecha Detectada</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Vulnerabilidades) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreVulnerabilidad)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NivelRiesgo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comando)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ResultadoEsperado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaDetectada)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.IdVulnerabilidad">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.IdVulnerabilidad">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.IdVulnerabilidad">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var v in Model.Items)
+        {
+            <tr>
+                <td>@v.NombreVulnerabilidad</td>
+                <td>@v.NivelRiesgo</td>
+                <td>@v.FechaDetectada.ToString("yyyy-MM-dd HH:mm")</td>
+                <td class="text-end">
+                    <a asp-page="Details" asp-route-id="@v.IdVulnerabilidad" class="btn btn-sm btn-info">Detalles</a>
+                    <a asp-page="Edit" asp-route-id="@v.IdVulnerabilidad" class="btn btn-sm btn-warning">Editar</a>
+                    <a asp-page="Delete" asp-route-id="@v.IdVulnerabilidad" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

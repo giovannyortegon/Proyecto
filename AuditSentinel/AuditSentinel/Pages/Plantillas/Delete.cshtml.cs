@@ -1,62 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+using AuditSentinel.Data;
+using AuditSentinel.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AuditSentinel.Data;
-using AuditSentinel.Models;
 
 namespace AuditSentinel.Pages.Plantillas
 {
+    [Authorize(Roles = "Auditor,Analista,Administrador")]
     public class DeleteModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
+        public DeleteModel(ApplicationDBContext context) => _context = context;
 
-        public DeleteModel(AuditSentinel.Data.ApplicationDBContext context)
+        [BindProperty] public AuditSentinel.Models.Plantillas Plantilla { get; set; } = new();
+
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            _context = context;
+            Plantilla = await _context.Plantillas.FirstOrDefaultAsync(p => p.IdPlantilla == id);
+            if (Plantilla == null) return NotFound();
+            return Page();
         }
 
-        [BindProperty]
-        public AuditSentinel.Models.Plantillas Plantillas { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (id == null)
+            var entity = await _context.Plantillas.FindAsync(id);
+            if (entity != null)
             {
-                return NotFound();
-            }
-
-            var plantillas = await _context.Plantillas.FirstOrDefaultAsync(m => m.IdPlantilla == id);
-
-            if (plantillas is not null)
-            {
-                Plantillas = plantillas;
-
-                return Page();
-            }
-
-            return NotFound();
-        }
-
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var plantillas = await _context.Plantillas.FindAsync(id);
-            if (plantillas != null)
-            {
-                Plantillas = plantillas;
-                _context.Plantillas.Remove(Plantillas);
+                _context.Plantillas.Remove(entity);
                 await _context.SaveChangesAsync();
             }
-
-            return RedirectToPage("./Index");
+            return RedirectToPage("Index");
         }
     }
 }

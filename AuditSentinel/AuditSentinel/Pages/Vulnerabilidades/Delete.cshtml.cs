@@ -1,62 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+using AuditSentinel.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AuditSentinel.Data;
-using AuditSentinel.Models;
 
 namespace AuditSentinel.Pages.Vulnerabilidades
 {
+    [Authorize(Roles = "Auditor,Analista,Administrador")]
     public class DeleteModel : PageModel
     {
-        private readonly AuditSentinel.Data.ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
+        public DeleteModel(ApplicationDBContext context) => _context = context;
 
-        public DeleteModel(AuditSentinel.Data.ApplicationDBContext context)
+        [BindProperty] public AuditSentinel.Models.Vulnerabilidades Vulnerabilidad { get; set; } = new();
+
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            _context = context;
+            Vulnerabilidad = await _context.Vulnerabilidades
+                .Include(v => v.EscaneosVulnerabilidades)
+                .Include(v => v.PlantillasVulnerabilidades)
+                .FirstOrDefaultAsync(v => v.IdVulnerabilidad == id);
+
+            if (Vulnerabilidad == null) return NotFound();
+            return Page();
         }
 
-        [BindProperty]
-        public AuditSentinel.Models.Vulnerabilidades Vulnerabilidades { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (id == null)
+            var entity = await _context.Vulnerabilidades
+                .Include(v => v.EscaneosVulnerabilidades)
+                .Include(v => v.PlantillasVulnerabilidades)
+                .FirstOrDefaultAsync(v => v.IdVulnerabilidad == id);
+
+            if (entity == null) return NotFound();
+
+            // Si tus relaciones están con DeleteBehavior.Cascade (como en tu DbContext),
+            // no necesitas borrar manualmente los vínculos; el DB los elimina automáticamente.
+            // En tu ApplicationDBContext las relaciones puente se configuraron con Cascade. [2](https://poligran-my.sharepoint.com/personal/giortegon1_poligran_edu_co/Documents/Archivos%20de%20Microsoft%C2%A0Copilot%20Chat/ApplicationDBContext.cs)
+
+            _context.Vulnerabilidades.Remove(entity);
+
+            try
             {
-                return NotFound();
+                await _context.SaveChangesAsync();
+                return RedirectToPage("Index");
             }
-
-            var vulnerabilidades = await _context.Vulnerabilidades.FirstOrDefaultAsync(m => m.IdVulnerabilidad == id);
-
-            if (vulnerabilidades is not null)
+            catch (DbUpdateException ex)
             {
-                Vulnerabilidades = vulnerabilidades;
-
+                ModelState.AddModelError(string.Empty, $"No se pudo eliminar. Detalle: {ex.Message}");
                 return Page();
             }
-
-            return NotFound();
-        }
-
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var vulnerabilidades = await _context.Vulnerabilidades.FindAsync(id);
-            if (vulnerabilidades != null)
-            {
-                Vulnerabilidades = vulnerabilidades;
-                _context.Vulnerabilidades.Remove(Vulnerabilidades);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToPage("./Index");
         }
     }
 }
+

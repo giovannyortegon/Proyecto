@@ -20,12 +20,23 @@ namespace AuditSentinel.Pages.Servidores
         {
             _context = context;
         }
-
+        public string? Search { get; set; }
         public IList<AuditSentinel.Models.Servidores> Servidores { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string? search)
         {
-            Servidores = await _context.Servidores.ToListAsync();
+            Search = search;
+
+            var query = _context.Servidores.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(Search))
+                query = query.Where(s => s.SistemaOperativo.Contains(Search) || (s.NombreServidor != null && s.NombreServidor.Contains(Search)));
+
+            Servidores = await query
+                .OrderByDescending(s => s.Create_is).ToListAsync();
+
+
+            //Servidores = await _context.Servidores.ToListAsync();
         }
     }
 }
