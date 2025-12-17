@@ -190,8 +190,8 @@ namespace AuditSentinel.Migrations
 
                     b.Property<string>("IP")
                         .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("NombreServidor")
                         .IsRequired()

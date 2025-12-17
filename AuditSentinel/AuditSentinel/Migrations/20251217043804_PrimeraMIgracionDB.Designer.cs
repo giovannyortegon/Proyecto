@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuditSentinel.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20251215154311_cambiosrelacionalesDB")]
-    partial class cambiosrelacionalesDB
+    [Migration("20251217043804_PrimeraMIgracionDB")]
+    partial class PrimeraMIgracionDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -193,8 +193,8 @@ namespace AuditSentinel.Migrations
 
                     b.Property<string>("IP")
                         .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("NombreServidor")
                         .IsRequired()
