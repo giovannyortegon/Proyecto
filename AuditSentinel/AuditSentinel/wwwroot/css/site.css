@@ -18,7 +18,8 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -31,9 +32,24 @@ body {
 }
 
 
-/*.footer a:hover {
-    color: #0d6efd;*/ /* Azul Bootstrap */
-    /*text-decoration: underline;
-    position: sticky;
-    z-index: -2
-}*/
+.card {
+    border-radius: 12px;
+}
+
+.card-body p {
+    margin-bottom: 1rem;
+}
+
+.list-group-item {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.display-6 {
+    font-weight: bold;
+}
