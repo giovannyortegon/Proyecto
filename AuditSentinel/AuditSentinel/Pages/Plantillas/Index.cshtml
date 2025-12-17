@@ -1,14 +1,28 @@
-﻿
-@page
+﻿@page
+@using AuditSentinel.Models
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @model AuditSentinel.Pages.Plantillas.IndexModel
 @{
     ViewData["Title"] = "Plantillas";
 }
 <div class="p-5">
 <h2>Plantillas</h2>
-<p><a class="btn btn-primary" asp-page="Create">Nueva Plantilla</a></p>
 
-<table class="table table-striped">
+<form method="get" class="row g-3 mb-3">
+    <div class="col-md-4">
+        <input name="search" value="@Model.Search" class="form-control" placeholder="Buscar por nombre..." />
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-outline-primary w-100" type="submit">Filtrar</button>
+    </div>
+    <div class="col-md-2">
+        <a class="btn btn-primary" asp-page="Create">Nueva Plantilla</a>
+    </div>
+</form>
+
+
+
+<table class="table table-striped p-5">
     <thead>
         <tr>
             <th>Nombre</th>
@@ -36,4 +50,29 @@
 <div>
         <a asp-page="/Configuracion" class="btn btn-secondary">Volver</a>
 </div>
-</div>
+
+
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Paginación" class="mt-3">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                <a class="page-link" asp-route-pageNumber="@(Model.PageNumber - 1)" asp-route-search="@Model.Search">Anterior</a>
+            </li>
+
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" asp-route-pageNumber="@i" asp-route-search="@Model.Search" >@i</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-search="@Model.Search" >Siguiente</a>
+            </li>
+        </ul>
+        <div class="text-center text-muted">
+                       Página @Model.PageNumber de @Model.TotalPages — @Model.TotalItems registro(s)
+        </div>
+    </nav>
+}
