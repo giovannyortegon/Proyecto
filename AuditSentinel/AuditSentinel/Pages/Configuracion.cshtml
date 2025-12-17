@@ -1,5 +1,7 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization
 @model AuditSentinel.Pages.ConfiguracionModel
+@attribute [Authorize(Roles = "Administrador")]
 @{
 }
 @{
