@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AuditSentinel</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #475569;
+            --accent: #2563eb;
+            --code: #1d4ed8;
+            --shadow: rgba(0,0,0,.1);
+        }
+
+        @@media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #020617;
+                --card: #0f172a;
+                --text: #e5e7eb;
+                --muted: #94a3b8;
+                --accent: #38bdf8;
+                --code: #7dd3fc;
+                --shadow: rgba(0,0,0,.5);
+            }
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg), #020617);
+            color: var(--text);
+        }
+
+        .error-card {
+            background: var(--card);
+            border-radius: 20px;
+            box-shadow: 0 30px 60px var(--shadow);
+            padding: 3rem;
+            max-width: 720px;
+            animation: fadeUp .8s ease;
+        }
+
+        .error-code {
+            font-size: 6rem;
+            font-weight: 900;
+            color: var(--code);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .error-details {
+            background: rgba(148,163,184,.1);
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: .9rem;
+            color: var(--muted);
+        }
+
+        .btn-home {
+            background: var(--accent);
+            border: none;
+            color: #020617;
+            font-weight: 600;
+            padding: .6rem 1.6rem;
+            border-radius: 10px;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px var(--shadow);
+        }
+
+        @@keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @@keyframes float {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+
+<body class="d-flex align-items-center justify-content-center">
+    @RenderBody()
+</body>
+</html>

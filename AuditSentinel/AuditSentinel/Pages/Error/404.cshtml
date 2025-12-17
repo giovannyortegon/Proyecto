@@ -1,23 +1,120 @@
-﻿@page
+﻿@page "/Error/404"
 @model AuditSentinel.Pages.Error.NotFoundModel
 @{
-    ViewData["Title"] = "Página no encontrada (404)";
+    Layout = null;
+    ViewData["Title"] = "404 - Página no encontrada";
 }
 
-<section class="container py-5">
-    <h1 class="display-6">404 - Página no encontrada</h1>
-    <p class="lead">
-        La URL solicitada no existe o fue movida. Verifica la dirección o usa el menú de navegación.
-    </p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>404 - Página no encontrada</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    @if (!string.IsNullOrEmpty(Model.OriginalPath))
-    {
-        <p><strong>Ruta original:</strong> @Model.OriginalPath</p>
-    }
-    @if (!string.IsNullOrEmpty(Model.OriginalQueryString))
-    {
-        <p><strong>Query:</strong> @Model.OriginalQueryString</p>
-    }
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3a8a, #0f172a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Comic Sans MS', sans-serif;
+            color: #e0f2ff;
+        }
 
-    <a class="btn btn-primary" asp-page="/Index">Ir al inicio</a>
-</section>
+        .error-wrapper {
+            text-align: center;
+        }
+
+        .error-code {
+            font-size: 6rem;
+            font-weight: 900;
+            text-shadow: 4px 4px #020617;
+        }
+        
+        .search-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .circle {
+            width: 90px;
+            height: 90px;
+            border: 8px solid #e0f2ff;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .circle::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 8px;
+            background: #e0f2ff;
+            bottom: -30px;
+            right: -40px;
+            transform: rotate(45deg);
+            border-radius: 5px;
+        }
+
+        .oops {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            text-shadow: 3px 3px #020617;
+        }
+
+        .message {
+            font-size: 1.5rem;
+            margin-top: .5rem;
+            text-shadow: 2px 2px #020617;
+        }
+
+        .path {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #ffffff;
+            font-weight: bold;
+            text-decoration: none;
+            border-bottom: 2px solid #ffffff;
+        }
+
+        a:hover {
+            opacity: 0.85;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="error-wrapper">
+
+        <div class="error-code">404</div>
+
+        <div class="search-area">
+            <div class="circle"></div>
+        </div>
+
+        <div class="oops">Upps!</div>
+        <div class="message">No encontramos la página que buscas</div>
+
+        @if (!string.IsNullOrEmpty(Model.OriginalPath))
+        {
+            <div class="path">
+                Ruta solicitada: @Model.OriginalPath
+            </div>
+        }
+
+        <a asp-page="/Index">Volver al inicio</a>
+    </div>
+</body>
+</html>
