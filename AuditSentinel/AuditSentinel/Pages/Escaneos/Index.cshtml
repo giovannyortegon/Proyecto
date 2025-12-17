@@ -9,9 +9,24 @@
 
 <h1>Lista Escaneos</h1>
 
-<p>
-    <a asp-page="Create" class="btn btn-primary">Nuevo Escaneo</a>
-</p>
+<form method="get" class="row g-3 mb-3">
+    <div class="col-md-4">
+        <input name="search" value="@Model.Search" class="form-control" placeholder="Buscar por nombre o descripción..." />
+    </div>
+    <div class="col-md-3">
+        <select name="estado" class="form-select"
+                asp-items="Html.GetEnumSelectList<AuditSentinel.Models.EstadoEscaneo>()">
+            <option value="">-- Estado (todos) --</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-outline-primary w-100" type="submit">Filtrar</button>
+    </div>
+    <div class="col-md-3 text-end">
+        @* <a class="btn btn-primary" asp-page="Create">Nueva Vulnerabilidad</a> *@
+        <a asp-page="Create" class="btn btn-primary">Nuevo Escaneo</a>
+    </div>
+</form>
 
 <div class="card p-3">
 <table class="table">

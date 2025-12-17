@@ -21,13 +21,29 @@ namespace AuditSentinel.Pages.Escaneos
         {
             _context = context;
         }
+        public string? Search { get; set; }
+        public EstadoEscaneo? BEstado { get; set; }
 
+        public IList<AuditSentinel.Models.Escaneos> Escaneos { get;set; } = new List<AuditSentinel.Models.Escaneos>();
 
-        public IList<AuditSentinel.Models.Escaneos> Escaneos { get;set; } = default!;
-
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string? search, EstadoEscaneo? estado)
         {
-            Escaneos = await _context.Escaneos.ToListAsync();
+            Search = search;
+            BEstado = estado;
+
+            var query = _context.Escaneos.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(Search))
+                query = query.Where(e => e.NombreEscaneo.Contains(Search));
+
+            if (BEstado.HasValue)
+                query = query.Where(ee => ee.Estado == BEstado.Value);
+
+            Escaneos = await query
+                .OrderByDescending(e => e.FechaEscaneo)
+                .ToListAsync();
+
+            //Escaneos = await _context.Escaneos.ToListAsync();
         }
     }
 }
