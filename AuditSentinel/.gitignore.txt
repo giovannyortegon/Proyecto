@@ -21,5 +21,10 @@ obj/*
 .nuget/*
 packages/*
 
+#Migraciones
+Migrations/
+Migrations/*
+
+
 ## Archivos de publicación (Publish)
 *.Publish.xml
