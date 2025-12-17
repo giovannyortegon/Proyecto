@@ -1,0 +1,28 @@
+## Directorios de configuración de Visual Studio
+.vs/
+.vs/*
+
+## Carpetas de compilación y salida (artifacts)
+[Bb]in/
+[Oo]bj/
+
+bin/*
+obj/*
+
+## Archivos de usuario y configuración local
+*.user
+*.userosscache
+*.sln.docstates
+
+
+# Carpetas de herramientas
+.nuget/
+.nuget/*
+packages/*
+
+#Migraciones
+Migrations/
+Migrations/*
+
+## Archivos de publicación (Publish)
+*.Publish.xml
