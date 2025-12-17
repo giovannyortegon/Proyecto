@@ -3,9 +3,63 @@
 @{
     ViewData["Title"] = "Home page";
 }
+<div class="container py-0">
+    <div class="text-center mb-4">
+        <img src="~/img/logo-auditsentinel.png" alt="AuditSentinel Logo" class="mb-3" style="width: 70px;">
+        <h1 class="fw-bold">AuditSentinel</h1>
+        <h2 class="h4 text-muted">¿Quiénes somos?</h2>
+    </div>
 
-<div class="text-center">
-    <h1 class="display-4">Audit Sentinel</h1>
-    <img src="/img/estadistica.png"" alt="Alternate Text" />
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container ">
+     <div class="row">
+        <div class="col-6">
+            <p class="lead">
+                Somos una plataforma de auditorías de ciberseguridad para infraestructuras de red a nivel empresarial, basada en escaneos automatizados y generación de reportes.
+            </p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">🔍 Escaneos por medio de plantillas estandarizadas</li>
+                <li class="list-group-item">🛡️ Evaluación de vulnerabilidades</li>
+                <li class="list-group-item">📊 Reportes técnicos y ejecutivos</li>
+            </ul>
+        </div>
+    
+            <div class="col-6">
+                <div class="container">
+                    <div class="d-flex flex-column gap-3 align-items-center"> 
+                        <div class="card" style="width: 18rem;">
+                        <div class="card text-bg-primary shadow-sm">
+                                <div class="card-body" style="height: 100px;">
+                                <h5 class="card-title text-center">Escaneos realizados</h5>
+                                    <p class="display-6 text-center">128</p>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="card" style="width: 18rem;">
+                        <div class="card text-bg-success shadow-sm">
+                                <div class="card-body" style="height: 100px;">
+                                    <h5 class="card-title text-center">Vulnerabilidades detectadas</h5>
+                                    <p class="display-6 text-center">45</p>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="card" style="width: 18rem;">
+                        <div class="card text-bg-warning shadow-sm">
+                                <div class="card-body" style="height: 100px;">
+                                    <h5 class="card-title text-center">Reportes generados</h5>
+                                    <p class="display-6 text-center">76</p>
+                            </div>
+                        </div>
+                  
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('vulnChart').getContext('2d');
+</script>
+
+

@@ -9,7 +9,7 @@
 
 <h1>Lista Servidores</h1>
 
-<form method="get" class="row g-3 mb-3">
+<form method="get"  class="row g-3 mb-3">
     <div class="col-md-4">
         <input name="search" value="@Model.Search" class="form-control" placeholder="Buscar por nombre o descripción..." />
     </div>
@@ -23,7 +23,7 @@
 
 
 <div class="card mb-md-3 ">
-    <table class="table">
+    <table id="Lista-Servidores" class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -66,3 +66,10 @@
     </tbody>
 </table>
 </div>
+<script> 
+   new DataTable("Lista Servidores");
+</script>
+@section Scripts 
+{
+  
+}
