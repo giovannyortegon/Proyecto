@@ -1,68 +1,93 @@
-﻿@page
-@model AuditSentinel.Pages.Escaneos.IndexModel
+﻿
+@page
+@using AuditSentinel.Models
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @using Microsoft.AspNetCore.Authorization
-@attribute [Authorize(Roles = "Analista,Administrador")]
-
+@attribute [Authorize(Roles = "Administrador,Analista")]
+@model AuditSentinel.Pages.Escaneos.IndexModel
 @{
-    ViewData["Title"] = "Lista Escaneos";
+    ViewData["Title"] = "Lista de Escaneos";
 }
 
-<h1>Lista Escaneos</h1>
+<h1>Lista de Escaneos</h1>
 
 <form method="get" class="row g-3 mb-3">
     <div class="col-md-4">
-        <input name="search" value="@Model.Search" class="form-control" placeholder="Buscar por nombre o descripción..." />
+        <input name="search"
+               value="@Model.Search"
+               class="form-control"
+               placeholder="Buscar por nombre..." />
     </div>
     <div class="col-md-3">
-        <select name="estado" class="form-select"
-                asp-items="Html.GetEnumSelectList<AuditSentinel.Models.EstadoEscaneo>()">
-            <option value="">-- Estado (todos) --</option>
+        <select name="estado" class="form-select">
+            <option value="">-- Estado --</option>
+            @foreach (var estado in Enum.GetValues(typeof(EstadoEscaneo)))
+            {
+                <option value="@estado" selected="@(Model.BEstado == (EstadoEscaneo)estado)">
+                    @estado
+                </option>
+            }
         </select>
     </div>
     <div class="col-md-2">
         <button class="btn btn-outline-primary w-100" type="submit">Filtrar</button>
     </div>
-    <div class="col-md-3 text-end">
-        @* <a class="btn btn-primary" asp-page="Create">Nueva Vulnerabilidad</a> *@
-        <a asp-page="Create" class="btn btn-primary">Nuevo Escaneo</a>
-    </div>
 </form>
 
-<div class="card p-3">
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Escaneos[0].NombreEscaneo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Escaneos[0].Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Escaneos[0].FechaEscaneo)
-            </th>
+            <th>Nombre Escaneo</th>
+            <th>Estado</th>
+            <th>Fecha</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Escaneos) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreEscaneo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaEscaneo)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.IdEscaneo" class="btn btn-primary">Editar</a> |
-                    <a asp-page="./Details" asp-route-id="@item.IdEscaneo" class="btn btn-secondary">Detalles</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.IdEscaneo" class="btn btn-danger">Eliminar</a>
-            </td>
-        </tr>
-}
+    @if (Model.Escaneos.Any())
+    {
+        foreach (var item in Model.Escaneos)
+        {
+            <tr>
+                <td>@item.NombreEscaneo</td>
+                <td>@item.Estado</td>
+                <td>@item.FechaEscaneo.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-primary">Editar</a>
+                    <a asp-page="./Details" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-secondary">Detalles</a>
+                    <a asp-page="./Delete" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr><td colspan="4" class="text-center text-muted">No hay escaneos</td></tr>
+    }
     </tbody>
 </table>
-    </div>
+
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Paginación" class="mt-3">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                <a class="page-link" asp-route-pageNumber="@(Model.PageNumber - 1)" asp-route-search="@Model.Search" asp-route-estado="@Model.BEstado">Anterior</a>
+            </li>
+
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" asp-route-pageNumber="@i" asp-route-search="@Model.Search" asp-route-estado="@Model.BEstado">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-search="@Model.Search" asp-route-estado="@Model.BEstado">Siguiente</a>
+            </li>
+        </ul>
+        <div class="text-center text-muted">
+                       Página @Model.PageNumber de @Model.TotalPages — @Model.TotalItems registro(s)
+        </div>
+    </nav>
+}

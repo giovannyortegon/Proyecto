@@ -1,11 +1,11 @@
-﻿using AuditSentinel.Data;
-using AuditSentinel.Models;
+﻿
+using AuditSentinel.Data; // Ajusta al namespace de tu DbContext
+using AuditSentinel.Models; // Ajusta al namespace de tu modelo Servidor
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,23 +20,58 @@ namespace AuditSentinel.Pages.Servidores
         {
             _context = context;
         }
+
+        // Lista que se mostrará
+        public IList<AuditSentinel.Models.Servidores> Servidores { get; set; } = new List<AuditSentinel.Models.Servidores>();
+
+        // Parámetros de búsqueda y paginación
+        [BindProperty(SupportsGet = true)]
         public string? Search { get; set; }
-        public IList<AuditSentinel.Models.Servidores> Servidores { get;set; } = default!;
 
-        public async Task OnGetAsync(string? search)
+        [BindProperty(SupportsGet = true)]
+        public int PageNumber { get; set; } = 1;
+
+        public int PageSize { get; set; } = 6;   // <<< 5 por página
+
+        // Datos para la UI
+        public int TotalItems { get; set; }
+        public int TotalPages { get; set; }
+
+        public async Task<IActionResult> OnGetAsync()
         {
-            Search = search;
+            // Base query
+            IQueryable<AuditSentinel.Models.Servidores> query = _context.Servidores.AsNoTracking();
 
-            var query = _context.Servidores.AsQueryable();
-
+            // Filtro por búsqueda (nombre o descripción o IP, ajusta campos a tu modelo real)
             if (!string.IsNullOrWhiteSpace(Search))
-                query = query.Where(s => s.SistemaOperativo.Contains(Search) || (s.NombreServidor != null && s.NombreServidor.Contains(Search)));
+            {
+                var s = Search.Trim();
+                query = query.Where(x =>
+                    x.NombreServidor.Contains(s) ||
+                    x.SistemaOperativo.Contains(s) ||
+                    x.IP.Contains(s));
+                // Si tienes Descripcion: x.Descripcion.Contains(s)
+            }
 
+            // Total de registros (para calcular páginas)
+            TotalItems = await query.CountAsync();
+
+            // Calcular total de páginas
+            TotalPages = (int)Math.Ceiling(TotalItems / (double)PageSize);
+
+            // Corregir PageNumber fuera de rango
+            if (PageNumber < 1) PageNumber = 1;
+            if (TotalPages > 0 && PageNumber > TotalPages) PageNumber = TotalPages;
+
+            // Aplicar orden, salto y toma
             Servidores = await query
-                .OrderByDescending(s => s.Create_is).ToListAsync();
+                .OrderBy(x => x.NombreServidor) // Ajusta el orden que prefieras
+                .Skip((PageNumber - 1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
 
-
-            //Servidores = await _context.Servidores.ToListAsync();
+            return Page();
         }
     }
 }
+

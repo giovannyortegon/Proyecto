@@ -1,3 +1,4 @@
+.gitignore
 ## Directorios de configuración de Visual Studio
 .vs/
 .vs/*
