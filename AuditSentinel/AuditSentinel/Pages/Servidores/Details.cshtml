@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "Detalles";
 }
-
+<div class="p-5">
 <h1>DETALLES</h1>
 
 <div>
@@ -39,8 +39,10 @@
         </dd>
     </dl>
 </div>
+
 <br>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Servidores.IdServidor" class="btn btn-primary">Editar</a> |
     <a asp-page="./Index" class="btn btn-secondary">Volver</a>
+</div>
 </div>
