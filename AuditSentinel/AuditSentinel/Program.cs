@@ -17,7 +17,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 //Agregar soporte para identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     {
-        // Opcional: políticas
+        // Opcional: polï¿½ticas
         options.Password.RequiredLength = 6;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireDigit = true;
@@ -65,13 +65,14 @@ if(app.Environment.IsDevelopment())
 }
 else
 {
-    // Manejo de excepciones 500 (redirige a /Error/500)
-    app.UseExceptionHandler("Pages/Error/500");
-    // Manejo de códigos de estado (ej. 404, 403, 401). Re-ejecuta la ruta /Error/{codigo}
-    app.UseStatusCodePagesWithReExecute(pathFormat: """Pages/Error/{0}""");
+    // Manejo de errores 500
+    app.UseExceptionHandler("/Error/500");
+
+    // Manejo de cÃ³digos como 404, 403, etc.
+    app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
     app.UseHsts();
 }
-
 
 app.UseHttpsRedirection();
 
