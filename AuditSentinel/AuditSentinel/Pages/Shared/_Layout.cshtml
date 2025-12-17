@@ -18,7 +18,9 @@
     <link rel="stylesheet" href="~/css/sidebar.css" asp-append-version="true" />
 
     <link rel="stylesheet" href="~/AuditSentinel.styles.css" asp-append-version="true" />
+ 
 </head>
+
 
 <body>
     @* Sidebar y contenido principal en dos columnas flex *@
@@ -27,8 +29,8 @@
         @await Html.PartialAsync("_Sidebar")
 
         @* Contenido principal (página) *@
-        <div class="flex-grow-1 p-3">
-            <main role="main" class="pb-3">
+        <div class="flex-grow-1 p-5">
+            <main role="main">
                 @RenderBody()
             </main>
         </div>
@@ -77,6 +79,7 @@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts",required: false)
+
 </body>
 </html>

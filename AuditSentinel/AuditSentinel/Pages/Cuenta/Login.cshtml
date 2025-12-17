@@ -7,7 +7,7 @@
 }
 
 @* <h2 class="mb-4">Iniciar Sesión</h2> *@
-<div class="container d-flex justify-content-center align-items-center vh-100">
+<div class="container d-flex justify-content-center align-items-center p-5">
     <div class="card sidebar p-4 text-white" style="width: 100%; max-width: 600px; height: 500px;">
         <div class="text-center mb-4">
             <div class="rounded-circle bg-body mx-auto" style="width: 150px; height: 150px;">
@@ -16,18 +16,18 @@
         </div>
 
 <form method="post">
-    <div class="mb-6">
-        <label>Correo</label>
+            <div class="mb-6 p-2">
+                <label class="mb-2 p-2">Correo</label>
         <input asp-for="Login.Email" class="form-control" placeholder="Ingresar Correo" />
         <span asp-validation-for="Login.Email" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
-        <label>Contraseña</label>
+    <div class="mb-3 p-2">
+                <label class="mb-2 p-2">Contraseña</label>
         <input asp-for="Login.Password" class="form-control" type="password" placeholder="Ingresar Contraseña" />
         <span asp-validation-for="Login.Password" class="text-danger"></span>
     </div>
-    <div class="d-grid">
+    <div class="d-grid p-2">
         <button type="submit" class="btn btn-primary">Ingresar</button>
     </div>
     <p class="text-danger">@Model.ErrorMessage</p>

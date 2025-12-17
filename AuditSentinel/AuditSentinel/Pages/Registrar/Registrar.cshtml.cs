@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AuditSentinel.Pages.Registrar
 {
-    [Authorize(Roles = "Administrador")]
+    //[Authorize(Roles = "Administrador")]
     public class RegistrarModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;

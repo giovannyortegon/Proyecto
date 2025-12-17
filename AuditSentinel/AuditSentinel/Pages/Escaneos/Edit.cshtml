@@ -1,7 +1,7 @@
 ﻿@page "{id:int}"
 @using AuditSentinel.Models
 @model AuditSentinel.Pages.Escaneos.EditModel
-
+<div class="p-5">
 <h2>Editar Escaneo</h2>
 
 <form method="post">
@@ -42,7 +42,7 @@
     <button type="submit" class="btn btn-primary">Actualizar</button>
     <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
 </form>
-
+</div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

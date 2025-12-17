@@ -1,3 +1,16 @@
+﻿@* <!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html> *@
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -69,19 +82,31 @@
             border-radius: 10px;
         }
 
-        .btn-home:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px var(--shadow);
-        }
+            .btn-home:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px var(--shadow);
+            }
 
         @@keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @@keyframes float {
-            0%,100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
     </style>
 </head>

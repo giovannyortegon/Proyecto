@@ -1,8 +1,8 @@
 ﻿@page
 @model AuditSentinel.Pages.Escaneos.CreateModel
 
+<div class="p-5">
 <h2>Nuevo Escaneo</h2>
-
 <form method="post">
     <div class="card p-3">
         <div class="mb-3">
@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row p-3">
         <div class="col-md-6 mb-3">
 
             <label>Servidores</label>
@@ -49,7 +49,7 @@
         <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
     </div>
 </form>
-
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
