@@ -9,67 +9,112 @@
 
 <h1>Lista Servidores</h1>
 
-<form method="get"  class="row g-3 mb-3">
+<form method="get" class="row g-3 mb-3">
     <div class="col-md-4">
-        <input name="search" value="@Model.Search" class="form-control" placeholder="Buscar por nombre o descripción..." />
+        <input name="search" value="@Model.Search" class="form-control" placeholder="Buscar por nombre, IP o sistema..." />
     </div>
-     <div class="col-md-2">
+    <div class="col-md-2">
         <button class="btn btn-outline-primary w-100" type="submit">Filtrar</button>
     </div>
-    <div class="col-6 .col-md-4 text-end align-content-center">
+    <div class="col-6 col-md-6 text-end align-content-center">
         <a asp-page="Create" class="btn btn-primary">Nuevo Servidor</a>
     </div>
 </form>
 
-
-<div class="card mb-md-3 ">
-    <table id="Lista-Servidores" class="table table-striped">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Servidores[0].NombreServidor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Servidores[0].IP)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Servidores[0].SistemaOperativo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Servidores[0].Create_is)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Servidores) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreServidor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IP)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SistemaOperativo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Create_is)
-            </td>
-            <td>
-                    <a asp-page="./Edit" asp-route-id="@item.IdServidor" class="btn btn-primary">Editar</a> |
-                    <a asp-page="./Details" asp-route-id="@item.IdServidor" class="btn btn-secondary">Detalles</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.IdServidor" class="btn btn-danger">Eliminar</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="card mb-md-3">
+    <table id="Lista-Servidores" class="table table-striped table-hover mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Servidores[0].NombreServidor)</th>
+                <th>@Html.DisplayNameFor(model => model.Servidores[0].IP)</th>
+                <th>@Html.DisplayNameFor(model => model.Servidores[0].SistemaOperativo)</th>
+                <th>@Html.DisplayNameFor(model => model.Servidores[0].Create_is)</th>
+                <th style="width:220px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Servidores != null && Model.Servidores.Any())
+            {
+                foreach (var item in Model.Servidores)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.NombreServidor)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IP)</td>
+                        <td>@Html.DisplayFor(modelItem => item.SistemaOperativo)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Create_is)</td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@item.IdServidor" class="btn btn-sm btn-primary">Editar</a>
+                            <a asp-page="./Details" asp-route-id="@item.IdServidor" class="btn btn-sm btn-secondary">Detalles</a>
+                            <a asp-page="./Delete" asp-route-id="@item.IdServidor" class="btn btn-sm btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-muted p-3">No hay servidores para mostrar.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
-<script> 
-   new DataTable("Lista Servidores");
-</script>
-@section Scripts 
+
+<!-- Controles de paginación -->
+@if (Model.TotalPages > 1)
 {
-  
+    <nav aria-label="Paginación de servidores" class="mt-3">
+        <ul class="pagination justify-content-center">
+            <!-- Primero -->
+            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                <a class="page-link"
+                   asp-page="./Index"
+                   asp-route-pageNumber="1"
+                   asp-route-search="@Model.Search">« Primero</a>
+            </li>
+
+            <!-- Anterior -->
+            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                <a class="page-link"
+                   asp-page="./Index"
+                   asp-route-pageNumber="@(Model.PageNumber - 1)"
+                   asp-route-search="@Model.Search">‹ Anterior</a>
+            </li>
+
+            <!-- Páginas numeradas (pequeño rango centrado) -->
+            @{
+                var start = Math.Max(1, Model.PageNumber - 2);
+                var end = Math.Min(Model.TotalPages, Model.PageNumber + 2);
+                for (int i = start; i <= end; i++)
+                {
+                    var active = i == Model.PageNumber ? "active" : "";
+                    <li class="page-item @active">
+                        <a class="page-link"
+                           asp-page="./Index"
+                           asp-route-pageNumber="@i"
+                           asp-route-search="@Model.Search">@i</a>
+                    </li>
+                }
+            }
+
+            <!-- Siguiente -->
+            <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link"
+                   asp-page="./Index"
+                   asp-route-pageNumber="@(Model.PageNumber + 1)"
+                   asp-route-search="@Model.Search">Siguiente ›</a>
+            </li>
+
+            <!-- Último -->
+            <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link"
+                   asp-page="./Index"
+                   asp-route-pageNumber="@Model.TotalPages"
+                   asp-route-search="@Model.Search">Último »</a>
+            </li>
+        </ul>
+        <div class="text-center text-muted">
+            Página @Model.PageNumber de @Model.TotalPages — @Model.TotalItems registro(s)
+        </div>
+    </nav>
 }
