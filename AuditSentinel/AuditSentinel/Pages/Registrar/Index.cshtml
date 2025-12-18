@@ -31,7 +31,8 @@
                 <td>@u.Email</td>
                 <td>@string.Join(", ", u.Roles)</td>
                 <td class="text-end">
-                    <a class="btn btn-sm btn-secondary" asp-page="Editar" asp-route-id="@u.Id">Editar</a>
+                    <a class="btn btn-sm btn-primary" asp-page="Editar" asp-route-id="@u.Id">Editar</a>
+                    <a class="btn btn-sm btn-secondary" asp-page="Details" asp-route-id="@u.Id">Detalles</a>
                     <a class="btn btn-sm btn-danger" asp-page="Eliminar" asp-route-id="@u.Id">Eliminar</a>
                 </td>
             </tr>

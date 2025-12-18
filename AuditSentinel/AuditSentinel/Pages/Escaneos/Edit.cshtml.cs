@@ -52,11 +52,12 @@ namespace AuditSentinel.Pages.Escaneos
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                CargarCombos();
-                return Page();
-            }
+            CargarCombos();
+            //if (!ModelState.IsValid)
+            //{
+                
+            //    return Page();
+            //}
 
             var escaneoDb = await _context.Escaneos
                 .Include(e => e.EscaneosServidores)

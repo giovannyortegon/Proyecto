@@ -53,7 +53,7 @@ namespace AuditSentinel.Pages.Registrar
             // Crear usuario
             var user = new IdentityUser
             {
-                UserName = Registro.Email,
+                UserName = Registro.Nombre,
                 Email = Registro.Email,
                 EmailConfirmed = true // Opcional: confirma email de inmediato
             };

@@ -1,33 +1,44 @@
-﻿using AuditSentinel.Data;
-using AuditSentinel.Models;
+
+// Pages/Usuarios/Details.cshtml.cs
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
-namespace AuditSentinel.Pages.Escaneos
+namespace AuditSentinel.Pages.Usuarios
 {
+    [Authorize(Roles = "Administrador")]
     public class DetailsModel : PageModel
     {
-        private readonly ApplicationDBContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public DetailsModel(ApplicationDBContext context)
+        public DetailsModel(UserManager<IdentityUser> userManager)
         {
-            _context = context;
+            _userManager = userManager;
         }
 
-        public AuditSentinel.Models.Escaneos Escaneo { get; set; }
+        public string UserId { get; private set; } = string.Empty;
+        public string UserName { get; private set; } = string.Empty;
+        public string? Email { get; private set; }
+        public string[] Roles { get; private set; } = [];
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
-            Escaneo = await _context.Escaneos
-                .Include(e => e.EscaneosServidores)
-                    .ThenInclude(es => es.Servidores)
-                .Include(e => e.EscaneosPlantillas)
-                    .ThenInclude(ep => ep.Plantillas)
-                .FirstOrDefaultAsync(e => e.IdEscaneo == id);
-
-            if (Escaneo == null)
+            if (string.IsNullOrWhiteSpace(id))
                 return NotFound();
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user is null)
+                return NotFound();
+
+            UserId = user.Id;
+            UserName = user.UserName ?? string.Empty;
+            Email = user.Email;
+
+            var roles = await _userManager.GetRolesAsync(user);
+            Roles = roles?.ToArray() ?? [];
 
             return Page();
         }
