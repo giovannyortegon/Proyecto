@@ -32,43 +32,46 @@
     <div class="col-md-2">
         <button class="btn btn-outline-primary w-100" type="submit">Filtrar</button>
     </div>
+        <div class="col-md-2">
+            <a class="btn btn-primary" asp-page="Create">Nueva Escaneo</a>
+        </div>
 </form>
 </div>
 
-<div class="p-5">
-<div class="card p-3">
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nombre Escaneo</th>
-            <th>Estado</th>
-            <th>Fecha</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    @if (Model.Escaneos.Any())
-    {
-        foreach (var item in Model.Escaneos)
-        {
+<div class="card mb-md-3">
+    <table class="table">
+        <thead class="table-light">
             <tr>
-                <td>@item.NombreEscaneo</td>
-                <td>@item.Estado</td>
-                <td>@item.FechaEscaneo.ToString("dd/MM/yyyy")</td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-primary">Editar</a>
-                    <a asp-page="./Details" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-secondary">Detalles</a>
-                    <a asp-page="./Delete" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-danger">Eliminar</a>
-                </td>
+                <th>Nombre Escaneo</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th></th>
             </tr>
+        </thead>
+        <tbody>
+        @if (Model.Escaneos.Any())
+        {
+            foreach (var item in Model.Escaneos)
+            {
+                <tr>
+                    <td>@item.NombreEscaneo</td>
+                    <td>@item.Estado</td>
+                    <td>@item.FechaEscaneo.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-primary">Editar</a>
+                        <a asp-page="./Details" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-secondary">Detalles</a>
+                        <a asp-page="./Delete" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+            }
         }
-    }
-    else
-    {
-        <tr><td colspan="4" class="text-center text-muted">No hay escaneos</td></tr>
-    }
-    </tbody>
-</table>
+        else
+        {
+            <tr><td colspan="4" class="text-center text-muted">No hay escaneos</td></tr>
+        }
+        </tbody>
+    </table>
+</div>
 
 @if (Model.TotalPages > 1)
 {
