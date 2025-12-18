@@ -11,10 +11,17 @@
         Lo sentimos, ocurrió un problema procesando tu solicitud. Nuestro equipo ya fue notificado (si tienes logging/telemetría).
     </p>
 
-    @if (Model.RequestId is not null)
-    {
-        <p><strong>ID de solicitud:</strong> @Model.RequestId</p>
-    }
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3a8a, #0f172a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Comic Sans MS', sans-serif;
+            color: #e0f2ff;
+        }
 
     <a class="btn btn-primary" asp-page="/Index">Volver al inicio</a>
 </section> *@
