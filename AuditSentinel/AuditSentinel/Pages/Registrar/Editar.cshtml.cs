@@ -64,13 +64,14 @@ namespace AuditSentinel.Pages.Usuarios
             var user = await _userManager.FindByIdAsync(UserId);
             if (user is null) return NotFound();
 
-            if (!ModelState.IsValid)
-            {
-                AvailableRoles = _roleManager.Roles
-                    .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
-                    .ToList();
-                return Page();
-            }
+            //if (!ModelState.IsValid)
+            //{
+                
+            //    return Page();
+            //}
+            //AvailableRoles = _roleManager.Roles
+            //        .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
+            //        .ToList();
 
             // Actualiza Email/UserName
             user.Email = Input.Email;
