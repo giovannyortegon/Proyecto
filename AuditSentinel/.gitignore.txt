@@ -28,3 +28,4 @@ Migrations/*
 
 ## Archivos de publicación (Publish)
 *.Publish.xml
+*.vsidx
