@@ -1,83 +1,52 @@
-﻿@page "{id:int}"
-@model AuditSentinel.Pages.Escaneos.DetailsModel
-<div class="p-5">
-<h2>Detalle del Escaneo</h2>
+﻿@page "{id}"
+@model AuditSentinel.Pages.Usuarios.DetailsModel
+@{
+    ViewData["Title"] = "Detalles del usuario";
+}
 
-<div class="card mb-3">
-    <div class="card-body">
-        <h4 class="card-title">@Model.Escaneo.NombreEscaneo</h4>
-
-        <p>
-            <strong>Estado:</strong> @Model.Escaneo.Estado <br />
-            <strong>Fecha:</strong> @Model.Escaneo.FechaEscaneo.ToString("dd/MM/yyyy HH:mm")
-        </p>
+<div class="container py-4">
+    <div class="d-flex align-items-center mb-3">
+        <h2 class="mb-0">Detalles del usuario</h2>
+        <span class="badge bg-secondary ms-3">ID: @Model.UserId</span>
     </div>
-</div>
 
-<div class="row">
+    <div class="card mb-4">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Usuario</dt>
+                <dd class="col-sm-9">@Model.UserName</dd>
 
-    <!-- SERVIDORES -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <strong>Servidores Asociados</strong>
-            </div>
-            <ul class="list-group list-group-flush">
-                @if (Model.Escaneo.EscaneosServidores.Any())
-                {
-                    @foreach (var s in Model.Escaneo.EscaneosServidores)
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Roles</dt>
+                <dd class="col-sm-9">
+                    @if (Model.Roles != null && Model.Roles.Length > 0)
                     {
-                        <li class="list-group-item">
-                            <strong>@s.Servidores.NombreServidor</strong><br />
-                            IP: @s.Servidores.IP <br />
-                            SO: @s.Servidores.SistemaOperativo
-                        </li>
+                        <ul class="list-inline mb-0">
+                            @foreach (var r in Model.Roles)
+                            {
+                                <li class="list-inline-item">
+                                    <span class="badge bg-info text-dark">@r</span>
+                                </li>
+                            }
+                        </ul>
                     }
-                }
-                else
-                {
-                    <li class="list-group-item text-muted">
-                        No hay servidores asociados.
-                    </li>
-                }
-            </ul>
+                    else
+                    {
+                        <span class="text-muted">Sin roles asignados</span>
+                    }
+                </dd>
+            </dl>
         </div>
     </div>
 
-    <!-- PLANTILLAS -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <strong>Plantillas Aplicadas</strong>
-            </div>
-            <ul class="list-group list-group-flush">
-                @if (Model.Escaneo.EscaneosPlantillas.Any())
-                {
-                    @foreach (var p in Model.Escaneo.EscaneosPlantillas)
-                    {
-                        <li class="list-group-item">
-                            @p.Plantillas.NombrePlantilla
-                        </li>
-                    }
-                }
-                else
-                {
-                    <li class="list-group-item text-muted">
-                        No hay plantillas asociadas.
-                    </li>
-                }
-            </ul>
-        </div>
+    <div class="d-flex gap-2">
+        <a asp-page="./Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+        <a asp-page="./Editar" asp-route-id="@Model.UserId" class="btn btn-primary">
+            <i class="bi bi-pencil-square"></i> Editar
+        </a>
     </div>
-
-</div>
-
-<div class="mt-3">
-    <a asp-page="Edit" asp-route-id="@Model.Escaneo.IdEscaneo" class="btn btn-primary">
-        Editar
-    </a>
-    <a asp-page="Index" class="btn btn-secondary">
-        Volver
-    </a>
-</div>
-</div>
+</<div>
