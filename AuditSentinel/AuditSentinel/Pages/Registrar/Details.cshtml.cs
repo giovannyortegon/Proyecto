@@ -24,11 +24,6 @@ namespace AuditSentinel.Pages.Usuarios
         [BindProperty]
         public AuditSentinel.Models.Registro Registro { get; set; } = new();
 
-        //public string UserId { get; private set; } = string.Empty;
-        //public string UserName { get; private set; } = string.Empty;
-        //public string? Email { get; private set; }
-        //public string[] Roles { get; private set; } = [];
-
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))

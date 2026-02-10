@@ -70,34 +70,6 @@ namespace AuditSentinel.Pages.Registrar
                 return Page();
             }
 
-            // Asegurar que el rol exista antes de asignarlo
-            //if (!string.IsNullOrWhiteSpace(Registro.Rol))
-            //{
-            //    var roleExists = await _roleManager.RoleExistsAsync(Registro.Rol);
-            //    if (!roleExists)
-            //    {
-            //        var createRole = await _roleManager.CreateAsync(new IdentityRole(Registro.Rol));
-            //        if (!createRole.Succeeded)
-            //        {
-            //            // Si no se pudo crear el rol, revertir usuario o notificar
-            //            foreach (var error in createRole.Errors)
-            //                ModelState.AddModelError(string.Empty, $"Error creando rol '{Registro.Rol}': {error.Description}");
-
-            //            return Page();
-            //        }
-            //    }
-
-            //    var addToRoleResult = await _userManager.AddToRoleAsync(user, Registro.Rol);
-            //    if (!addToRoleResult.Succeeded)
-            //    {
-            //        foreach (var error in addToRoleResult.Errors)
-            //            ModelState.AddModelError(string.Empty, $"Error asignando rol '{Registro.Rol}': {error.Description}");
-
-            //        return Page();
-            //    }
-            //}
-
-
             // 3) Asignación de Roles (lista)
             //    - Limpia nulos/espacios
             var rolesSolicitados = (Registro.Rol ?? new List<string>())

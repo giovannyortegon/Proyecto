@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 
 
-
 var builder = WebApplication.CreateBuilder(args);
 // Configuracion de la cadena de conexion
 builder.Services.AddDbContext<ApplicationDBContext>(options =>

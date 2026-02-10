@@ -28,23 +28,9 @@ namespace AuditSentinel.Pages.Usuarios
             _signInManager = signInManager;
         }
 
-        // ViewModel para edición
-        //public class EditInputModel
-        //{
-        //    [Required, EmailAddress]
-        //    public string Email { get; set; } = string.Empty;
-
-        //    [Required]
-        //    public string UserName { get; set; } = string.Empty;
-
-        //    public List<string> Roles { get; set; } = new();
-        //}
-
         [BindProperty] 
-        //public EditInputModel Input { get; set; } = new();
         public AuditSentinel.Models.Registro Registro { get; set; } = new();
-        //[BindProperty] public string UserId { get; set; } = string.Empty;
-
+ 
         public List<SelectListItem> AvailableRoles { get; set; } = new();
 
         public async Task<IActionResult> OnGetAsync(string id)
@@ -86,7 +72,6 @@ namespace AuditSentinel.Pages.Usuarios
             user.Nombre = Registro.Nombre;
             user.Apellido = Registro.Apellido;
             user.Email = Registro.Email;
-            //user.UserName = Registro.UserName;
 
             var update = await _userManager.UpdateAsync(user);
             if (!update.Succeeded)
