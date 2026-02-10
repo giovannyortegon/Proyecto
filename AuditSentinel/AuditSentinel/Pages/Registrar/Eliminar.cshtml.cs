@@ -11,9 +11,9 @@ namespace AuditSentinel.Pages.Usuarios
     [Authorize(Roles = "Administrador")]
     public class DeleteModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AuditSentinel.Models.Usuarios> _userManager;
 
-        public DeleteModel(UserManager<IdentityUser> userManager)
+        public DeleteModel(UserManager<AuditSentinel.Models.Usuarios> userManager)
         {
             _userManager = userManager;
         }

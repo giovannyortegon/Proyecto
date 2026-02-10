@@ -10,9 +10,9 @@ namespace AuditSentinel.Pages.Cuenta
     // [Authorize]
     public class LogoutModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<AuditSentinel.Models.Usuarios> _signInManager;
 
-        public LogoutModel(SignInManager<IdentityUser> signInManager)
+        public LogoutModel(SignInManager<AuditSentinel.Models.Usuarios> signInManager)
         {
             _signInManager = signInManager;
         }

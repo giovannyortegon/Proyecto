@@ -3,11 +3,25 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuditSentinel.Models
 {
-    public class Registro : IdentityUser
+    public class Registro
     {
+        public string Id { get; set; }
+
+        [Required(ErrorMessage = "El nombre es obligatoria")]
+        [StringLength(100, ErrorMessage = "El nombre no debe exceder 100 caracteres")]
+        [Display(Name = "Nombre")]
+        public string Nombre { get; set; }
+
+        [Required(ErrorMessage = "El nombre es obligatoria")]
+        [StringLength(100, ErrorMessage = "El nombre no debe exceder 100 caracteres")]
+        [Display(Name = "Nombre")]
+        public string Apellido { get; set; }
+
+        public string UserName { get; set; }
+
         // Username property with validation
         [Required(ErrorMessage = "El correo electronico es obligatorio")]
-        [EmailAddress(ErrorMessage = "El correo electronico no es valido")]
+       //[EmailAddress(ErrorMessage = "El correo electronico no es valido")]
         [Display(Name = "Correo Electronico")]
         public string Email { get; set; }
 
@@ -25,15 +39,9 @@ namespace AuditSentinel.Models
         [Display(Name = "Confirmar Contraseña")]
         public string ConfirmacionPassword { get; set; }
 
-
-        [Required(ErrorMessage = "El nombre es obligatoria")]
-        [StringLength(100, ErrorMessage = "El nombre no debe exceder 100 caracteres")]
-        [Display(Name = "Nombre")]
-        public string Nombre { get; set; }
-
         [Required(ErrorMessage = "El nombre es obligatoria")]
         [Display(Name = "Rol")]
-        public string Rol { get; set; }
+        public List<string> Rol { get; set; }
 
         [Display(Name = "Fecha Creacion")]
         public DateTime FechaCreado { get; set; } = DateTime.Now;

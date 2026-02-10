@@ -1,42 +1,49 @@
-
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+using AuditSentinel.Models;
 
 namespace AuditSentinel.Pages.Usuarios
 {
     [Authorize(Roles = "Administrador")]
     public class EditModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AuditSentinel.Models.Usuarios> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<AuditSentinel.Models.Usuarios> _signInManager;
 
-        public EditModel(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public EditModel(UserManager<AuditSentinel.Models.Usuarios> userManager,
+                                    RoleManager<IdentityRole> roleManager,
+                                    SignInManager<AuditSentinel.Models.Usuarios> signInManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         // ViewModel para edición
-        public class EditInputModel
-        {
-            [Required, EmailAddress]
-            public string Email { get; set; } = string.Empty;
+        //public class EditInputModel
+        //{
+        //    [Required, EmailAddress]
+        //    public string Email { get; set; } = string.Empty;
 
-            [Required]
-            public string UserName { get; set; } = string.Empty;
+        //    [Required]
+        //    public string UserName { get; set; } = string.Empty;
 
-            public List<string> Roles { get; set; } = new();
-        }
+        //    public List<string> Roles { get; set; } = new();
+        //}
 
-        [BindProperty] public EditInputModel Input { get; set; } = new();
-        [BindProperty] public string UserId { get; set; } = string.Empty;
+        [BindProperty] 
+        //public EditInputModel Input { get; set; } = new();
+        public AuditSentinel.Models.Registro Registro { get; set; } = new();
+        //[BindProperty] public string UserId { get; set; } = string.Empty;
 
         public List<SelectListItem> AvailableRoles { get; set; } = new();
 
@@ -47,10 +54,12 @@ namespace AuditSentinel.Pages.Usuarios
             var user = await _userManager.FindByIdAsync(id);
             if (user is null) return NotFound();
 
-            UserId = user.Id;
-            Input.Email = user.Email ?? string.Empty;
-            Input.UserName = user.UserName ?? string.Empty;
-            Input.Roles = (await _userManager.GetRolesAsync(user)).ToList();
+            Registro.Id = user.Id;
+            Registro.Nombre = user.Nombre ?? string.Empty;
+            Registro.Apellido = user.Apellido ?? string.Empty;
+            Registro.Email = user.Email ?? string.Empty;
+            Registro.UserName = user.UserName ?? string.Empty;
+            Registro.Rol = (await _userManager.GetRolesAsync(user)).ToList();
 
             AvailableRoles = _roleManager.Roles
                 .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
@@ -61,21 +70,23 @@ namespace AuditSentinel.Pages.Usuarios
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.FindByIdAsync(UserId);
+            var user = await _userManager.FindByIdAsync(Registro.Id);
             if (user is null) return NotFound();
 
             //if (!ModelState.IsValid)
             //{
-                
+
             //    return Page();
             //}
-            //AvailableRoles = _roleManager.Roles
-            //        .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
-            //        .ToList();
+            AvailableRoles = _roleManager.Roles
+                    .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
+                    .ToList();
 
             // Actualiza Email/UserName
-            user.Email = Input.Email;
-            user.UserName = Input.UserName;
+            user.Nombre = Registro.Nombre;
+            user.Apellido = Registro.Apellido;
+            user.Email = Registro.Email;
+            //user.UserName = Registro.UserName;
 
             var update = await _userManager.UpdateAsync(user);
             if (!update.Succeeded)
@@ -91,8 +102,8 @@ namespace AuditSentinel.Pages.Usuarios
 
             // Actualiza roles: quita los que ya no están y agrega los nuevos
             var currentRoles = await _userManager.GetRolesAsync(user);
-            var toAdd = Input.Roles.Except(currentRoles).ToArray();
-            var toRemove = currentRoles.Except(Input.Roles).ToArray();
+            var toAdd = Registro.Rol.Except(currentRoles).ToArray();
+            var toRemove = currentRoles.Except(Registro.Rol).ToArray();
 
             if (toRemove.Length > 0)
             {
@@ -122,6 +133,10 @@ namespace AuditSentinel.Pages.Usuarios
                     return Page();
                 }
             }
+
+
+            if (User?.Identity?.Name != null && user.UserName == User.Identity.Name)
+                await _signInManager.RefreshSignInAsync(user);
 
             return RedirectToPage("Index");
         }
