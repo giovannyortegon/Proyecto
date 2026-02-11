@@ -9,25 +9,28 @@
 <h2>Editar usuario</h2>
 
 <form method="post">
-    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="Registro.Id" />
 
+        <div class="mb-3">
+            <label asp-for="Registro.Nombre">Nombre</label>
+            <input asp-for="Registro.Nombre" class="form-control" />
+            <span asp-validation-for="Registro.Nombre" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Registro.Apellido">Apellido</label>
+            <input asp-for="Registro.Apellido" class="form-control" />
+            <span asp-validation-for="Registro.Apellido" class="text-danger"></span>
+        </div>
     <div class="mb-3">
-        <label asp-for="Input.UserName">Nombre</label>
-        <input asp-for="Input.UserName" class="form-control" />
-        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+            <label asp-for="Registro.Email"></label>
+            <input asp-for="Registro.Email" class="form-control" />
+            <span asp-validation-for="Registro.Email" class="text-danger"></span>
     </div>
-    <div class="mb-3">
-        <label asp-for="Input.Email"></label>
-        <input asp-for="Input.Email" class="form-control" />
-        <span asp-validation-for="Input.Email" class="text-danger"></span>
-    </div>
-
-    
 
     <div class="mb-3">
         <label>Roles</label>
-        <select asp-for="Input.Roles" class="form-select" multiple size="5" asp-items="Model.AvailableRoles"></select>
-        <span asp-validation-for="Input.Roles" class="text-danger"></span>
+            <select asp-for="Registro.Rol" class="form-select" multiple size="5" asp-items="Model.AvailableRoles"></select>
+            <span asp-validation-for="Registro.Rol" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>

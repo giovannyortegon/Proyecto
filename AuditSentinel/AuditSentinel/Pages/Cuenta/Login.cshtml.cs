@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace AuditSentinel.Pages.Cuenta {
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<AuditSentinel.Models.Usuarios> _signInManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager)
+        public LoginModel(SignInManager<AuditSentinel.Models.Usuarios> signInManager)
         {
             _signInManager = signInManager;
         }

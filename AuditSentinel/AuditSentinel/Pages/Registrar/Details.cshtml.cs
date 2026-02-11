@@ -12,17 +12,17 @@ namespace AuditSentinel.Pages.Usuarios
     [Authorize(Roles = "Administrador")]
     public class DetailsModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AuditSentinel.Models.Usuarios> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public DetailsModel(UserManager<IdentityUser> userManager)
+        public DetailsModel(UserManager<AuditSentinel.Models.Usuarios> userManager, RoleManager<IdentityRole> roleManager   )
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
-        public string UserId { get; private set; } = string.Empty;
-        public string UserName { get; private set; } = string.Empty;
-        public string? Email { get; private set; }
-        public string[] Roles { get; private set; } = [];
+        [BindProperty]
+        public AuditSentinel.Models.Registro Registro { get; set; } = new();
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -33,13 +33,14 @@ namespace AuditSentinel.Pages.Usuarios
             if (user is null)
                 return NotFound();
 
-            UserId = user.Id;
-            UserName = user.UserName ?? string.Empty;
-            Email = user.Email;
-
-            var roles = await _userManager.GetRolesAsync(user);
-            Roles = roles?.ToArray() ?? [];
-
+            Registro.Id = user.Id;
+            Registro.Nombre = user.Nombre ?? string.Empty;
+            Registro.Apellido = user.Apellido?? string.Empty;
+            Registro.UserName = user.UserName ?? string.Empty;
+            Registro.Email = user.Email;
+            Registro.Rol = (List<string>)await _userManager.GetRolesAsync(user);
+            Registro.FechaCreado = user.FechaCreado;
+        
             return Page();
         }
     }

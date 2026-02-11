@@ -1,30 +1,34 @@
 ﻿@page "{id}"
+@using AuditSentinel.Models
 @model AuditSentinel.Pages.Usuarios.DetailsModel
 @{
     ViewData["Title"] = "Detalles del usuario";
+    var registro = Model.Registro;
 }
 
 <div class="container py-4">
     <div class="d-flex align-items-center mb-3">
         <h2 class="mb-0">Detalles del usuario</h2>
-        <span class="badge bg-secondary ms-3">ID: @Model.UserId</span>
+        <span class="badge bg-secondary ms-3">ID: @registro.Id</span>
     </div>
 
     <div class="card mb-4">
         <div class="card-body">
             <dl class="row mb-0">
+                <dt class="col-sm-3">Nombre</dt>
+                <dd class="col-sm-9">@registro.Nombre</dd>
+                <dt class="col-sm-3">Apellido</dt>
+                <dd class="col-sm-9">@registro.Apellido</dd>
                 <dt class="col-sm-3">Usuario</dt>
-                <dd class="col-sm-9">@Model.UserName</dd>
-
+                <dd class="col-sm-9">@registro.UserName</dd>
                 <dt class="col-sm-3">Email</dt>
-                <dd class="col-sm-9">@Model.Email</dd>
-
+                <dd class="col-sm-9">@registro.Email</dd>
                 <dt class="col-sm-3">Roles</dt>
                 <dd class="col-sm-9">
-                    @if (Model.Roles != null && Model.Roles.Length > 0)
+                    @if (registro.Rol != null)
                     {
                         <ul class="list-inline mb-0">
-                            @foreach (var r in Model.Roles)
+                            @foreach (var r in registro.Rol)
                             {
                                 <li class="list-inline-item">
                                     <span class="badge bg-info text-dark">@r</span>
@@ -37,6 +41,9 @@
                         <span class="text-muted">Sin roles asignados</span>
                     }
                 </dd>
+                <dt class="col-sm-3">Creado</dt>
+                <dd class="col-sm-9">@registro.FechaCreado</dd>
+                
             </dl>
         </div>
     </div>
@@ -45,8 +52,8 @@
         <a asp-page="./Index" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Volver
         </a>
-        <a asp-page="./Editar" asp-route-id="@Model.UserId" class="btn btn-primary">
+        <a asp-page="./Editar" asp-route-id="@registro.Id" class="btn btn-primary">
             <i class="bi bi-pencil-square"></i> Editar
         </a>
     </div>
-</<div>
+</div>
