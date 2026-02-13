@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 
 
-
 var builder = WebApplication.CreateBuilder(args);
 // Configuracion de la cadena de conexion
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
@@ -15,7 +14,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 );
 
 //Agregar soporte para identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+builder.Services.AddIdentity<Usuarios, IdentityRole>(options =>
     {
         // Opcional: pol�ticas
         options.Password.RequiredLength = 6;
@@ -34,6 +33,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 
+builder.Logging.ClearProviders();
+builder.Logging.AddSimpleConsole();
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -50,13 +52,22 @@ using (var scope = app.Services.CreateScope())
     foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
-            await roleManager.CreateAsync(new IdentityRole(role));
+        {
+            var create = await roleManager.CreateAsync(new IdentityRole(role));
+            if (!create.Succeeded)
+            {
+                // si quieres ver el error exacto:
+                var errs = string.Join("; ", create.Errors.Select(e => $"{e.Code}: {e.Description}"));
+                Console.WriteLine($"[SEED ROLES] Error creando rol '{role}': {errs}");
+            }
+        }
     }
+
 }
 
 
 
-if(app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseExceptionHandler("/Error/500");

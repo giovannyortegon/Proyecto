@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuditSentinel.Data
 {
-    public class ApplicationDBContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDBContext : IdentityDbContext<Usuarios>
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
@@ -22,9 +22,7 @@ namespace AuditSentinel.Data
         public DbSet<AuditSentinel.Models.Reportes> Reportes { get; set; }
         public DbSet<AuditSentinel.Models.EscaneosReportes> EscaneosReportes { get; set; }
         public DbSet<AuditSentinel.Models.EscaneosVulnerabilidades> EscaneosVulnerabilidades { get; set; }
-        //public DbSet<AuditSentinel.Models.Registro> Registros { get; set; }
-        //public DbSet<AuditSentinel.Models.Roles> Roles { get; set; }
-        //public DbSet<AuditSentinel.Models.UsuariosRoles> UsuariosRoles { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
