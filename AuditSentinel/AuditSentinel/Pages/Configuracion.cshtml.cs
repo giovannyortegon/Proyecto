@@ -7,6 +7,7 @@ namespace AuditSentinel.Pages
     {
         public void OnGet()
         {
-        }
+        } 
     }
 }
+

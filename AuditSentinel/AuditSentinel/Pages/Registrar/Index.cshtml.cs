@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AuditSentinel.Pages.Usuarios
 {
-    [Authorize(Roles = "Administrador")]
+    //[Authorize(Roles = "Administrador")]
     public class IndexModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
