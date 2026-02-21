@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AuditSentinel.Migrations
 {
     /// <inheritdoc />
-    public partial class implementItentityDB : Migration
+    public partial class newDBAspNet : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +30,9 @@ namespace AuditSentinel.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
+                    Apellido = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
+                    FechaCreado = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -118,9 +121,9 @@ namespace AuditSentinel.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NombreVulnerabilidad = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     NivelRiesgo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Comando = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    ResultadoEsperado = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Comando = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ResultadoEsperado = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     FechaDetectada = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
