@@ -27,9 +27,10 @@
         @foreach (var u in Model.Users)
         {
             <tr>
+                <td>@u.Nombre @u.Apellido</td>
                 <td>@u.UserName</td>
                 <td>@u.Email</td>
-                <td>@string.Join(", ", u.Roles)</td>
+                <td>@string.Join(", ", u.Rol)</td>
                 <td class="text-end">
                     <a class="btn btn-sm btn-primary" asp-page="Editar" asp-route-id="@u.Id">Editar</a>
                     <a class="btn btn-sm btn-secondary" asp-page="Details" asp-route-id="@u.Id">Detalles</a>

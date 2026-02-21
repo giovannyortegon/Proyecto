@@ -4,6 +4,7 @@ using AuditSentinel.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuditSentinel.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260214141345_newDBAspNet")]
+    partial class newDBAspNet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,9 +46,6 @@ namespace AuditSentinel.Migrations
                         .HasColumnType("nvarchar(80)");
 
                     b.HasKey("IdEscaneo");
-
-                    b.HasIndex("NombreEscaneo")
-                        .IsUnique();
 
                     b.ToTable("Escaneos");
                 });
@@ -137,9 +137,6 @@ namespace AuditSentinel.Migrations
 
                     b.HasKey("IdPlantilla");
 
-                    b.HasIndex("NombrePlantilla")
-                        .IsUnique();
-
                     b.ToTable("Plantillas");
                 });
 
@@ -180,9 +177,6 @@ namespace AuditSentinel.Migrations
 
                     b.HasKey("IdReporte");
 
-                    b.HasIndex("NombreReporte")
-                        .IsUnique();
-
                     b.ToTable("Reportes");
                 });
 
@@ -213,12 +207,6 @@ namespace AuditSentinel.Migrations
                         .HasColumnType("nvarchar(80)");
 
                     b.HasKey("IdServidor");
-
-                    b.HasIndex("IP")
-                        .IsUnique();
-
-                    b.HasIndex("NombreServidor")
-                        .IsUnique();
 
                     b.ToTable("Servidores");
                 });
@@ -334,9 +322,6 @@ namespace AuditSentinel.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("IdVulnerabilidad");
-
-                    b.HasIndex("NombreVulnerabilidad")
-                        .IsUnique();
 
                     b.ToTable("Vulnerabilidades");
                 });
