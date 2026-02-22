@@ -44,6 +44,9 @@ namespace AuditSentinel.Migrations
 
                     b.HasKey("IdEscaneo");
 
+                    b.HasIndex("NombreEscaneo")
+                        .IsUnique();
+
                     b.ToTable("Escaneos");
                 });
 
@@ -134,6 +137,9 @@ namespace AuditSentinel.Migrations
 
                     b.HasKey("IdPlantilla");
 
+                    b.HasIndex("NombrePlantilla")
+                        .IsUnique();
+
                     b.ToTable("Plantillas");
                 });
 
@@ -174,6 +180,9 @@ namespace AuditSentinel.Migrations
 
                     b.HasKey("IdReporte");
 
+                    b.HasIndex("NombreReporte")
+                        .IsUnique();
+
                     b.ToTable("Reportes");
                 });
 
@@ -204,6 +213,12 @@ namespace AuditSentinel.Migrations
                         .HasColumnType("nvarchar(80)");
 
                     b.HasKey("IdServidor");
+
+                    b.HasIndex("IP")
+                        .IsUnique();
+
+                    b.HasIndex("NombreServidor")
+                        .IsUnique();
 
                     b.ToTable("Servidores");
                 });
@@ -319,6 +334,9 @@ namespace AuditSentinel.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("IdVulnerabilidad");
+
+                    b.HasIndex("NombreVulnerabilidad")
+                        .IsUnique();
 
                     b.ToTable("Vulnerabilidades");
                 });

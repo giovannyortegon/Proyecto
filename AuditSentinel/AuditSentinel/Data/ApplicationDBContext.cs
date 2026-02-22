@@ -27,22 +27,63 @@ namespace AuditSentinel.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // servidores
+            //nombre servidor debe ser unico
+            modelBuilder.Entity<Servidores>()
+               .HasIndex(s => s.NombreServidor)
+                .IsUnique();
+            // indice unico para IP
+
+            modelBuilder.Entity<Servidores>()
+                .HasIndex(s => s.IP)
+                .IsUnique();
+
+            //Enum sistemas operativos
+            modelBuilder.Entity<Servidores>()
+                .Property(s => s.SistemaOperativo)
+                .HasConversion<string>();
+
             // Almacenar enum como string
             modelBuilder.Entity<Escaneos>()
                 .Property(e => e.Estado)
                 .HasConversion<string>();
 
+            // nombre unico
+
+            modelBuilder.Entity<Escaneos>()
+               .HasIndex(e => e.NombreEscaneo)
+                .IsUnique();
+
+
             modelBuilder.Entity<Vulnerabilidades>()
                 .Property(v => v.NivelRiesgo)
                 .HasConversion<string>();
+
+            // nombre unico 
+            modelBuilder.Entity<Vulnerabilidades>()
+               .HasIndex(v => v.NombreVulnerabilidad)
+                .IsUnique();
+
 
             modelBuilder.Entity<Reportes>()
                 .Property(r => r.cumplimiento)
                 .HasConversion<string>();
 
+            // nombre unico 
+            modelBuilder.Entity<Reportes>()
+               .HasIndex(r => r.NombreReporte)
+                .IsUnique();
+
+
             modelBuilder.Entity<EscaneosVulnerabilidades>()
                 .Property(es => es.estado)
                 .HasConversion<string>();
+
+            //plantillas
+            modelBuilder.Entity<Plantillas>()
+               .HasIndex(p => p.NombrePlantilla)
+                .IsUnique();
 
             //modelBuilder.Entity<Roles>()
             //    .Property(r => r.NombreRol)

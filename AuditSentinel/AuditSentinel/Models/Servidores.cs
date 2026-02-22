@@ -2,6 +2,15 @@
 
 namespace AuditSentinel.Models
 {
+    public enum SistemaOperativo
+    {
+        Linux,
+        WindowsServer2012,
+        WindowsServer2016,
+        WindowsServer2019,
+        WindowsServer2022,
+        WindowsServer2025
+    }
     public class Servidores
     {
         [Key]
@@ -30,6 +39,7 @@ namespace AuditSentinel.Models
         public DateTime Create_is { get; set; } = DateTime.Now;
 
         public ICollection<EscaneosServidores> EscaneosServidores { get; set; }
+
 
     }
 }
