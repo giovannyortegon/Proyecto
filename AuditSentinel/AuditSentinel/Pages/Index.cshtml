@@ -1,65 +1,160 @@
-﻿@page 
+﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Inicio";
 }
-<div class="container py-0">
-    <div class="text-center mb-4">
-        <img src="~/img/logo-auditsentinel.png" alt="AuditSentinel Logo" class="mb-3" style="width: 70px;">
-        <h1 class="fw-bold">AuditSentinel</h1>
-        <h2 class="h4 text-muted">¿Quiénes somos?</h2>
-    </div>
 
-<div class="container ">
-     <div class="row">
-        <div class="col-6">
-            <p class="lead">
-                Somos una plataforma de auditorías de ciberseguridad para infraestructuras de red a nivel empresarial, basada en escaneos automatizados y generación de reportes.
-            </p>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">🔍 Escaneos por medio de plantillas estandarizadas</li>
-                <li class="list-group-item">🛡️ Evaluación de vulnerabilidades</li>
-                <li class="list-group-item">📊 Reportes técnicos y ejecutivos</li>
-            </ul>
+<section class="hero py-5">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <!-- LADO IZQUIERDO (Texto) -->
+            <div class="col-md-6">
+                <h1 class="display-4 fw-bold">Protegemos tu infraestructura digital</h1>
+                <p class="lead">
+                    Somos una plataforma de auditorías de ciberseguridad para infraestructuras 
+                    de red a nivel empresarial, basada en escaneos automatizados y generación de reportes.
+                </p>
+                <a href="#contacto" class="btn btn-primary btn-lg">
+                    Solicitar Auditoría
+                </a>
+            </div>
+
+            <!-- LADO DERECHO (Imagen) -->
+            <div class="col-md-6 text-center">
+                <img src="/img/hero.png"
+                     class="img-fluid"
+                     alt="Ciberseguridad y servidor">
+            </div>
+
         </div>
-    
-            <div class="col-6">
-                <div class="container">
-                    <div class="d-flex flex-column gap-3 align-items-center"> 
-                        <div class="card" style="width: 18rem;">
-                        <div class="card text-bg-primary shadow-sm">
-                                <div class="card-body" style="height: 100px;">
-                                <h5 class="card-title text-center">Escaneos realizados</h5>
-                                    <p class="display-6 text-center">128</p>
-                            </div>
-                        </div>
-                    </div>
-                        <div class="card" style="width: 18rem;">
-                        <div class="card text-bg-success shadow-sm">
-                                <div class="card-body" style="height: 100px;">
-                                    <h5 class="card-title text-center">Vulnerabilidades detectadas</h5>
-                                    <p class="display-6 text-center">45</p>
-                            </div>
-                        </div>
-                    </div>
-                        <div class="card" style="width: 18rem;">
-                        <div class="card text-bg-warning shadow-sm">
-                                <div class="card-body" style="height: 100px;">
-                                    <h5 class="card-title text-center">Reportes generados</h5>
-                                    <p class="display-6 text-center">76</p>
-                            </div>
-                        </div>
-                  
-                    </div>
-                </div>
-                </div>
+    </div>
+</section>
+
+
+<section class="container mt-5">
+    <h2 class="section-title text-center">Nuestros Servicios</h2>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card p-4 text-center shadow">
+                <h4>Escaneo de Vulnerabilidades</h4>
+                <p>Identificamos fallas de seguridad en aplicaciones y servidores.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center shadow">
+                <h4>Generación de Reportes</h4>
+                <p>Documentación detallada con análisis técnico y nivel de riesgo.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center shadow">
+                <h4>Evaluación de Servidores</h4>
+                <p>Revisión integral de infraestructura y configuración.</p>
             </div>
         </div>
     </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('vulnChart').getContext('2d');
-</script>
+</section>
+
+
+<section class="hero text-center text-white bg-dark p-5 mb-5 mt-5">
+    <h5>Auditorías de Vulnerabilidades </h5>
+    <p>Protegemos tus servidores, detectamos vulnerabilidades y generamos reportes detallados.</p>
+    <a href="/Escaneos" class="btn btn-primary btn-lg">Ver Escaneos</a>
+</section>
+
+<section class="stats-section container text-center">
+    <h6 class="section-title">Estadísticas Generales</h6>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="stats-box">
+                <h6>@Model.TotalEscaneos</h6>
+                <p>Escaneos Realizados</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stats-box">
+                <h6>@Model.TotalVulnerabilidades</h6>
+                <p>Vulnerabilidades Detectadas</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stats-box">
+                <h6>@Model.TotalReportes</h6>
+                <p>Reportes Generados</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stats-box">
+                <h6>@Model.TotalServidores</h6>
+                <p>Servidores Analizados</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-5">
+    <h2 class="section-title text-center">Nuestra Metodología</h2>
+
+    <div class="row text-center mt-4">
+        <div class="col-md-3">
+            <div class="card p-4 text-center shadow">
+             <h5>1. Análisis</h5>
+             <p>Revisión inicial del sistema y recopilación de información.</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-4 text-center shadow">
+             <h5>2. Escaneo</h5>
+             <p>Detección automatizada y manual de vulnerabilidades.</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-4 text-center shadow">
+             <h5>3. Evaluación</h5>
+             <p>Clasificación por nivel de riesgo y criticidad.</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-4 text-center shadow">
+             <h5>4. Reporte Final</h5>
+             <p>Entrega de informe técnico con recomendaciones.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="contacto" class="container mt-5 mb-5">
+    <h2 class="section-title text-center">Solicita una Auditoría</h2>
+
+    <form method="post">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <input type="text" name="Nombre" class="form-control" placeholder="Nombre completo" required />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <input type="email" name="Email" class="form-control" placeholder="Correo electrónico" required />
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <textarea name="Mensaje" class="form-control" rows="4" placeholder="Describe tu necesidad"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+    </form>
+</section>
 
 

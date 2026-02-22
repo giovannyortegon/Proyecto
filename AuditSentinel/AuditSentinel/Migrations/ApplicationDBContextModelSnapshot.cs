@@ -295,12 +295,10 @@ namespace AuditSentinel.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdVulnerabilidad"));
 
                     b.Property<string>("Comando")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Descripcion")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
@@ -317,7 +315,6 @@ namespace AuditSentinel.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ResultadoEsperado")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
