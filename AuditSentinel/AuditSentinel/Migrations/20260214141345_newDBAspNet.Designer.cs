@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuditSentinel.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20260209180627_UpdateItentityDB")]
-    partial class UpdateItentityDB
+    [Migration("20260214141345_newDBAspNet")]
+    partial class newDBAspNet
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -298,12 +298,10 @@ namespace AuditSentinel.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdVulnerabilidad"));
 
                     b.Property<string>("Comando")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Descripcion")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
@@ -320,7 +318,6 @@ namespace AuditSentinel.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ResultadoEsperado")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
