@@ -1,41 +1,48 @@
-﻿
-@page
+﻿@page
 @using AuditSentinel.Models
-@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = "Administrador,Analista")]
 @model AuditSentinel.Pages.Escaneos.IndexModel
+
 @{
     ViewData["Title"] = "Lista de Escaneos";
 }
-<div class="p-5">
-<h1>Lista Escaneos</h1>
 
-<form method="get" class="row g-3 mb-3">
-    <div class="col-md-4">
-        <input name="search"
-               value="@Model.Search"
-               class="form-control"
-               placeholder="Buscar por nombre..." />
-    </div>
-    <div class="col-md-3">
-        <select name="estado" class="form-select">
-            <option value="">-- Estado --</option>
-            @foreach (var estado in Enum.GetValues(typeof(EstadoEscaneo)))
-            {
-                <option value="@estado" selected="@(Model.BEstado == (EstadoEscaneo)estado)">
-                    @estado
-                </option>
-            }
-        </select>
-    </div>
-    <div class="col-md-2">
-        <button class="btn btn-outline-primary w-100" type="submit">Filtrar</button>
-    </div>
+<div class="p-5">
+    <h1>Lista Escaneos</h1>
+
+    <form method="get" class="row g-3 mb-3">
+        <div class="col-md-4">
+            <input name="search"
+                   value="@Model.Search"
+                   class="form-control"
+                   placeholder="Buscar por nombre..." />
+        </div>
+        <div class="col-md-3">
+            <select name="estado" class="form-select">
+                <option value="">-- Estado --</option>
+                @foreach (var estado in Enum.GetValues(typeof(EstadoEscaneo)))
+                {
+                    <option value="@estado" selected="@(Model.BEstado == (EstadoEscaneo)estado)">
+                        @estado
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-outline-primary w-100" type="submit">Filtrar</button>
+        </div>
         <div class="col-md-2">
             <a class="btn btn-primary" asp-page="Create">Nueva Escaneo</a>
         </div>
-</form>
+    </form>
+</div>
+
+<!-- 🔎 Botones de exportación -->
+<div class="mb-3 text-end">
+    <a asp-page-handler="Export" asp-route-format="csv" class="btn btn-outline-success">Exportar CSV</a>
+    <a asp-page-handler="Export" asp-route-format="html" class="btn btn-outline-info">Exportar HTML</a>
+    <a asp-page-handler="Export" asp-route-format="pdf" class="btn btn-outline-danger">Exportar PDF</a>
 </div>
 
 <div class="card mb-md-3">
@@ -49,26 +56,26 @@
             </tr>
         </thead>
         <tbody>
-        @if (Model.Escaneos.Any())
-        {
-            foreach (var item in Model.Escaneos)
+            @if (Model.ListaEscaneos.Any())
             {
-                <tr>
-                    <td>@item.NombreEscaneo</td>
-                    <td>@item.Estado</td>
-                    <td>@item.FechaEscaneo.ToString("dd/MM/yyyy")</td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-primary">Editar</a>
-                        <a asp-page="./Details" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-secondary">Detalles</a>
-                        <a asp-page="./Delete" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-danger">Eliminar</a>
-                    </td>
-                </tr>
+                foreach (var item in Model.ListaEscaneos)
+                {
+                    <tr>
+                        <td>@item.NombreEscaneo</td>
+                        <td>@item.Estado</td>
+                        <td>@item.FechaEscaneo.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-primary">Editar</a>
+                            <a asp-page="./Details" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-secondary">Detalles</a>
+                            <a asp-page="./Delete" asp-route-id="@item.IdEscaneo" class="btn btn-sm btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                }
             }
-        }
-        else
-        {
-            <tr><td colspan="4" class="text-center text-muted">No hay escaneos</td></tr>
-        }
+            else
+            {
+                <tr><td colspan="4" class="text-center text-muted">No hay escaneos</td></tr>
+            }
         </tbody>
     </table>
 </div>
@@ -93,7 +100,7 @@
             </li>
         </ul>
         <div class="text-center text-muted">
-                       Página @Model.PageNumber de @Model.TotalPages — @Model.TotalItems registro(s)
+            Página @Model.PageNumber de @Model.TotalPages — @Model.TotalItems registro(s)
         </div>
     </nav>
 }

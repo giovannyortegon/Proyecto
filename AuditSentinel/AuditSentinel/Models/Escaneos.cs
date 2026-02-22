@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿    using System.ComponentModel.DataAnnotations;
 
 namespace AuditSentinel.Models
 {
@@ -21,7 +21,7 @@ namespace AuditSentinel.Models
         public string NombreEscaneo { get; set; }
 
         [Display(Name = "Estado")]
-        public EstadoEscaneo Estado { get; set; }
+        public EstadoEscaneo Estado { get; set; }   
         [Display(Name = "Fecha Escaneo")]
         public DateTime FechaEscaneo { get; set; } = DateTime.Now;
 

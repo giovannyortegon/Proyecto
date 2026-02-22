@@ -1,79 +1,91 @@
 ﻿@page "{id:int}"
 @model AuditSentinel.Pages.Escaneos.DetailsModel
+@{
+    ViewData["Title"] = "Detalle del Escaneo";
+}
+
 <div class="p-5">
-<h2>Detalle del Escaneo</h2>
+    <h2>Detalle del Escaneo</h2>
 
-<div class="card mb-3">
-    <div class="card-body">
-        <h4 class="card-title">@Model.Escaneo.NombreEscaneo</h4>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4 class="card-title">@Model.Escaneo.NombreEscaneo</h4>
 
-        <p>
-            <strong>Estado:</strong> @Model.Escaneo.Estado <br />
-            <strong>Fecha:</strong> @Model.Escaneo.FechaEscaneo.ToString("dd/MM/yyyy HH:mm")
-        </p>
-    </div>
-</div>
-
-<div class="row"><!-- SERVIDORES -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <strong>Servidores Asociados</strong>
-            </div>
-            <ul class="list-group list-group-flush">
-                @if (Model.Escaneo.EscaneosServidores.Any())
-                {
-                    @foreach (var s in Model.Escaneo.EscaneosServidores)
-                    {
-                        <li class="list-group-item">
-                                <strong>Nombre:</strong>@s.Servidores.NombreServidor <strong>IP:</strong>  @s.Servidores.IP <strong>SO:</strong>  @s.Servidores.SistemaOperativo
-                        </li>
-                    }
-                }
-                else
-                {
-                    <li class="list-group-item text-muted">
-                        No hay servidores asociados.
-                    </li>
-                }
-            </ul>
+            <p>
+                <strong>Estado:</strong> @Model.Escaneo.Estado <br />
+                <strong>Fecha:</strong> @Model.Escaneo.FechaEscaneo.ToString("dd/MM/yyyy HH:mm")
+            </p>
         </div>
     </div>
 
-    <!-- PLANTILLAS -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <strong>Plantillas Aplicadas</strong>
-            </div>
-            <ul class="list-group list-group-flush">
-                @if (Model.Escaneo.EscaneosPlantillas.Any())
-                {
-                    @foreach (var p in Model.Escaneo.EscaneosPlantillas)
+    <div class="row">
+        <!-- SERVIDORES -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Servidores Asociados</strong>
+                </div>
+                <ul class="list-group list-group-flush">
+                    @if (Model.Escaneo.EscaneosServidores.Any())
                     {
-                        <li class="list-group-item">
-                            @p.Plantillas.NombrePlantilla
+                        @foreach (var s in Model.Escaneo.EscaneosServidores)
+                        {
+                            <li class="list-group-item">
+                                <strong>Nombre:</strong> @s.Servidores.NombreServidor
+                                <strong>IP:</strong> @s.Servidores.IP
+                                <strong>SO:</strong> @s.Servidores.SistemaOperativo
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item text-muted">
+                            No hay servidores asociados.
                         </li>
                     }
-                }
-                else
-                {
-                    <li class="list-group-item text-muted">
-                        No hay plantillas asociadas.
-                    </li>
-                }
-            </ul>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PLANTILLAS -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Plantillas Aplicadas</strong>
+                </div>
+                <ul class="list-group list-group-flush">
+                    @if (Model.Escaneo.EscaneosPlantillas.Any())
+                    {
+                        @foreach (var p in Model.Escaneo.EscaneosPlantillas)
+                        {
+                            <li class="list-group-item">
+                                @p.Plantillas.NombrePlantilla
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item text-muted">
+                            No hay plantillas asociadas.
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
     </div>
 
-</div>
+    <!-- 🔎 Botones de exportación individual -->
+    <div class="mt-3">
+        <h4>Exportar este escaneo</h4>
+        <div class="btn-group" role="group">
+            <a asp-page-handler="Export" asp-route-id="@Model.Escaneo.IdEscaneo" asp-route-format="pdf" class="btn btn-outline-danger">PDF</a>
+            <a asp-page-handler="Export" asp-route-id="@Model.Escaneo.IdEscaneo" asp-route-format="csv" class="btn btn-outline-success">CSV</a>
+            <a asp-page-handler="Export" asp-route-id="@Model.Escaneo.IdEscaneo" asp-route-format="html" class="btn btn-outline-info">HTML</a>
+        </div>
+    </div>
 
-<div class="mt-3">
-    <a asp-page="Edit" asp-route-id="@Model.Escaneo.IdEscaneo" class="btn btn-primary">
-        Editar
-    </a>
-    <a asp-page="Index" class="btn btn-secondary">
-        Volver
-    </a>
-</div>
+    <div class="mt-3">
+        <a asp-page="Edit" asp-route-id="@Model.Escaneo.IdEscaneo" class="btn btn-primary">Editar</a>
+        <a asp-page="Index" class="btn btn-secondary">Volver</a>
+    </div>
 </div>
