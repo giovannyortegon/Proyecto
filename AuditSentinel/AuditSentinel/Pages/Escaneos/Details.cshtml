@@ -1,47 +1,72 @@
 ﻿@page "{id:int}"
 @model AuditSentinel.Pages.Escaneos.DetailsModel
 @{
-    ViewData["Title"] = "Detalle del Escaneo";
+    ViewData["Title"] = "Monitor de Escaneo";
 }
 
-<div class="p-5">
+<div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Detalle del Escaneo #@Model.Escaneo.IdEscaneo</h2>
         <div>
-            <a asp-page="Edit" asp-route-id="@Model.Escaneo.IdEscaneo" class="btn btn-primary">Editar</a>
-            <a asp-page="Index" class="btn btn-secondary">Volver</a>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a asp-page="Index">Escaneos</a></li>
+                    <li class="breadcrumb-item active">Monitor en Vivo</li>
+                </ol>
+            </nav>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="bi bi-activity text-primary"></i> Escaneo: @Model.Escaneo.NombreEscaneo
+            </h1>
+        </div>
+        <div class="btn-group shadow-sm">
+            <a asp-page="Edit" asp-route-id="@Model.Escaneo.IdEscaneo" class="btn btn-white bg-white border">
+                <i class="bi bi-pencil"></i> Editar
+            </a>
+            <a asp-page="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Volver
+            </a>
         </div>
     </div>
 
-    <div class="card mb-4 border-primary shadow-sm">
+    <div class="card shadow-sm mb-4 border-0 border-start border-primary border-4">
         <div class="card-body">
             <div class="row align-items-center">
-                <div class="col-md-4">
-                    <h4 class="card-title text-primary">@Model.Escaneo.NombreEscaneo</h4>
-                    <p class="mb-0"><strong>Fecha:</strong> @Model.Escaneo.FechaEscaneo.ToString("dd/MM/yyyy HH:mm")</p>
-                    <p><strong>Estado Actual:</strong> <span id="txtEstado" class="badge bg-info text-dark">@Model.Escaneo.Estado</span></p>
-                </div>
-                <div class="col-md-5">
-                    <label class="fw-bold">Progreso del Escaneo en Tiempo Real:</label>
-                    <div class="progress" style="height: 30px;">
-                        <div id="pBar" class="progress-bar progress-bar-striped bg-success"
-                             role="progressbar" style="width: 0%;">
-                            0%
-                        </div>
+                <div class="col-lg-3 border-end">
+                    <div class="text-xs fw-bold text-primary text-uppercase mb-1">ID Operación</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">#@Model.Escaneo.IdEscaneo</div>
+                    <div class="mt-2">
+                        <span id="txtEstado" class="badge rounded-pill @(Model.Escaneo.Estado.ToString() == "Finalizado" ? "bg-success" : "bg-info") px-3">
+                            @Model.Escaneo.Estado
+                        </span>
                     </div>
                 </div>
-                <div class="col-md-3 text-end">
+
+                <div class="col-lg-6 px-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-bold small text-muted">Progreso de Análisis Nmap</span>
+                        <span id="progressText" class="fw-bold text-primary">0%</span>
+                    </div>
+                    <div class="progress shadow-sm" style="height: 12px; border-radius: 10px;">
+                        <div id="pBar" class="progress-bar progress-bar-striped bg-primary"
+                             role="progressbar" style="width: 0%; transition: width 0.5s ease;">
+                        </div>
+                    </div>
+                    <div class="mt-2 small text-muted">
+                        <i class="bi bi-calendar-event"></i> Iniciado: @Model.Escaneo.FechaEscaneo.ToString("dd/MM/yyyy HH:mm")
+                    </div>
+                </div>
+
+                <div class="col-lg-3 text-center">
                     @{
                         var primeraIp = Model.Escaneo.EscaneosServidores.FirstOrDefault()?.Servidores?.IP ?? "";
                     }
                     <div id="btnGroupEscaneo">
-                        <button id="btnStart" class="btn btn-success btn-lg w-100 mb-2"
+                        <button id="btnStart" class="btn btn-primary btn-lg w-100 shadow-sm"
                                 onclick="iniciarEscaneo('@primeraIp')" @(string.IsNullOrEmpty(primeraIp) ? "disabled" : "")>
-                            <i class="bi bi-play-fill"></i> Iniciar Nmap
+                            <i class="bi bi-play-circle-fill me-2"></i> Ejecutar Scan
                         </button>
 
-                        <button id="btnStop" class="btn btn-danger btn-lg w-100 d-none" onclick="detenerEscaneo()">
-                            <i class="bi bi-stop-fill"></i> Detener Escaneo
+                        <button id="btnStop" class="btn btn-outline-danger btn-lg w-100 d-none" onclick="detenerEscaneo()">
+                            <i class="bi bi-stop-circle-fill me-2"></i> Abortar
                         </button>
                     </div>
                 </div>
@@ -49,69 +74,76 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row g-4">
         <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header bg-light"><strong>Servidores Asociados</strong></div>
-                <ul class="list-group list-group-flush">
-                    @if (Model.Escaneo.EscaneosServidores.Any())
-                    {
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-header bg-white py-3 border-0">
+                    <h6 class="m-0 font-weight-bold text-dark"><i class="bi bi-server me-2"></i>Servidores Objetivo</h6>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
                         @foreach (var s in Model.Escaneo.EscaneosServidores)
                         {
-                            <li class="list-group-item">
-                                <strong>@s.Servidores.NombreServidor</strong><br />
-                                <small class="text-muted">IP: @s.Servidores.IP | SO: @s.Servidores.SistemaOperativo</small>
-                            </li>
+                            <div class="list-group-item border-0 border-bottom">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold">@s.Servidores.NombreServidor</span>
+                                    <code class="small px-2 py-1 bg-light rounded text-primary">@s.Servidores.IP</code>
+                                </div>
+                                <div class="small text-muted mt-1">@s.Servidores.SistemaOperativo</div>
+                            </div>
                         }
-                    }
-                    else
-                    {
-                        <li class="list-group-item text-muted">No hay servidores asociados.</li>
-                    }
-                </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header bg-light"><strong>Plantillas Aplicadas</strong></div>
-                <ul class="list-group list-group-flush">
-                    @if (Model.Escaneo.EscaneosPlantillas.Any())
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-header bg-white py-3 border-0">
+                    <h6 class="m-0 font-weight-bold text-dark"><i class="bi bi-shield-check me-2"></i>Reglas Aplicadas</h6>
+                </div>
+                <div class="card-body">
+                    @foreach (var p in Model.Escaneo.EscaneosPlantillas)
                     {
-                        @foreach (var p in Model.Escaneo.EscaneosPlantillas)
-                        {
-                            <li class="list-group-item">@p.Plantillas.NombrePlantilla</li>
-                        }
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0 bg-light p-2 rounded">
+                                <i class="bi bi-file-earmark-ruled text-primary"></i>
+                            </div>
+                            <div class="ms-3">
+                                <div class="fw-bold small">@p.Plantillas.NombrePlantilla</div>
+                                <div class="text-muted" style="font-size: 0.75rem;">Configuración estandarizada</div>
+                            </div>
+                        </div>
                     }
-                    else
-                    {
-                        <li class="list-group-item text-muted">No hay plantillas asociadas.</li>
-                    }
-                </ul>
+                </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-danger">
-                <div class="card-header bg-dark text-white text-center"><strong>Logs de Errores Típicos</strong></div>
-                <div class="table-responsive" style="max-height: 250px;">
-                    <table class="table table-sm mb-0">
-                        <tbody id="logTableBody">
-                            <tr class="text-center"><td class="text-muted p-3">Esperando inicio...</td></tr>
-                        </tbody>
-                    </table>
+            <div class="card shadow-sm h-100 border-0 bg-dark">
+                <div class="card-header bg-transparent py-3 border-0">
+                    <h6 class="m-0 font-weight-bold text-white"><i class="bi bi-terminal me-2"></i>Consola de Errores</h6>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive" style="max-height: 280px;">
+                        <table class="table table-dark table-sm table-hover mb-0" style="font-family: 'Courier New', Courier, monospace; font-size: 0.8rem;">
+                            <tbody id="logTableBody">
+                                <tr><td class="text-center text-muted p-4">Sistema listo para monitoreo...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card mt-4 shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title">Exportar Resultados</h5>
+    <div class="card mt-4 shadow-sm border-0">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <span class="fw-bold"><i class="bi bi-download me-2 text-primary"></i> Generar Reportes del Escaneo</span>
             <div class="btn-group" role="group">
-                <a asp-page-handler="Export" asp-route-id="@Model.Escaneo.IdEscaneo" asp-route-format="pdf" class="btn btn-outline-danger">PDF</a>
-                <a asp-page-handler="Export" asp-route-id="@Model.Escaneo.IdEscaneo" asp-route-format="csv" class="btn btn-outline-success">CSV</a>
-                <a asp-page-handler="Export" asp-route-id="@Model.Escaneo.IdEscaneo" asp-route-format="html" class="btn btn-outline-info">HTML</a>
+                <a asp-page-handler="Export" asp-route-id="@Model.Escaneo.IdEscaneo" asp-route-format="pdf" class="btn btn-outline-danger btn-sm">PDF</a>
+                <a asp-page-handler="Export" asp-route-id="@Model.Escaneo.IdEscaneo" asp-route-format="csv" class="btn btn-outline-success btn-sm">CSV</a>
+                <a asp-page-handler="Export" asp-route-id="@Model.Escaneo.IdEscaneo" asp-route-format="html" class="btn btn-outline-info btn-sm">HTML</a>
             </div>
         </div>
     </div>
@@ -119,16 +151,20 @@
 
 @section Scripts {
     <script>
+        // ... (Mantén tu lógica de JS igual, solo actualizamos los selectores si cambiaron)
+        // Por ejemplo, para actualizar el texto del porcentaje además de la barra:
+        // document.getElementById('progressText').innerText = data.porcentaje + '%';
+
         let pollInterval;
 
         async function iniciarEscaneo(ip) {
             if(!ip) return alert("No hay IP válida para escanear.");
 
-            // UI: Cambiar botones y activar animación
             document.getElementById('btnStart').classList.add('d-none');
             document.getElementById('btnStop').classList.remove('d-none');
             document.getElementById('pBar').classList.add('progress-bar-animated');
             document.getElementById('txtEstado').innerText = "Ejecutando...";
+            document.getElementById('txtEstado').className = "badge rounded-pill bg-warning px-3";
 
             try {
                 await fetch(`?handler=Iniciar&ip=${ip}`, {
@@ -138,20 +174,19 @@
                 pollInterval = setInterval(actualizarEstado, 2000);
             } catch (error) {
                 console.error("Error al iniciar:", error);
-                resetUI("Error al conectar con el servidor");
+                resetUI("Error de Conexión");
             }
         }
 
         async function detenerEscaneo() {
-            if(!confirm("¿Estás seguro de que deseas detener el escaneo actual?")) return;
-
+            if(!confirm("¿Desea abortar el escaneo?")) return;
             try {
                 await fetch(`?handler=Detener`, {
                     method: 'POST',
                     headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() }
                 });
                 clearInterval(pollInterval);
-                resetUI("Escaneo detenido por el usuario");
+                resetUI("Abortado");
             } catch (error) {
                 console.error("Error al detener:", error);
             }
@@ -159,16 +194,13 @@
 
         function resetUI(mensaje) {
             document.getElementById('btnStart').classList.remove('d-none');
-            document.getElementById('btnStart').disabled = false;
             document.getElementById('btnStop').classList.add('d-none');
-
             const bar = document.getElementById('pBar');
             bar.style.width = '0%';
-            bar.innerText = '0%';
+            document.getElementById('progressText').innerText = '0%';
             bar.classList.remove('progress-bar-animated');
-
             document.getElementById('txtEstado').innerText = mensaje;
-            document.getElementById('txtEstado').className = "badge bg-secondary";
+            document.getElementById('txtEstado').className = "badge rounded-pill bg-danger px-3";
         }
 
         async function actualizarEstado() {
@@ -176,32 +208,28 @@
                 const response = await fetch('?handler=Estado');
                 const data = await response.json();
 
-                // Actualizar Barra
                 const bar = document.getElementById('pBar');
                 bar.style.width = data.porcentaje + '%';
-                bar.innerText = data.porcentaje + '%';
+                document.getElementById('progressText').innerText = data.porcentaje + '%';
 
-                // Actualizar Tabla de Logs
                 const tbody = document.getElementById('logTableBody');
                 if (data.logs && data.logs.length > 0) {
                     tbody.innerHTML = data.logs.map(log => `
-                        <tr class="table-danger">
-                            <td class="small p-2">
-                                <strong>[${log.fase}]</strong>: ${log.mensaje}<br/>
-                                <small class="text-muted">Cmd: ${log.comandoEjecutado}</small>
+                        <tr>
+                            <td class="p-2 border-secondary text-danger">
+                                <span class="text-info">[${log.fase}]</span>: ${log.mensaje}
                             </td>
                         </tr>
                     `).join('');
                 }
 
-                // Si terminó el proceso
                 if (data.porcentaje >= 100) {
                     clearInterval(pollInterval);
                     bar.classList.remove('progress-bar-animated');
                     document.getElementById('btnStart').classList.remove('d-none');
                     document.getElementById('btnStop').classList.add('d-none');
                     document.getElementById('txtEstado').innerText = "Finalizado";
-                    document.getElementById('txtEstado').className = "badge bg-success";
+                    document.getElementById('txtEstado').className = "badge rounded-pill bg-success px-3";
                 }
             } catch (error) {
                 console.error("Error al obtener estado:", error);

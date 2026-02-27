@@ -1,29 +1,137 @@
-﻿
-@page "{id:int}"
+﻿@page "{id:int}"
 @model AuditSentinel.Pages.Plantillas.DetailsModel
 @{
-    ViewData["Title"] = "Detalles de Plantilla";
+    ViewData["Title"] = "Especificaciones de Plantilla";
 }
-<div class="p-5">
-<h2>Detalles</h2>
 
-<div class="card p-3">
-    <dl class="row">
-        <dt class="col-sm-3">Nombre</dt><dd class="col-sm-9">@Model.Plantilla.NombrePlantilla</dd>
-        <dt class="col-sm-3">Versión</dt><dd class="col-sm-9">@Model.Plantilla.Version</dd>
-    </dl>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a asp-page="Index">Plantillas</a></li>
+                    <li class="breadcrumb-item active">Detalles de Perfil</li>
+                </ol>
+            </nav>
+            <h1 class="h3 mb-0 text-gray-800 fw-bold">
+                <i class="bi bi-file-earmark-medical text-primary"></i> Perfil de Auditoría: @Model.Plantilla.NombrePlantilla
+            </h1>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-page="Edit" asp-route-id="@Model.Plantilla.IdPlantilla" class="btn btn-warning shadow-sm fw-bold">
+                <i class="bi bi-pencil-square"></i> Editar Perfil
+            </a>
+            <a asp-page="Index" class="btn btn-outline-secondary shadow-sm">
+                <i class="bi bi-arrow-left"></i> Volver
+            </a>
+        </div>
+    </div>
 
-    <h5>Vulnerabilidades relacionadas</h5>
-    <ul>
-        @foreach (var x in Model.Plantilla.PlantillasVulnerabilidades)
-        {
-            <li>@x.Vulnerabilidades?.NombreVulnerabilidad (@x.Vulnerabilidades?.NivelRiesgo)</li>
-        }
-    </ul>
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4 h-100">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Resumen del Perfil</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                            <i class="bi bi-shield-check text-primary fs-1"></i>
+                        </div>
+                        <h5 class="fw-bold mb-0">@Model.Plantilla.NombrePlantilla</h5>
+                        <span class="badge bg-info-subtle text-info border border-info-subtle rounded-pill">Versión @Model.Plantilla.Version</span>
+                    </div>
 
-    <div class="mt-3 d-flex gap-2">
-        <a asp-page="Edit" asp-route-id="@Model.Plantilla.IdPlantilla" class="btn btn-warning">Editar</a>
-        <a asp-page="Index" class="btn btn-secondary">Volver</a>
+                    <ul class="list-group list-group-flush small">
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span class="text-muted text-uppercase fw-bold">ID Plantilla</span>
+                            <span class="fw-bold">#@Model.Plantilla.IdPlantilla</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span class="text-muted text-uppercase fw-bold">Vulnerabilidades</span>
+                            <span class="badge bg-primary rounded-pill">@Model.Plantilla.PlantillasVulnerabilidades.Count</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white py-3 border-0">
+                    <h6 class="m-0 font-weight-bold text-dark">Matriz de Vulnerabilidades Incluidas</h6>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Nombre de Vulnerabilidad</th>
+                                    <th class="text-center">Criticidad / Riesgo</th>
+                                    <th class="text-end pe-4">Identificador</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Plantilla.PlantillasVulnerabilidades.Any())
+                                {
+                                    foreach (var x in Model.Plantilla.PlantillasVulnerabilidades)
+                                    {
+                                        var nivelRiesgo = x.Vulnerabilidades?.NivelRiesgo.ToString().ToLower();
+                                        var badgeClass = nivelRiesgo switch
+                                        {
+                                            "alto" or "crítico" => "bg-danger",
+                                            "medio" => "bg-warning text-dark",
+                                            "bajo" => "bg-success",
+                                            _ => "bg-secondary"
+                                        };
+
+                                        <tr>
+                                            <td class="ps-4">
+                                                <div class="fw-bold text-dark">@x.Vulnerabilidades?.NombreVulnerabilidad</div>
+                                                <div class="small text-muted">Definición estandarizada</div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge @badgeClass rounded-pill px-3 py-2 text-uppercase" style="min-width: 80px;">
+                                                    @x.Vulnerabilidades?.NivelRiesgo
+                                                </span>
+                                            </td>
+                                            <td class="text-end pe-4">
+                                                <code class="small text-primary">#VULN-@x.Vulnerabilidades?.IdVulnerabilidad</code>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-center py-5 text-muted small">
+                                            No hay vulnerabilidades asociadas a esta plantilla.
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-</div>
+
+<style>
+    /* Efecto de elevación suave */
+    .card {
+        transition: transform 0.2s;
+    }
+
+    .bg-info-subtle {
+        background-color: #e0f2fe !important;
+    }
+
+    .table thead th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+        color: #6b7280;
+    }
+</style>

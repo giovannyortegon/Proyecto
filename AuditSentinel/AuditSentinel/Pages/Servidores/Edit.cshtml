@@ -1,54 +1,133 @@
-﻿@page
+﻿@page "{id:int}"
 @model AuditSentinel.Pages.Servidores.EditModel
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = "Analista,Administrador")]
 
 @{
-    ViewData["Title"] = "Editar";
+    ViewData["Title"] = "Modificar Servidor";
 }
-<div class="p-5">
-<h1>Editar</h1>
 
-<h4>Servidores</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Servidores.IdServidor" />
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Servidores.NombreServidor" class="control-label"></label>
-                <input asp-for="Servidores.NombreServidor" class="form-control" />
-                <span asp-validation-for="Servidores.NombreServidor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Servidores.IP" class="control-label"></label>
-                <input asp-for="Servidores.IP" class="form-control" />
-                <span asp-validation-for="Servidores.IP" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Servidores.SistemaOperativo" class="control-label"></label>
-                <input asp-for="Servidores.SistemaOperativo" class="form-control" />
-                <span asp-validation-for="Servidores.SistemaOperativo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="Servidores.Create_is" class="control-label"></label>
-                <input asp-for="Servidores.Create_is" class="form-control" />
-                <span asp-validation-for="Servidores.Create_is" class="text-danger"></span>
-            </div>
-            <br>
-            <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
-                <a asp-page="./Index" class="btn btn-secondary">Volver</a>
-            </div>
-        </form>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a asp-page="./Index">Servidores</a></li>
+                    <li class="breadcrumb-item active">Editar Registro</li>
+                </ol>
+            </nav>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="bi bi-pencil-square text-warning me-2"></i>Editar Servidor <span class="text-muted small">#@Model.Servidores.IdServidor</span>
+            </h1>
+        </div>
+        <a asp-page="./Index" class="btn btn-outline-secondary shadow-sm">
+            <i class="bi bi-arrow-left"></i> Volver al listado
+        </a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-xl-9 col-lg-11">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger border-0 small shadow-sm mb-4"></div>
+                <input type="hidden" asp-for="Servidores.IdServidor" />
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-header bg-white py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Identificación del Sistema</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <label asp-for="Servidores.NombreServidor" class="form-label small fw-bold text-muted text-uppercase">Nombre del Activo <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-tag"></i></span>
+                                        <input asp-for="Servidores.NombreServidor" class="form-control" />
+                                    </div>
+                                    <span asp-validation-for="Servidores.NombreServidor" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-0">
+                                    <label asp-for="Servidores.SistemaOperativo" class="form-label small fw-bold text-muted text-uppercase">Plataforma Instalada <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-cpu"></i></span>
+                                        <input asp-for="Servidores.SistemaOperativo" class="form-control" placeholder="Ej: Ubuntu 22.04, Windows 2022..." />
+                                    </div>
+                                    <span asp-validation-for="Servidores.SistemaOperativo" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-header bg-white py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Parámetros de Red y Registro</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <label asp-for="Servidores.IP" class="form-label small fw-bold text-muted text-uppercase">Dirección IP <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-broadcast"></i></span>
+                                        <input asp-for="Servidores.IP" class="form-control font-monospace" />
+                                    </div>
+                                    <span asp-validation-for="Servidores.IP" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-0">
+                                    <label asp-for="Servidores.Create_is" class="form-label small fw-bold text-muted text-uppercase">Fecha de Registro Inicial</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-calendar-event"></i></span>
+                                        <input asp-for="Servidores.Create_is" class="form-control" readonly />
+                                    </div>
+                                    <div class="form-text x-small">Este campo es informativo y no puede ser modificado.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0 mt-4">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="small text-muted">
+                            <i class="bi bi-info-circle me-1"></i> Asegúrese de verificar la conectividad tras cambiar la IP.
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-warning px-5 fw-bold shadow-sm">
+                                <i class="bi bi-save me-2"></i> Actualizar Cambios
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-</div>
+
+<style>
+    .form-control:focus {
+        background-color: #fff !important;
+        border-color: #f6c23e; /* Color amarillo para indicar edición */
+        box-shadow: 0 0 0 0.25rem rgba(246, 194, 62, 0.1);
+    }
+
+    .input-group-text {
+        border-radius: 8px 0 0 8px;
+        color: #858796;
+    }
+
+    .font-monospace {
+        font-family: 'Courier New', Courier, monospace !important;
+        letter-spacing: 0.5px;
+    }
+
+    .x-small {
+        font-size: 0.7rem;
+    }
+</style>
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

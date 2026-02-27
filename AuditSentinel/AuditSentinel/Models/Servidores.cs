@@ -1,15 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace AuditSentinel.Models
 {
     public enum SistemaOperativo
     {
+
+        [Display(Name = "Linux")]
         Linux,
+
+        [Display(Name = "Windows Server 2012")]
         WindowsServer2012,
+
+        [Display(Name = "Windows Server 2016")]
         WindowsServer2016,
+
+        [Display(Name = "Windows Server 2019")]
         WindowsServer2019,
+
+        [Display(Name = "Windows Server 2022")]
         WindowsServer2022,
+
+        [Display(Name = "Windows Server 2025")]
         WindowsServer2025
+
     }
     public class Servidores
     {
@@ -27,14 +41,12 @@ namespace AuditSentinel.Models
         [RegularExpression(@"^(?:\d{1,3}\.){3}\d{1,3}$", ErrorMessage = "La IP debe tener el formato correcto (ej. 192.168.0.1).")]
         [Display(Name = "Direccion IP")]
         public string IP { get; set; }
-        [Required]
-        [MaxLength(80)]
-        [StringLength(80, MinimumLength = 5, ErrorMessage = "El nombre debe tener entre 5 y 80 caracteres.")]
-        [RegularExpression(@"^(Linux( Suse)?|RedHat( 8)?|Windows Server (2012|2016|2019|2022|2025))$",
-                            ErrorMessage = "Sistema operativo no permitido deber ser Linux o Windows Server (2012 entre 2025)."
-        )]
+
+        [Required(ErrorMessage = "Seleccione un sistema operativo.")]
         [Display(Name = "Sistema Operativo")]
-        public string SistemaOperativo { get; set; }
+        public SistemaOperativo? SistemaOperativo { get; set; }  // nullable + [Required]
+
+
         [Display(Name = "Fecha Creacion")]
         public DateTime Create_is { get; set; } = DateTime.Now;
 

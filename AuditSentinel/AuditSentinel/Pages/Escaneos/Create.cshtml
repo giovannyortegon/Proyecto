@@ -1,55 +1,134 @@
 ﻿@page
 @model AuditSentinel.Pages.Escaneos.CreateModel
 
-<div class="p-5">
-<h2>Nuevo Escaneo</h2>
-<form method="post">
-    <div class="card p-3">
-        <div class="mb-3">
-            <label asp-for="Escaneo.NombreEscaneo"></label>
-            <input asp-for="Escaneo.NombreEscaneo" class="form-control" />
-            <span asp-validation-for="Escaneo.NombreEscaneo"></span>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a asp-page="Index">Escaneos</a></li>
+                    <li class="breadcrumb-item active">Nuevo Registro</li>
+                </ol>
+            </nav>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="bi bi-shield-plus text-primary"></i> Configurar Nuevo Escaneo
+            </h1>
         </div>
-
-        <div class="mb-3">
-            <label asp-for="Escaneo.Estado"></label>
-            <select asp-for="Escaneo.Estado"
-                    asp-items="Html.GetEnumSelectList<AuditSentinel.Models.EstadoEscaneo>()"
-                    class="form-control">
-            </select>
-        </div>
+        <a asp-page="Index" class="btn btn-outline-secondary shadow-sm">
+            <i class="bi bi-x-lg"></i> Cancelar
+        </a>
     </div>
 
-    <div class="row p-3">
-        <div class="col-md-6 mb-3">
+    <form method="post">
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Detalles Generales</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label asp-for="Escaneo.NombreEscaneo" class="form-label small fw-bold text-muted">Nombre del Escaneo</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-tag"></i></span>
+                                <input asp-for="Escaneo.NombreEscaneo" class="form-control" placeholder="Ej: Auditoría Trimestral DMZ" />
+                            </div>
+                            <span asp-validation-for="Escaneo.NombreEscaneo" class="text-danger small"></span>
+                        </div>
 
-            <label>Servidores</label>
-            <select asp-for="ServidoresSeleccionados"
-                    asp-items="Model.Servidores"
-                    class="form-control"
-                    multiple>
-            </select>
-            <small class="text-muted">Usa Ctrl/Cmd para seleccionar múltiples.</small>
-            <span asp-validation-for="ServidoresSeleccionados" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Escaneo.Estado" class="form-label small fw-bold text-muted">Estado Inicial</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-info-circle"></i></span>
+                                <select asp-for="Escaneo.Estado"
+                                        asp-items="Html.GetEnumSelectList<AuditSentinel.Models.EstadoEscaneo>()"
+                                        class="form-select">
+                                </select>
+                            </div>
+                            <span asp-validation-for="Escaneo.Estado" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="card shadow-sm border-0 mb-4 h-100">
+                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Configuración de Objetivos</h6>
+                        <span class="badge bg-light text-muted border">Selección Múltiple</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label small fw-bold text-muted">
+                                    <i class="bi bi-server me-1"></i> Servidores Asociados
+                                </label>
+                                <select asp-for="ServidoresSeleccionados"
+                                        asp-items="Model.Servidores"
+                                        class="form-select select-custom"
+                                        multiple style="height: 180px;">
+                                </select>
+                                <div class="form-text small mt-2">
+                                    <i class="bi bi-info-circle"></i> Mantenga <strong>Ctrl / Cmd</strong> para elegir varios servidores.
+                                </div>
+                                <span asp-validation-for="ServidoresSeleccionados" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label small fw-bold text-muted">
+                                    <i class="bi bi-file-earmark-ruled me-1"></i> Plantillas de Escaneo
+                                </label>
+                                <select asp-for="PlantillasSeleccionadas"
+                                        asp-items="Model.Plantillas"
+                                        class="form-select select-custom"
+                                        multiple style="height: 180px;">
+                                </select>
+                                <div class="form-text small mt-2">
+                                    <i class="bi bi-info-circle"></i> Defina las reglas Nmap a aplicar.
+                                </div>
+                                <span asp-validation-for="PlantillasSeleccionadas" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="col-md-6 mb-3">
-        <label>Plantillas</label>
-        <select asp-for="PlantillasSeleccionadas"
-                asp-items="Model.Plantillas"
-                class="form-control"
-                multiple>
-        </select>
-            <small class="text-muted">Usa Ctrl/Cmd para seleccionar múltiples.</small>
-            <span asp-validation-for="PlantillasSeleccionadas" class="text-danger"></span>
+        <div class="card shadow-sm border-0 mt-2">
+            <div class="card-body d-flex justify-content-end gap-3">
+                <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm fw-bold">
+                    <i class="bi bi-save me-2"></i> Crear Escaneo
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="d-flex gap-2">
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
-    </div>
-</form>
+    </form>
 </div>
+
+<style>
+    /* Estilo para mejorar la apariencia de los selectores múltiples */
+    .select-custom {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 10px;
+        transition: all 0.2s ease;
+    }
+
+        .select-custom:focus {
+            border-color: #4e73df;
+            box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.1);
+        }
+
+        .select-custom option {
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 2px;
+        }
+
+            .select-custom option:checked {
+                background-color: #4e73df !important;
+                color: white;
+            }
+</style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

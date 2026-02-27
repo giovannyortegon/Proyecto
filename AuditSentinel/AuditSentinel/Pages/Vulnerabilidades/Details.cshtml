@@ -1,47 +1,173 @@
-﻿
-@page "{id:int}"
+﻿@page "{id:int}"
 @model AuditSentinel.Pages.Vulnerabilidades.DetailsModel
 @{
     ViewData["Title"] = "Detalles de la Vulnerabilidad";
 }
-<div class="p-5">
-<h2>Detalles</h2>
 
-<div class="card p-3">
-    <dl class="row">
-        <dt class="col-sm-3">Nombre</dt><dd class="col-sm-9">@Model.Vulnerabilidad.NombreVulnerabilidad</dd>
-        <dt class="col-sm-3">Riesgo</dt><dd class="col-sm-9">@Model.Vulnerabilidad.NivelRiesgo</dd>
-        <dt class="col-sm-3">Detectada</dt><dd class="col-sm-9">@Model.Vulnerabilidad.FechaDetectada</dd>
-        <dt class="col-sm-3">Descripción</dt><dd class="col-sm-9">@Model.Vulnerabilidad.Descripcion</dd>
-        <dt class="col-sm-3">Comando</dt><dd class="col-sm-9"><pre class="mb-0">@Model.Vulnerabilidad.Comando</pre></dd>
-        <dt class="col-sm-3">Resultado esperado</dt><dd class="col-sm-9">@Model.Vulnerabilidad.ResultadoEsperado</dd>
-    </dl>
-
-    <hr />
-    <div class="row">
-        <div class="col-md-6">
-            <h5>Escaneos asociados</h5>
-            <ul>
-                @foreach (var ev in Model.Vulnerabilidad.EscaneosVulnerabilidades ?? Enumerable.Empty<AuditSentinel.Models.EscaneosVulnerabilidades>())
-                {
-                    <li>@ev.Escaneos?.NombreEscaneo (@ev.Escaneos?.Estado)</li>
-                }
-            </ul>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a asp-page="Index">Vulnerabilidades</a></li>
+                    <li class="breadcrumb-item active">Detalles Técnicos</li>
+                </ol>
+            </nav>
+            <h1 class="h3 mb-0 text-gray-800 fw-bold">
+                <i class="bi bi-shield-exclamation text-primary me-2"></i>@Model.Vulnerabilidad.NombreVulnerabilidad
+            </h1>
         </div>
-        <div class="col-md-6">
-            <h5>Plantillas asociadas</h5>
-            <ul>
-                @foreach (var pv in Model.Vulnerabilidad.PlantillasVulnerabilidades ?? Enumerable.Empty<AuditSentinel.Models.PlantillasVulnerabilidades>())
-                {
-                    <li>@pv.Plantillas?.NombrePlantilla (@pv.Plantillas?.Version)</li>
-                }
-            </ul>
+        <div class="d-flex gap-2">
+            <a asp-page="Edit" asp-route-id="@Model.Vulnerabilidad.IdVulnerabilidad" class="btn btn-warning shadow-sm fw-bold">
+                <i class="bi bi-pencil-square me-1"></i> Editar
+            </a>
+            <a asp-page="Index" class="btn btn-outline-secondary shadow-sm">
+                <i class="bi bi-arrow-left me-1"></i> Volver al Catálogo
+            </a>
         </div>
     </div>
 
-    <div class="mt-3 d-flex gap-2">
-        <a asp-page="Edit" asp-route-id="@Model.Vulnerabilidad.IdVulnerabilidad" class="btn btn-warning">Editar</a>
-        <a asp-page="Index" class="btn btn-secondary">Volver</a>
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Análisis de la Amenaza</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-sm-4 text-muted small fw-bold text-uppercase">Nivel de Riesgo</div>
+                        <div class="col-sm-8">
+                            @{
+                                var riesgo = Model.Vulnerabilidad.NivelRiesgo.ToString();
+                                var badgeClass = riesgo.ToLower() switch
+                                {
+                                    "crítico" or "alto" => "bg-danger",
+                                    "medio" => "bg-warning text-dark",
+                                    "bajo" => "bg-success",
+                                    _ => "bg-secondary"
+                                };
+                            }
+                            <span class="badge @badgeClass rounded-pill px-4 py-2">@riesgo</span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-sm-4 text-muted small fw-bold text-uppercase">Descripción</div>
+                        <div class="col-sm-8 text-dark lead" style="font-size: 1rem;">
+                            @Model.Vulnerabilidad.Descripcion
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="text-muted small fw-bold text-uppercase mb-2 d-block">Lógica de Ejecución (Comando)</label>
+                        <div class="bg-dark rounded-3 p-3 position-relative">
+                            <i class="bi bi-terminal text-success position-absolute top-0 end-0 m-2"></i>
+                            <pre class="text-success mb-0 font-monospace" style="overflow-x: auto;">@Model.Vulnerabilidad.Comando</pre>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4 text-muted small fw-bold text-uppercase">Patrón de Resultado Esperado</div>
+                        <div class="col-sm-8">
+                            <code class="text-primary fw-bold">@Model.Vulnerabilidad.ResultadoEsperado</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4 bg-light">
+                <div class="card-body py-4 text-center border-bottom">
+                    <div class="small text-muted text-uppercase fw-bold mb-1">Fecha de Detección</div>
+                    <div class="h6 mb-0"><i class="bi bi-calendar-event me-2"></i>@Model.Vulnerabilidad.FechaDetectada.ToString("D")</div>
+                </div>
+                <div class="card-body text-center py-4">
+                    <div class="small text-muted text-uppercase fw-bold mb-1">Impacto en Sistema</div>
+                    <div class="h2 fw-bold text-primary mb-0">@((Model.Vulnerabilidad.EscaneosVulnerabilidades?.Count ?? 0) + (Model.Vulnerabilidad.PlantillasVulnerabilidades?.Count ?? 0))</div>
+                    <div class="x-small text-muted">Relaciones Activas</div>
+                </div>
+            </div>
+
+            <div class="alert alert-info border-0 shadow-sm small">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                Esta vulnerabilidad es una definición global. Cualquier cambio en su comando afectará a todas las plantillas vinculadas.
+            </div>
+        </div>
     </div>
+
+    <div class="row g-4 mt-1">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white py-3 border-0">
+                    <h6 class="m-0 font-weight-bold text-dark"><i class="bi bi-activity me-2"></i>Escaneos Asociados</h6>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-3">Nombre del Escaneo</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ev in Model.Vulnerabilidad.EscaneosVulnerabilidades ?? Enumerable.Empty<AuditSentinel.Models.EscaneosVulnerabilidades>())
+                                {
+                                    <tr>
+                                        <td class="ps-3 fw-bold">@ev.Escaneos?.NombreEscaneo</td>
+                                        <td><span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">@ev.Escaneos?.Estado</span></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white py-3 border-0">
+                    <h6 class="m-0 font-weight-bold text-dark"><i class="bi bi-layers me-2"></i>Plantillas Vinculadas</h6>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-3">Nombre de Plantilla</th>
+                                    <th>Versión</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var pv in Model.Vulnerabilidad.PlantillasVulnerabilidades ?? Enumerable.Empty<AuditSentinel.Models.PlantillasVulnerabilidades>())
+                                {
+                                    <tr>
+                                        <td class="ps-3 fw-bold">@pv.Plantillas?.NombrePlantilla</td>
+                                        <td><code class="text-primary fw-bold">@pv.Plantillas?.Version</code></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    </div>
+</div>
+
+<style>
+    .font-monospace {
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 0.9rem;
+    }
+
+    .x-small {
+        font-size: 0.75rem;
+    }
+
+    .bg-secondary-subtle {
+        background-color: #f3f4f6 !important;
+    }
+</style>

@@ -1,44 +1,126 @@
-﻿
-@page "{id:int}"
+﻿@page "{id:int}"
 @model AuditSentinel.Pages.Plantillas.EditModel
 @{
-    ViewData["Title"] = "Editar Plantilla";
+    ViewData["Title"] = "Modificar Plantilla";
 }
-<div class="p-5">
-<h2>Editar Plantilla</h2>
 
-<form method="post">
-    <input type="hidden" asp-for="Plantilla.IdPlantilla" />
-    <div class="card p-3">
-        <div class="mb-3">
-            <label asp-for="Plantilla.NombrePlantilla" class="form-label"></label>
-            <input asp-for="Plantilla.NombrePlantilla" class="form-control" />
-            <span asp-validation-for="Plantilla.NombrePlantilla" class="text-danger"></span>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a asp-page="Index">Plantillas</a></li>
+                    <li class="breadcrumb-item active">Editar Perfil</li>
+                </ol>
+            </nav>
+            <h1 class="h3 mb-0 text-gray-800 fw-bold">
+                <i class="bi bi-pencil-square text-warning"></i> Editar Plantilla <span class="text-muted small">#@Model.Plantilla.IdPlantilla</span>
+            </h1>
         </div>
-
-        <div class="mb-3">
-            <label asp-for="Plantilla.Version" class="form-label"></label>
-            <input asp-for="Plantilla.Version" class="form-control" />
-            <span asp-validation-for="Plantilla.Version" class="text-danger"></span>
-        </div>
-
-        <hr />
-        <h5>Relacionar Vulnerabilidades</h5>
-        <div class="mb-3">
-            <label class="form-label">Vulnerabilidades</label>
-            <select multiple class="form-select"
-                    asp-for="SelectedVulnerabilidades"
-                    asp-items="Model.VulnerabilidadesList"></select>
-            <span asp-validation-for="SelectedVulnerabilidades" class="text-danger"></span>
-        </div>
-
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary">Guardar cambios</button>
-            <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
-               </div>
+        <a asp-page="Index" class="btn btn-outline-secondary shadow-sm">
+            <i class="bi bi-arrow-left"></i> Volver al listado
+        </a>
     </div>
-</form>
+
+    <form method="post">
+        <input type="hidden" asp-for="Plantilla.IdPlantilla" />
+
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Detalles de la Plantilla</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label asp-for="Plantilla.NombrePlantilla" class="form-label small fw-bold text-muted text-uppercase">Nombre de la Plantilla</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-bookmark-fill text-warning"></i></span>
+                                <input asp-for="Plantilla.NombrePlantilla" class="form-control bg-light border-start-0 ps-0" />
+                            </div>
+                            <span asp-validation-for="Plantilla.NombrePlantilla" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-0">
+                            <label asp-for="Plantilla.Version" class="form-label small fw-bold text-muted text-uppercase">Versión de Auditoría</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-hash"></i></span>
+                                <input asp-for="Plantilla.Version" class="form-control bg-light border-start-0 ps-0" />
+                            </div>
+                            <span asp-validation-for="Plantilla.Version" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Matriz de Vulnerabilidades</h6>
+                        <span class="badge bg-warning text-dark rounded-pill shadow-sm">Edición Activa</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Vulnerabilidades Seleccionadas</label>
+                            <select multiple class="form-select select-vulnerability-edit"
+                                    asp-for="SelectedVulnerabilidades"
+                                    asp-items="Model.VulnerabilidadesList">
+                            </select>
+                            <div class="form-text mt-3 bg-light p-3 rounded-3 border-start border-warning border-4">
+                                <i class="bi bi-info-circle-fill me-2 text-warning"></i>
+                                Los cambios en esta lista afectarán a todos los escaneos futuros que utilicen esta plantilla. Use <strong>Ctrl + Click</strong> para modificar la selección.
+                            </div>
+                            <span asp-validation-for="SelectedVulnerabilidades" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 mt-4">
+            <div class="card-body d-flex justify-content-end gap-3">
+                <button type="submit" class="btn btn-warning btn-lg px-5 shadow-sm fw-bold">
+                    <i class="bi bi-arrow-repeat me-2"></i> Actualizar Plantilla
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
-@section Scripts{
+
+<style>
+    /* Estética para el selector múltiple en modo edición */
+    .select-vulnerability-edit {
+        height: 280px !important;
+        border-radius: 12px;
+        background-color: #fcfcfc;
+        border: 1px dashed #f6c23e; /* Borde discontinuo para indicar edición */
+        padding: 10px;
+    }
+
+        .select-vulnerability-edit option {
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+            .select-vulnerability-edit option:hover {
+                background-color: #fff9e6;
+            }
+
+            .select-vulnerability-edit option:checked {
+                background: linear-gradient(135deg, #f6c23e 0%, #e5a50a 100%) !important;
+                color: #000;
+                font-weight: bold;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #f6c23e;
+        box-shadow: 0 0 0 0.25rem rgba(246, 194, 62, 0.15);
+    }
+</style>
+
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

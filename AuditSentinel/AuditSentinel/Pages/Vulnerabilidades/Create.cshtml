@@ -1,59 +1,119 @@
-﻿
-@page
+﻿@page
 @model AuditSentinel.Pages.Vulnerabilidades.CreateModel
 @{
-    ViewData["Title"] = "Nueva Vulnerabilidad";
+    ViewData["Title"] = "Definir Vulnerabilidad";
 }
-<div class="p-5">
-<h2>Nueva Vulnerabilidad</h2>
 
-<form method="post">
-    <div class="card p-3">
-        <div class="mb-3">
-            <label asp-for="Vulnerabilidad.NombreVulnerabilidad" class="form-label"></label>
-            <input asp-for="Vulnerabilidad.NombreVulnerabilidad" class="form-control" />
-            <span asp-validation-for="Vulnerabilidad.NombreVulnerabilidad" class="text-danger"></span>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a asp-page="Index">Vulnerabilidades</a></li>
+                    <li class="breadcrumb-item active">Nueva Definición</li>
+                </ol>
+            </nav>
+            <h1 class="h3 mb-0 text-gray-800 fw-bold">
+                <i class="bi bi-bug text-primary"></i> Registrar Vulnerabilidad
+            </h1>
         </div>
-
-        <div class="mb-3">
-            <label asp-for="Vulnerabilidad.NivelRiesgo" class="form-label"></label>
-            <select asp-for="Vulnerabilidad.NivelRiesgo" class="form-select"
-                    asp-items="Html.GetEnumSelectList<AuditSentinel.Models.NivelRiesgo>()"></select>
-            <span asp-validation-for="Vulnerabilidad.NivelRiesgo" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Vulnerabilidad.Descripcion" class="form-label"></label>
-            <textarea asp-for="Vulnerabilidad.Descripcion" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="Vulnerabilidad.Descripcion" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Vulnerabilidad.Comando" class="form-label"></label>
-            <textarea asp-for="Vulnerabilidad.Comando" class="form-control" rows="2"></textarea>
-            <span asp-validation-for="Vulnerabilidad.Comando" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Vulnerabilidad.ResultadoEsperado" class="form-label"></label>
-            <input asp-for="Vulnerabilidad.ResultadoEsperado" class="form-control" />
-            <span asp-validation-for="Vulnerabilidad.ResultadoEsperado" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Vulnerabilidad.FechaDetectada" class="form-label"></label>
-            <input asp-for="Vulnerabilidad.FechaDetectada" type="datetime-local" class="form-control"
-                   value="@Model.Vulnerabilidad.FechaDetectada.ToString("yyyy-MM-ddTHH:mm")" />
-            <span asp-validation-for="Vulnerabilidad.FechaDetectada" class="text-danger"></span>
-        </div>
-
-               <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-            <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
-        </div>
+        <a asp-page="Index" class="btn btn-outline-secondary shadow-sm">
+            <i class="bi bi-arrow-left"></i> Volver al Catálogo
+        </a>
     </div>
-</form>
+
+    <form method="post">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Clasificación y Descripción</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Vulnerabilidad.NombreVulnerabilidad" class="form-label small fw-bold text-muted text-uppercase"></label>
+                            <input asp-for="Vulnerabilidad.NombreVulnerabilidad" class="form-control" placeholder="Ej: CVE-2024-XXXX o Debilidad de SSL" />
+                            <span asp-validation-for="Vulnerabilidad.NombreVulnerabilidad" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Vulnerabilidad.NivelRiesgo" class="form-label small fw-bold text-muted text-uppercase">Prioridad de Riesgo</label>
+                            <select asp-for="Vulnerabilidad.NivelRiesgo" class="form-select border-start border-4 border-primary"
+                                    asp-items="Html.GetEnumSelectList<AuditSentinel.Models.NivelRiesgo>()">
+                            </select>
+                            <span asp-validation-for="Vulnerabilidad.NivelRiesgo" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Vulnerabilidad.Descripcion" class="form-label small fw-bold text-muted text-uppercase"></label>
+                            <textarea asp-for="Vulnerabilidad.Descripcion" class="form-control" rows="4" placeholder="Explique en qué consiste esta vulnerabilidad..."></textarea>
+                            <span asp-validation-for="Vulnerabilidad.Descripcion" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-0">
+                            <label asp-for="Vulnerabilidad.FechaDetectada" class="form-label small fw-bold text-muted text-uppercase">Fecha de Registro</label>
+                            <input asp-for="Vulnerabilidad.FechaDetectada" type="datetime-local" class="form-control"
+                                   value="@Model.Vulnerabilidad.FechaDetectada.ToString("yyyy-MM-ddTHH:mm")" />
+                            <span asp-validation-for="Vulnerabilidad.FechaDetectada" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 h-100 bg-light bg-opacity-50">
+                    <div class="card-header bg-dark text-white py-3 border-0">
+                        <h6 class="m-0 font-weight-bold"><i class="bi bi-terminal me-2"></i>Configuración de Ejecución</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label asp-for="Vulnerabilidad.Comando" class="form-label small fw-bold text-dark text-uppercase">Instrucción / Comando (Shell/Nmap)</label>
+                            <textarea asp-for="Vulnerabilidad.Comando" class="form-control font-monospace bg-dark text-success border-0"
+                                      rows="4" style="resize: none;" placeholder="# Inserte el comando técnico aquí..."></textarea>
+                            <div class="form-text small">Use variables permitidas para el escaneo automático.</div>
+                            <span asp-validation-for="Vulnerabilidad.Comando" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-0">
+                            <label asp-for="Vulnerabilidad.ResultadoEsperado" class="form-label small fw-bold text-dark text-uppercase">Patrón de Éxito (Regex o String)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-check-all text-success"></i></span>
+                                <input asp-for="Vulnerabilidad.ResultadoEsperado" class="form-control font-monospace" placeholder="Valor esperado del comando..." />
+                            </div>
+                            <div class="form-text small">Si el comando devuelve este valor, la vulnerabilidad se marcará como detectada.</div>
+                            <span asp-validation-for="Vulnerabilidad.ResultadoEsperado" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 mt-4">
+            <div class="card-body d-flex justify-content-end gap-3">
+                <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm fw-bold">
+                    <i class="bi bi-cloud-check me-2"></i> Guardar Definición
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
-@section Scripts{
+
+<style>
+    .font-monospace {
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 0.9rem;
+    }
+
+    .form-control:focus {
+        border-color: #4e73df;
+        box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.1);
+    }
+
+    textarea.form-control::placeholder {
+        color: rgba(255,255,255,0.3);
+    }
+</style>
+
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

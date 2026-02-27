@@ -5,59 +5,132 @@
 @attribute [Authorize(Roles = "Analista,Administrador")]
 
 @{
-    ViewData["Title"] = "Crear";
+    ViewData["Title"] = "Nuevo Servidor";
 }
 
-<div class="p-5">
-    <h1>Crear</h1>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a asp-page="Index">Servidores</a></li>
+                    <li class="breadcrumb-item active">Alta de Activo</li>
+                </ol>
+            </nav>
+            <h1 class="h3 mb-0 text-gray-800 fw-bold">
+                <i class="bi bi-hdd-stack text-primary"></i> Registrar Nuevo Servidor
+            </h1>
+        </div>
+        <a asp-page="Index" class="btn btn-outline-secondary shadow-sm">
+            <i class="bi bi-arrow-left"></i> Volver al inventario
+        </a>
+    </div>
 
-    <h4>Servidores</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-10">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Especificaciones del Hardware/Nodo</h6>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger border-0 small shadow-sm mb-4"></div>
 
-                <div class="form-group">
-                    <span class="text-danger">*</span>
-                    <label asp-for="Servidores.NombreServidor" class="control-label"></label>
-                    <input asp-for="Servidores.NombreServidor" class="form-control" />
-                    <span asp-validation-for="Servidores.NombreServidor" class="text-danger"></span>
-                </div>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label asp-for="Servidores.NombreServidor" class="form-label small fw-bold text-muted text-uppercase">
+                                    Nombre del Activo <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-pencil-square"></i></span>
+                                    <input asp-for="Servidores.NombreServidor" class="form-control" placeholder="Ej: SRV-PROD-WEB-01" />
+                                </div>
+                                <span asp-validation-for="Servidores.NombreServidor" class="text-danger small"></span>
+                            </div>
 
-                <div class="form-group">
-                    <span class="text-danger">*</span>
-                    <label asp-for="Servidores.IP" class="control-label"></label>
-                    <input asp-for="Servidores.IP" class="form-control" />
-                    <span asp-validation-for="Servidores.IP" class="text-danger"></span>
+                            <div class="col-md-6">
+                                <label asp-for="Servidores.IP" class="form-label small fw-bold text-muted text-uppercase">
+                                    Dirección IP <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-broadcast"></i></span>
+                                    <input asp-for="Servidores.IP" class="form-control font-monospace" placeholder="192.168.x.x" />
+                                </div>
+                                <span asp-validation-for="Servidores.IP" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="Servidores.SistemaOperativo" class="form-label small fw-bold text-muted text-uppercase">Plataforma / Sistema Operativo</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-cpu"></i></span>
+                                    <select asp-for="Servidores.SistemaOperativo" class="form-select">
+                                        <option value="">-- Seleccione la plataforma instalada --</option>
+                                        <optgroup label="Open Source">
+                                            <option value="@nameof(AuditSentinel.Models.SistemaOperativo.Linux)">🐧 Linux Distributions</option>
+                                        </optgroup>
+                                        <optgroup label="Microsoft Windows Server">
+                                            <option value="@nameof(AuditSentinel.Models.SistemaOperativo.WindowsServer2012)">Windows Server 2012</option>
+                                            <option value="@nameof(AuditSentinel.Models.SistemaOperativo.WindowsServer2016)">Windows Server 2016</option>
+                                            <option value="@nameof(AuditSentinel.Models.SistemaOperativo.WindowsServer2019)">Windows Server 2019</option>
+                                            <option value="@nameof(AuditSentinel.Models.SistemaOperativo.WindowsServer2022)">Windows Server 2022</option>
+                                            <option value="@nameof(AuditSentinel.Models.SistemaOperativo.WindowsServer2025)">Windows Server 2025</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="Servidores.SistemaOperativo" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <hr class="my-4 text-light">
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm fw-bold">
+                                <i class="bi bi-plus-circle me-2"></i> Registrar Servidor
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Servidores.SistemaOperativo" class="control-label"></label>
-                    <select asp-for="Servidores.SistemaOperativo" class="form-control">
-                        <option value="">-- Selecciona un Sistema Operativo --</option>
-                        <option value="@nameof(AuditSentinel.Models.SistemaOperativo.Linux)">Linux</option>
-                        <option value="@nameof(AuditSentinel.Models.SistemaOperativo.WindowsServer2012)">Windows Server 2012</option>
-                        <option value="@nameof(AuditSentinel.Models.SistemaOperativo.WindowsServer2016)">Windows Server 2016</option>
-                        <option value="@nameof(AuditSentinel.Models.SistemaOperativo.WindowsServer2019)">Windows Server 2019</option>
-                        <option value="@nameof(AuditSentinel.Models.SistemaOperativo.WindowsServer2022)">Windows Server 2022</option>
-                        <option value="@nameof(AuditSentinel.Models.SistemaOperativo.WindowsServer2025)">Windows Server 2025</option>
-                    </select>
-                    <span asp-validation-for="Servidores.SistemaOperativo" class="text-danger"></span>
-                </div>           
-                <br>
-                <div class="form-group">
-                    <input type="submit" value="Crear" class="btn btn-primary" />
-                    <a asp-page="Index" class="btn btn-info">Volver</a>
+            </div>
+
+            <div class="mt-4 alert alert-info border-0 shadow-sm d-flex align-items-center">
+                <i class="bi bi-info-circle-fill fs-4 me-3 text-primary"></i>
+                <div class="small">
+                    <strong>Nota de Auditoría:</strong> Asegúrese de que la dirección IP sea accesible desde el nodo de escaneo. El registro de este servidor permitirá su selección en futuros planes de escaneo y reportes de cumplimiento.
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
+
+<style>
+    /* Estilo para los inputs */
+    .form-control, .form-select {
+        border-radius: 8px;
+        padding: 0.6rem 1rem;
+        background-color: #fcfcfc;
+        transition: all 0.2s ease;
+    }
+
+        .form-control:focus, .form-select:focus {
+            background-color: #fff;
+            border-color: #4e73df;
+            box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.1);
+        }
+
+    .input-group-text {
+        border-radius: 8px 0 0 8px;
+        color: #4e73df;
+        border-color: #dee2e6;
+    }
+
+    .font-monospace {
+        font-family: 'Courier New', Courier, monospace !important;
+        letter-spacing: 1px;
+    }
+</style>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-
-                    
