@@ -1,8 +1,9 @@
 using AuditSentinel.Data;
 using AuditSentinel.Models;
+using AuditSentinel.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using QuestPDF.Infrastructure; // 👈 Importante
+using QuestPDF.Infrastructure; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,8 @@ builder.Services.AddRazorPages();
 
 // ⚡ Configuración de QuestPDF
 QuestPDF.Settings.License = LicenseType.Community;
+
+builder.Services.AddSingleton<INmapScannerService, NmapScannerService>();
 
 var app = builder.Build();
 

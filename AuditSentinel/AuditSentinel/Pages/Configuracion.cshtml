@@ -3,38 +3,86 @@
 @model AuditSentinel.Pages.ConfiguracionModel
 @attribute [Authorize(Roles = "Administrador")]
 @{
-    ViewData["Title"] = "Lista Servidores";
+    ViewData["Title"] = "Configuración del Sistema";
 }
 
-<div class="p-5">
-<h1>Configuracion</h1>
-
-
-<div class="container-fluid">
-    <div class="row bg-transparent align-items-center">
-        <!-- Columna izquierda -->
-        <div class="col-6 border d-flex flex-column align-items-center justify-content-evenly p-4 bg-light">
-            <h2>Usuarios</h2>
-            <p>Lista, Crear y Actualiza los usuarios disponibles</p>
-            <a asp-page="Registrar/Index" class="btn btn-secondary">Crear Usuario</a>
-            
-        </div>
-
-        <!-- Columna derecha -->
-        <div class="col-6 border d-flex flex-column align-items-center justify-content-evenly p-4 bg-light">
-            <h2>Plantillas</h2>
-            <p>Listar, Crear y Editar las plantillas </p>
-            <a asp-page="Plantillas/Index" class="btn btn-secondary">Plantillas</a>
-        </div>
-        <div class="col-6 border d-flex flex-column align-items-center justify-content-evenly p-4 bg-light">
-            <h2>Vulnerabilidades</h2>
-            <p>Listar, Crear, Editar y Actualizar las vulnerabilidaes.</p>
-            <a asp-page="Vulnerabilidades/Index" class="btn btn-secondary">Actualizar Vulnerabilidades</a>
-        </div>
-        <div class="col-6 d-flex flex-column align-items-center justify-content-evenly p-4 bg-transparent">
-            <h2></h2>
-            <p></p>
-            <a asp-page="Index" class="btn btn-secondary">Volver</a>
-        </div>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-gray-800">
+            <i class="bi bi-gear-wide-connected"></i> Panel de Configuración
+        </h1>
+        <a asp-page="Index" class="btn btn-outline-secondary shadow-sm">
+            <i class="bi bi-arrow-left"></i> Volver al Inicio
+        </a>
     </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 transition-hover">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-primary bg-gradient text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="bi bi-people fs-3"></i>
+                    </div>
+                    <h2 class="h5 fw-bold">Usuarios</h2>
+                    <p class="text-muted small">Administra las cuentas de acceso, crea nuevos analistas y gestiona permisos del sistema.</p>
+                    <div class="d-grid mt-auto">
+                        <a asp-page="Registrar/Index" class="btn btn-outline-primary">
+                            Gestionar Usuarios
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 transition-hover">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-success bg-gradient text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="bi bi-layout-text-window-reverse fs-3"></i>
+                    </div>
+                    <h2 class="h5 fw-bold">Plantillas</h2>
+                    <p class="text-muted small">Configura los formatos predefinidos para los escaneos y la estructura de los reportes.</p>
+                    <div class="d-grid mt-auto">
+                        <a asp-page="Plantillas/Index" class="btn btn-outline-success">
+                            Configurar Plantillas
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 transition-hover">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-danger bg-gradient text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="bi bi-shield-slash fs-3"></i>
+                    </div>
+                    <h2 class="h5 fw-bold">Vulnerabilidades</h2>
+                    <p class="text-muted small">Base de datos de amenazas. Mantén actualizado el catálogo de riesgos y sus criticidades.</p>
+                    <div class="d-grid mt-auto">
+                        <a asp-page="Vulnerabilidades/Index" class="btn btn-outline-danger">
+                            Actualizar Catálogo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+</div>
+
+<style>
+    .transition-hover {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+        .transition-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+        }
+
+    .feature-icon {
+        display: inline-flex;
+    }
+</style>

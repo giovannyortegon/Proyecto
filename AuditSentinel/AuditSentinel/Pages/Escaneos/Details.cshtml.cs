@@ -9,13 +9,16 @@ namespace AuditSentinel.Pages.Escaneos
 {
     public class DetailsModel : PageModel
     {
+        private readonly INmapScannerService _nmapService;
         private readonly ApplicationDBContext _context;
 
-        public DetailsModel(ApplicationDBContext context)
+        public DetailsModel(INmapScannerService nmapService, ApplicationDBContext context)
         {
+            _nmapService = nmapService;
             _context = context;
         }
-
+        [BindProperty(SupportsGet = true)]
+        public int Id { get; set; }
         public AuditSentinel.Models.Escaneos Escaneo { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
@@ -32,6 +35,43 @@ namespace AuditSentinel.Pages.Escaneos
 
             return Page();
         }
+
+
+        // Manejador para iniciar el escaneo vía AJAX
+        public IActionResult OnPostIniciar(string ip)
+        {
+            // Ejecución asíncrona en el servicio (Fire and Forget)
+            _ = _nmapService.EjecutarEscaneoAsync(Id, ip);
+            return new JsonResult(new { iniciado = true });
+        }
+
+        // Manejador para detener el escaneo vía AJAX
+        public IActionResult OnPostDetener()
+        {
+            _nmapService.DetenerEscaneo(Id);
+            return new JsonResult(new { detenido = true });
+        }
+
+        // Manejador para obtener progreso y logs de errores vía AJAX
+        public async Task<IActionResult> OnGetEstado()
+        {
+            var progreso = _nmapService.ObtenerProgreso(Id);
+
+            // Consultamos los errores específicos de este escaneo
+            var errores = await _context.LogErroresEscaneos
+                .Where(l => l.EscaneoId == Id)
+                .OrderByDescending(l => l.FechaError)
+                .Select(l => new {
+                    l.FechaError,
+                    l.Fase,
+                    l.Mensaje,
+                    l.ComandoEjecutado
+                })
+                .ToListAsync();
+
+            return new JsonResult(new { porcentaje = progreso, logs = errores });
+        }
+        
 
         //  Exportación individual desde Detalles
         public async Task<IActionResult> OnGetExportAsync(int id, string format)
@@ -67,5 +107,8 @@ namespace AuditSentinel.Pages.Escaneos
             var fileBytes = System.IO.File.ReadAllBytes(filePath);
             return File(fileBytes, "application/octet-stream", $"Escaneo_{id}.{format}");
         }
+
+
+
     }
 }

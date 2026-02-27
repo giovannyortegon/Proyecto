@@ -39,8 +39,6 @@ namespace AuditSentinel.Pages.Servidores
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
-
-            // PUTO EL QUE LO LEA XD
         }
     }
 }
