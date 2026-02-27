@@ -29,5 +29,6 @@ namespace AuditSentinel.Models
         public ICollection<EscaneosPlantillas> EscaneosPlantillas { get; set; }
         public ICollection<EscaneosReportes> EscaneosReportes { get; set; }
         public ICollection<EscaneosVulnerabilidades> EscaneosVulnerabilidades { get; set; }
+        public virtual ICollection<LogErroresEscaneo> Logs { get; set; } = new List<LogErroresEscaneo>();
     }
 }
