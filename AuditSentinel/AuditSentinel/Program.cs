@@ -3,7 +3,13 @@ using AuditSentinel.Models;
 using AuditSentinel.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< Updated upstream
 using QuestPDF.Infrastructure; 
+=======
+using AuditSentinel.Services;
+
+
+>>>>>>> Stashed changes
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +38,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Cuenta/AccessDenied";
 });
 
+<<<<<<< Updated upstream
 // Logging
+=======
+builder.Services.AddScoped<EmailService>();
+
+>>>>>>> Stashed changes
 builder.Logging.ClearProviders();
 builder.Logging.AddSimpleConsole();
 

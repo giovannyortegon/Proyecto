@@ -42,8 +42,14 @@ namespace AuditSentinel.Pages.Reportes
         {
             await LoadEscaneosAsync();
 
-            //if (!ModelState.IsValid)
-            //    return Page();
+            //  VALIDAR QUE HAYA AL MENOS UN ESCANEO SELECCIONADO
+            if (SelectedEscaneos == null || !SelectedEscaneos.Any())
+            {
+                ModelState.AddModelError("SelectedEscaneos",
+                 "Debes seleccionar al menos un escaneo.");
+
+                return Page();
+            }
 
             // Validar que los escaneos seleccionados existan (evita FK 547)
             var escaneosValidos = await _context.Escaneos

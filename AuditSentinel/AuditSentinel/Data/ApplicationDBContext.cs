@@ -22,8 +22,13 @@ namespace AuditSentinel.Data
         public DbSet<AuditSentinel.Models.Reportes> Reportes { get; set; }
         public DbSet<AuditSentinel.Models.EscaneosReportes> EscaneosReportes { get; set; }
         public DbSet<AuditSentinel.Models.EscaneosVulnerabilidades> EscaneosVulnerabilidades { get; set; }
+<<<<<<< Updated upstream
 
         public DbSet<LogErroresEscaneo> LogErroresEscaneos { get; set; }
+=======
+       
+
+>>>>>>> Stashed changes
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
