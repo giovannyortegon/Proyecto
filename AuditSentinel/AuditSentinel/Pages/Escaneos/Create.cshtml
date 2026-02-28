@@ -1,7 +1,6 @@
 ﻿@page
 @model AuditSentinel.Pages.Escaneos.CreateModel
 
-<<<<<<< Updated upstream
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -14,30 +13,7 @@
             <h1 class="h3 mb-0 text-gray-800">
                 <i class="bi bi-shield-plus text-primary"></i> Configurar Nuevo Escaneo
             </h1>
-=======
 <div class="p-5">
-<h2>Nuevo Escaneo</h2>
-<form method="post">
-    <div class="card p-3">
-        <div class="mb-3">
-            <label asp-for="Escaneo.NombreEscaneo"></label>
-            <input asp-for="Escaneo.NombreEscaneo" class="form-control" />
-                <span asp-validation-for="Escaneo.NombreEscaneo"> </span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Escaneo.Estado"></label>
-            <select asp-for="Escaneo.Estado"
-                    asp-items="Html.GetEnumSelectList<AuditSentinel.Models.EstadoEscaneo>()"
-                    class="form-control">
-            </select>
->>>>>>> Stashed changes
-        </div>
-        <a asp-page="Index" class="btn btn-outline-secondary shadow-sm">
-            <i class="bi bi-x-lg"></i> Cancelar
-        </a>
-    </div>
-
     <form method="post">
         <div class="row">
             <div class="col-lg-5">

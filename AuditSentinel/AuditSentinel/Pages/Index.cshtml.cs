@@ -37,6 +37,8 @@ namespace AuditSentinel.Pages
 
         [BindProperty]
         public string Nombre { get; set; }
+        [BindProperty]
+        public string Empresa { get; set; }
 
         [BindProperty]
         public string Email { get; set; }
@@ -52,6 +54,7 @@ namespace AuditSentinel.Pages
             var mensajeCorreo = $@"
                 <h3>Nueva Solicitud de Auditoría</h3>
                 <p><strong>Nombre:</strong> {Nombre}</p>
+                <p><strong>Empresa:</strong> {Empresa}</p>
                 <p><strong>Email:</strong> {Email}</p>
                 <p><strong>Mensaje:</strong> {Mensaje}</p>
             ";
@@ -63,7 +66,7 @@ namespace AuditSentinel.Pages
 
             TempData["Exito"] = "Solicitud enviada correctamente.";
 
-            return RedirectToPage();
+            return RedirectToPage("MensajeEnviado");
         }
     }
 }

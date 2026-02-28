@@ -161,20 +161,20 @@
                     <form method="post">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <input type="text" class="form-control custom-input" placeholder="Nombre" required>
+                                <input asp-for="Nombre" type="text" class="form-control custom-input" placeholder="Nombre" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <input type="text" class="form-control custom-input" placeholder="Empresa" required>
+                                <input asp-for="Empresa" type="text" class="form-control custom-input" placeholder="Empresa" required>
                             </div>
 
                             <div class="col-md-12 mb-3">
-                                <input type="email" class="form-control custom-input" placeholder="Email" required>
+                                <input asp-for="Email" type="email" class="form-control custom-input" placeholder="Email" required>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <textarea class="form-control custom-input" rows="4" placeholder="Mensaje"></textarea>
+                            <textarea asp-for="Mensaje" class="form-control custom-input" rows="4" placeholder="Mensaje"></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-lg">
