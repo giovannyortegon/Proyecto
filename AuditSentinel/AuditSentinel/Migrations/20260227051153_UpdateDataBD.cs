@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AuditSentinel.Migrations
 {
     /// <inheritdoc />
-    public partial class newDBAspNet : Migration
+    public partial class UpdateDataBD : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -105,7 +105,7 @@ namespace AuditSentinel.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NombreServidor = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     IP = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    SistemaOperativo = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
+                    SistemaOperativo = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Create_is = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -234,6 +234,29 @@ namespace AuditSentinel.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LogErroresEscaneos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EscaneoId = table.Column<int>(type: "int", nullable: false),
+                    FechaError = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fase = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Mensaje = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ComandoEjecutado = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LogErroresEscaneos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LogErroresEscaneos_Escaneos_EscaneoId",
+                        column: x => x.EscaneoId,
+                        principalTable: "Escaneos",
+                        principalColumn: "IdEscaneo",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -399,6 +422,12 @@ namespace AuditSentinel.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Escaneos_NombreEscaneo",
+                table: "Escaneos",
+                column: "NombreEscaneo",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EscaneosPlantillas_IdPlantilla",
                 table: "EscaneosPlantillas",
                 column: "IdPlantilla");
@@ -419,9 +448,44 @@ namespace AuditSentinel.Migrations
                 column: "IdVulnerabilidad");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LogErroresEscaneos_EscaneoId",
+                table: "LogErroresEscaneos",
+                column: "EscaneoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Plantillas_NombrePlantilla",
+                table: "Plantillas",
+                column: "NombrePlantilla",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PlantillasVulnerabilidades_IdVulnerabilidad",
                 table: "PlantillasVulnerabilidades",
                 column: "IdVulnerabilidad");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reportes_NombreReporte",
+                table: "Reportes",
+                column: "NombreReporte",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Servidores_IP",
+                table: "Servidores",
+                column: "IP",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Servidores_NombreServidor",
+                table: "Servidores",
+                column: "NombreServidor",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vulnerabilidades_NombreVulnerabilidad",
+                table: "Vulnerabilidades",
+                column: "NombreVulnerabilidad",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -453,6 +517,9 @@ namespace AuditSentinel.Migrations
 
             migrationBuilder.DropTable(
                 name: "EscaneosVulnerabilidades");
+
+            migrationBuilder.DropTable(
+                name: "LogErroresEscaneos");
 
             migrationBuilder.DropTable(
                 name: "PlantillasVulnerabilidades");

@@ -5,7 +5,7 @@
 namespace AuditSentinel.Migrations
 {
     /// <inheritdoc />
-    public partial class NewMigration : Migration
+    public partial class UpdateDataBDServidores : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

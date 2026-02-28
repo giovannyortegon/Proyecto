@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuditSentinel.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20260221161019_NewMigration")]
-    partial class NewMigration
+    [Migration("20260227051153_UpdateDataBD")]
+    partial class UpdateDataBD
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,9 @@ namespace AuditSentinel.Migrations
                         .HasColumnType("nvarchar(80)");
 
                     b.HasKey("IdEscaneo");
+
+                    b.HasIndex("NombreEscaneo")
+                        .IsUnique();
 
                     b.ToTable("Escaneos");
                 });
@@ -117,6 +120,36 @@ namespace AuditSentinel.Migrations
                     b.ToTable("EscaneosVulnerabilidades");
                 });
 
+            modelBuilder.Entity("AuditSentinel.Models.LogErroresEscaneo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ComandoEjecutado")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EscaneoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Fase")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaError")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Mensaje")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EscaneoId");
+
+                    b.ToTable("LogErroresEscaneos");
+                });
+
             modelBuilder.Entity("AuditSentinel.Models.Plantillas", b =>
                 {
                     b.Property<int>("IdPlantilla")
@@ -136,6 +169,9 @@ namespace AuditSentinel.Migrations
                         .HasColumnType("nvarchar(80)");
 
                     b.HasKey("IdPlantilla");
+
+                    b.HasIndex("NombrePlantilla")
+                        .IsUnique();
 
                     b.ToTable("Plantillas");
                 });
@@ -177,6 +213,9 @@ namespace AuditSentinel.Migrations
 
                     b.HasKey("IdReporte");
 
+                    b.HasIndex("NombreReporte")
+                        .IsUnique();
+
                     b.ToTable("Reportes");
                 });
 
@@ -203,10 +242,16 @@ namespace AuditSentinel.Migrations
 
                     b.Property<string>("SistemaOperativo")
                         .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("IdServidor");
+
+                    b.HasIndex("IP")
+                        .IsUnique();
+
+                    b.HasIndex("NombreServidor")
+                        .IsUnique();
 
                     b.ToTable("Servidores");
                 });
@@ -322,6 +367,9 @@ namespace AuditSentinel.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("IdVulnerabilidad");
+
+                    b.HasIndex("NombreVulnerabilidad")
+                        .IsUnique();
 
                     b.ToTable("Vulnerabilidades");
                 });
@@ -535,6 +583,17 @@ namespace AuditSentinel.Migrations
                     b.Navigation("Vulnerabilidades");
                 });
 
+            modelBuilder.Entity("AuditSentinel.Models.LogErroresEscaneo", b =>
+                {
+                    b.HasOne("AuditSentinel.Models.Escaneos", "Escaneo")
+                        .WithMany("Logs")
+                        .HasForeignKey("EscaneoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Escaneo");
+                });
+
             modelBuilder.Entity("AuditSentinel.Models.PlantillasVulnerabilidades", b =>
                 {
                     b.HasOne("AuditSentinel.Models.Plantillas", "Plantillas")
@@ -614,6 +673,8 @@ namespace AuditSentinel.Migrations
                     b.Navigation("EscaneosServidores");
 
                     b.Navigation("EscaneosVulnerabilidades");
+
+                    b.Navigation("Logs");
                 });
 
             modelBuilder.Entity("AuditSentinel.Models.Plantillas", b =>

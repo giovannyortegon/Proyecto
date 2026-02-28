@@ -205,7 +205,7 @@
 
         async function actualizarEstado() {
             try {
-                const response = await fetch('?handler=Estado');
+                const response = await fetch(`?handler=Estado&id=${@Model.Id}`);
                 const data = await response.json();
 
                 const bar = document.getElementById('pBar');
