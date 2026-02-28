@@ -48,7 +48,6 @@ namespace AuditSentinel.Pages.Servidores
                 var s = Search.Trim();
                 query = query.Where(x =>
                     x.NombreServidor.Contains(s) ||
-                    x.SistemaOperativo.Contains(s) ||
                     x.IP.Contains(s));
                 // Si tienes Descripcion: x.Descripcion.Contains(s)
             }

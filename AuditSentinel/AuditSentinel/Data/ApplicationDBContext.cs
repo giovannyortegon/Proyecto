@@ -23,7 +23,7 @@ namespace AuditSentinel.Data
         public DbSet<AuditSentinel.Models.EscaneosReportes> EscaneosReportes { get; set; }
         public DbSet<AuditSentinel.Models.EscaneosVulnerabilidades> EscaneosVulnerabilidades { get; set; }
 
-
+        public DbSet<LogErroresEscaneo> LogErroresEscaneos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -42,7 +42,8 @@ namespace AuditSentinel.Data
             //Enum sistemas operativos
             modelBuilder.Entity<Servidores>()
                 .Property(s => s.SistemaOperativo)
-                .HasConversion<string>();
+                .HasConversion<string>()
+                .HasMaxLength(30);
 
             // Almacenar enum como string
             modelBuilder.Entity<Escaneos>()
@@ -50,7 +51,6 @@ namespace AuditSentinel.Data
                 .HasConversion<string>();
 
             // nombre unico
-
             modelBuilder.Entity<Escaneos>()
                .HasIndex(e => e.NombreEscaneo)
                 .IsUnique();
@@ -84,11 +84,6 @@ namespace AuditSentinel.Data
             modelBuilder.Entity<Plantillas>()
                .HasIndex(p => p.NombrePlantilla)
                 .IsUnique();
-
-            //modelBuilder.Entity<Roles>()
-            //    .Property(r => r.NombreRol)
-            //    .HasConversion<string>();
-
 
             // Configurar clave primaria en las plantillas
             modelBuilder.Entity<AuditSentinel.Models.EscaneosServidores>()
@@ -173,15 +168,10 @@ namespace AuditSentinel.Data
                 .HasForeignKey(pv => pv.IdVulnerabilidad)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //modelBuilder.Entity<AuditSentinel.Models.UsuariosRoles>()
-            //    .HasOne(ur => ur.usuarios)
-            //    .WithMany(u => u.UsuariosRoles)
-            //    .HasForeignKey(ur => ur.IdUsuario);
-
-            //modelBuilder.Entity<AuditSentinel.Models.UsuariosRoles>()
-            //    .HasOne(ur => ur.roles)
-            //    .WithMany(u => u.UsuariosRoles)
-            //    .HasForeignKey(ur => ur.IdRol);
+            modelBuilder.Entity<LogErroresEscaneo>()
+                .HasOne(l => l.Escaneo)
+                .WithMany(e => e.Logs) // Asegúrate de agregar ICollection<LogErroresEscaneo> en tu clase Escaneo
+                .HasForeignKey(l => l.EscaneoId);
         }
     }
 }

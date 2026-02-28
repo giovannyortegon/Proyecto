@@ -4,46 +4,91 @@
 @attribute [Authorize(Roles = "Analista,Administrador")]
 
 @{
-    ViewData["Title"] = "Eliminar";
+    ViewData["Title"] = "Eliminar Servidor";
 }
-<div class="p-5">
-<h1>ELIMINAR</h1>
 
-<h3>¿Esta seguro que desea eliminarlo?</h3>
-<div>
-    <h4>Servidores</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Servidores.NombreServidor)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Servidores.NombreServidor)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Servidores.IP)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Servidores.IP)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Servidores.SistemaOperativo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Servidores.SistemaOperativo)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Servidores.Create_is)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Servidores.Create_is)
-        </dd>
-    </dl>
-    <br>
-    <form method="post">
-        <input type="hidden" asp-for="Servidores.IdServidor" />
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-page="./Index" class="btn btn-primary" >Volver</a>
-    </form>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="max-width: 550px; width: 100%;">
+
+        <div class="bg-danger p-4 text-center text-white bg-gradient">
+            <div class="mb-3">
+                <i class="bi bi-exclamation-triangle-fill shadow-sm" style="font-size: 3.5rem;"></i>
+            </div>
+            <h2 class="h4 fw-bold mb-0 text-uppercase">¿Eliminar este Activo?</h2>
+            <p class="small opacity-75 mb-0">Esta operación desvinculará el servidor de futuros escaneos</p>
+        </div>
+
+        <div class="card-body p-4">
+            <p class="text-center text-muted mb-4">
+                Confirme que desea eliminar permanentemente el siguiente servidor de la red:
+            </p>
+
+            <div class="bg-light rounded-3 p-3 border mb-4">
+                <div class="row g-2">
+                    <div class="col-4 text-muted small fw-bold text-uppercase">Nombre:</div>
+                    <div class="col-8 fw-bold text-dark">@Html.DisplayFor(model => model.Servidores.NombreServidor)</div>
+
+                    <div class="col-4 text-muted small fw-bold text-uppercase">Dirección IP:</div>
+                    <div class="col-8"><code class="text-primary fw-bold">@Html.DisplayFor(model => model.Servidores.IP)</code></div>
+
+                    <div class="col-4 text-muted small fw-bold text-uppercase">Plataforma:</div>
+                    <div class="col-8 text-dark">@Html.DisplayFor(model => model.Servidores.SistemaOperativo)</div>
+
+                    <div class="col-4 text-muted small fw-bold text-uppercase">Registro:</div>
+                    <div class="col-8 small text-muted">@Html.DisplayFor(model => model.Servidores.Create_is)</div>
+                </div>
+            </div>
+
+            <form method="post">
+                <input type="hidden" asp-for="Servidores.IdServidor" />
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-danger btn-lg shadow-sm fw-bold py-2">
+                        <i class="bi bi-trash3 me-2"></i>Eliminar Servidor
+                    </button>
+                    <a asp-page="./Index" class="btn btn-outline-secondary py-2">
+                        <i class="bi bi-arrow-left me-1"></i> Cancelar y Volver
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-footer bg-white border-top-0 py-3 text-center">
+            <small class="text-muted italic">
+                <i class="bi bi-shield-lock me-1"></i> AuditSentinel Infrastructure Protection
+            </small>
+        </div>
+    </div>
 </div>
-</div>
+
+<style>
+    /* Estética de fondo para pantallas de confirmación */
+    body {
+        background-color: #f8f9fc;
+        background-image: radial-gradient(circle at center, rgba(220, 53, 69, 0.03) 0%, transparent 75%);
+    }
+
+    /* Animación de entrada para evitar clics accidentales rápidos */
+    .card {
+        animation: slideInUp 0.3s ease-out;
+    }
+
+    @@keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .btn-danger {
+        transition: all 0.2s ease;
+    }
+
+        .btn-danger:hover {
+            background-color: #bb2d3b;
+            transform: scale(1.01);
+        }
+</style>

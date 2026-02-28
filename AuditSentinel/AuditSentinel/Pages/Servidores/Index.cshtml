@@ -4,117 +4,146 @@
 @model AuditSentinel.Pages.Servidores.IndexModel
 
 @{
-    ViewData["Title"] = "Lista Servidores";
+    ViewData["Title"] = "Gestión de Servidores";
 }
-<div class="p-5">
-<h1>Lista Servidores</h1>
 
-<form method="get" class="row g-3 mb-3">
-    <div class="col-md-4">
-        <input name="search" value="@Model.Search" class="form-control" placeholder="Buscar por nombre, IP o sistema..." />
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-gray-800">
+            <i class="bi bi-hdd-network"></i> Lista de Servidores
+        </h1>
+        <a asp-page="Create" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-circle"></i> Nuevo Servidor
+        </a>
     </div>
-    <div class="col-md-2">
-        <button class="btn btn-outline-primary w-100" type="submit">Filtrar</button>
-    </div>
-    <div class="col-6 col-md-6 text-end align-content-center">
-        <a asp-page="Create" class="btn btn-primary">Nuevo Servidor</a>
-    </div>
-</form>
 
-<div class="card mb-md-3">
-    <table id="Lista-Servidores" class="table table-striped table-hover mb-0">
-        <thead class="table-light">
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.Servidores[0].NombreServidor)</th>
-                <th>@Html.DisplayNameFor(model => model.Servidores[0].IP)</th>
-                <th>@Html.DisplayNameFor(model => model.Servidores[0].SistemaOperativo)</th>
-                <th>@Html.DisplayNameFor(model => model.Servidores[0].Create_is)</th>
-                <th style="width:220px;"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Servidores != null && Model.Servidores.Any())
-            {
-                foreach (var item in Model.Servidores)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.NombreServidor)</td>
-                        <td>@Html.DisplayFor(modelItem => item.IP)</td>
-                        <td>@Html.DisplayFor(modelItem => item.SistemaOperativo)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Create_is)</td>
-                        <td>
-                            <a asp-page="./Edit" asp-route-id="@item.IdServidor" class="btn btn-sm btn-primary">Editar</a>
-                            <a asp-page="./Details" asp-route-id="@item.IdServidor" class="btn btn-sm btn-secondary">Detalles</a>
-                            <a asp-page="./Delete" asp-route-id="@item.IdServidor" class="btn btn-sm btn-danger">Eliminar</a>
-                        </td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="5" class="text-center text-muted p-3">No hay servidores para mostrar.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<!-- Controles de paginación -->
-@if (Model.TotalPages > 1)
-{
-    <nav aria-label="Paginación de servidores" class="mt-3">
-        <ul class="pagination justify-content-center">
-            <!-- Primero -->
-            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
-                <a class="page-link"
-                   asp-page="./Index"
-                   asp-route-pageNumber="1"
-                   asp-route-search="@Model.Search">« Primero</a>
-            </li>
-
-            <!-- Anterior -->
-            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
-                <a class="page-link"
-                   asp-page="./Index"
-                   asp-route-pageNumber="@(Model.PageNumber - 1)"
-                   asp-route-search="@Model.Search">‹ Anterior</a>
-            </li>
-
-            <!-- Páginas numeradas (pequeño rango centrado) -->
-            @{
-                var start = Math.Max(1, Model.PageNumber - 2);
-                var end = Math.Min(Model.TotalPages, Model.PageNumber + 2);
-                for (int i = start; i <= end; i++)
-                {
-                    var active = i == Model.PageNumber ? "active" : "";
-                    <li class="page-item @active">
-                        <a class="page-link"
-                           asp-page="./Index"
-                           asp-route-pageNumber="@i"
-                           asp-route-search="@Model.Search">@i</a>
-                    </li>
-                }
-            }
-
-            <!-- Siguiente -->
-            <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
-                <a class="page-link"
-                   asp-page="./Index"
-                   asp-route-pageNumber="@(Model.PageNumber + 1)"
-                   asp-route-search="@Model.Search">Siguiente ›</a>
-            </li>
-
-            <!-- Último -->
-            <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
-                <a class="page-link"
-                   asp-page="./Index"
-                   asp-route-pageNumber="@Model.TotalPages"
-                   asp-route-search="@Model.Search">Último »</a>
-            </li>
-        </ul>
-        <div class="text-center text-muted">
-            Página @Model.PageNumber de @Model.TotalPages — @Model.TotalItems registro(s)
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Filtros de Red</h6>
         </div>
-    </nav>
-}
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-8">
+                    <label class="form-label small fw-bold">Búsqueda rápida</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light text-muted">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input name="search" value="@Model.Search" class="form-control"
+                               placeholder="Buscar por nombre, dirección IP o sistema operativo..." />
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex align-items-end gap-2">
+                    <button class="btn btn-outline-primary flex-grow-1" type="submit">
+                        <i class="bi bi-filter"></i> Filtrar
+                    </button>
+                    <a asp-page="./Index" class="btn btn-outline-secondary" title="Restablecer">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white py-3">
+            <h6 class="m-0 font-weight-bold text-dark">Servidores Activos</h6>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table id="Lista-Servidores" class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">@Html.DisplayNameFor(model => model.Servidores[0].NombreServidor)</th>
+                            <th>@Html.DisplayNameFor(model => model.Servidores[0].IP)</th>
+                            <th>@Html.DisplayNameFor(model => model.Servidores[0].SistemaOperativo)</th>
+                            <th>Fecha Registro</th>
+                            <th class="text-end pe-4">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Servidores != null && Model.Servidores.Any())
+                        {
+                            foreach (var item in Model.Servidores)
+                            {
+                                <tr>
+                                    <td class="ps-4">
+                                        <span class="fw-bold text-dark">@Html.DisplayFor(modelItem => item.NombreServidor)</span>
+                                    </td>
+                                    <td>
+                                        <code>@Html.DisplayFor(modelItem => item.IP)</code>
+                                    </td>
+                                    <td>
+                                        <i class="bi bi-cpu me-1"></i> @Html.DisplayFor(modelItem => item.SistemaOperativo)
+                                    </td>
+                                    <td class="small text-muted">
+                                        @Html.DisplayFor(modelItem => item.Create_is)
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="btn-group shadow-sm">
+                                            <a asp-page="./Details" asp-route-id="@item.IdServidor" class="btn btn-sm btn-outline-secondary" title="Detalles">
+                                                <i class="bi bi-info-circle"></i>
+                                            </a>
+                                            <a asp-page="./Edit" asp-route-id="@item.IdServidor" class="btn btn-sm btn-outline-primary" title="Editar">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-page="./Delete" asp-route-id="@item.IdServidor" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center py-5">
+                                    <p class="text-muted mb-0">No se encontraron servidores registrados.</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @if (Model.TotalPages > 1)
+        {
+            <div class="card-footer bg-white border-top-0 py-3">
+                <nav aria-label="Paginación de servidores">
+                    <ul class="pagination pagination-sm justify-content-center mb-2">
+                        @* Primero *@
+                        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                            <a class="page-link" asp-page="./Index" asp-route-pageNumber="1" asp-route-search="@Model.Search">
+                                <i class="bi bi-chevron-double-left"></i>
+                            </a>
+                        </li>
+
+                        @* Páginas numeradas dinámicas *@
+                        @{
+                            var start = Math.Max(1, Model.PageNumber - 2);
+                            var end = Math.Min(Model.TotalPages, Model.PageNumber + 2);
+                            for (int i = start; i <= end; i++)
+                            {
+                                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                    <a class="page-link" asp-page="./Index" asp-route-pageNumber="@i" asp-route-search="@Model.Search">@i</a>
+                                </li>
+                            }
+                        }
+
+                        @* Último *@
+                        <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                            <a class="page-link" asp-page="./Index" asp-route-pageNumber="@Model.TotalPages" asp-route-search="@Model.Search">
+                                <i class="bi bi-chevron-double-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="text-center small text-muted">
+                        Página <strong>@Model.PageNumber</strong> de @Model.TotalPages — Total: @Model.TotalItems servidores
+                    </div>
+                </nav>
+            </div>
+        }
+    </div>
+</div>

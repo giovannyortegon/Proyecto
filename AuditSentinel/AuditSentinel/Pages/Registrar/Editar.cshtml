@@ -3,40 +3,133 @@
 @model AuditSentinel.Pages.Usuarios.EditModel
 
 @{
-    ViewData["Title"] = "Editar usuario";
+    ViewData["Title"] = "Editar Perfil de Usuario";
 }
-<div class="p-5">
-<h2>Editar usuario</h2>
 
-<form method="post">
-    <input type="hidden" asp-for="Registro.Id" />
-
-        <div class="mb-3">
-            <label asp-for="Registro.Nombre">Nombre</label>
-            <input asp-for="Registro.Nombre" class="form-control" />
-            <span asp-validation-for="Registro.Nombre" class="text-danger"></span>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a asp-page="./Index">Usuarios</a></li>
+                    <li class="breadcrumb-item active">Modificar Usuario</li>
+                </ol>
+            </nav>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="bi bi-person-gear text-primary"></i> Editar Usuario: <span class="text-muted small">@Model.Registro.UserName</span>
+            </h1>
         </div>
-        <div class="mb-3">
-            <label asp-for="Registro.Apellido">Apellido</label>
-            <input asp-for="Registro.Apellido" class="form-control" />
-            <span asp-validation-for="Registro.Apellido" class="text-danger"></span>
-        </div>
-    <div class="mb-3">
-            <label asp-for="Registro.Email"></label>
-            <input asp-for="Registro.Email" class="form-control" />
-            <span asp-validation-for="Registro.Email" class="text-danger"></span>
+        <a asp-page="Index" class="btn btn-outline-secondary shadow-sm">
+            <i class="bi bi-arrow-left"></i> Regresar
+        </a>
     </div>
 
-    <div class="mb-3">
-        <label>Roles</label>
-            <select asp-for="Registro.Rol" class="form-select" multiple size="5" asp-items="Model.AvailableRoles"></select>
-            <span asp-validation-for="Registro.Rol" class="text-danger"></span>
-    </div>
+    <form method="post">
+        <input type="hidden" asp-for="Registro.Id" />
 
-    <button type="submit" class="btn btn-primary">Guardar</button>
-    <a asp-page="Index" class="btn btn-secondary">Volver</a>
-</form>
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Datos Personales</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Registro.Nombre" class="form-label small fw-bold text-muted text-uppercase">Nombre</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-person"></i></span>
+                                    <input asp-for="Registro.Nombre" class="form-control bg-light border-start-0 ps-0" placeholder="Ej: Juan" />
+                                </div>
+                                <span asp-validation-for="Registro.Nombre" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Registro.Apellido" class="form-label small fw-bold text-muted text-uppercase">Apellido</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-person"></i></span>
+                                    <input asp-for="Registro.Apellido" class="form-control bg-light border-start-0 ps-0" placeholder="Ej: Pérez" />
+                                </div>
+                                <span asp-validation-for="Registro.Apellido" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-0">
+                            <label asp-for="Registro.Email" class="form-label small fw-bold text-muted text-uppercase">Correo Electrónico Corporativo</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope-at"></i></span>
+                                <input asp-for="Registro.Email" class="form-control bg-light border-start-0 ps-0" placeholder="nombre@empresa.com" />
+                            </div>
+                            <span asp-validation-for="Registro.Email" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Permisos y Accesos</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Asignación de Roles</label>
+                            <select asp-for="Registro.Rol"
+                                    class="form-select select-role-custom"
+                                    multiple
+                                    asp-items="Model.AvailableRoles">
+                            </select>
+                            <div class="form-text small mt-3">
+                                <i class="bi bi-info-circle-fill me-1 text-info"></i>
+                                Use <strong>Ctrl</strong> (o Cmd en Mac) para seleccionar o quitar múltiples roles.
+                            </div>
+                            <span asp-validation-for="Registro.Rol" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 mt-4">
+            <div class="card-body d-flex justify-content-end gap-2">
+                <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm fw-bold">
+                    <i class="bi bi-check2-circle me-2"></i> Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
+
+<style>
+    /* Estilo para el selector de roles */
+    .select-role-custom {
+        height: 160px !important;
+        border-radius: 10px;
+        border: 1px solid #dee2e6;
+        padding: 8px;
+        transition: all 0.3s;
+    }
+
+        .select-role-custom option {
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+            .select-role-custom option:checked {
+                background: linear-gradient(135deg, #4e73df 0%, #224abe 100%) !important;
+                color: white;
+            }
+
+    /* Mejora de focus en inputs */
+    .form-control:focus, .form-select:focus {
+        background-color: #fff !important;
+        border-color: #4e73df;
+        box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.1);
+    }
+</style>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
