@@ -1,0 +1,12 @@
+C:\Users\HP\PruebasUnitariasProyecto\Servidores\bin\Debug\net9.0\ProyectoAuditSentinel.deps.json
+C:\Users\HP\PruebasUnitariasProyecto\Servidores\bin\Debug\net9.0\ProyectoAuditSentinel.dll
+C:\Users\HP\PruebasUnitariasProyecto\Servidores\bin\Debug\net9.0\ProyectoAuditSentinel.pdb
+C:\Users\HP\PruebasUnitariasProyecto\Servidores\obj\Debug\net9.0\ProyectoAuditSentinel.csproj.AssemblyReference.cache
+C:\Users\HP\PruebasUnitariasProyecto\Servidores\obj\Debug\net9.0\ProyectoAuditSentinel.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\PruebasUnitariasProyecto\Servidores\obj\Debug\net9.0\ProyectoAuditSentinel.AssemblyInfoInputs.cache
+C:\Users\HP\PruebasUnitariasProyecto\Servidores\obj\Debug\net9.0\ProyectoAuditSentinel.AssemblyInfo.cs
+C:\Users\HP\PruebasUnitariasProyecto\Servidores\obj\Debug\net9.0\ProyectoAuditSentinel.csproj.CoreCompileInputs.cache
+C:\Users\HP\PruebasUnitariasProyecto\Servidores\obj\Debug\net9.0\ProyectoAuditSentinel.dll
+C:\Users\HP\PruebasUnitariasProyecto\Servidores\obj\Debug\net9.0\refint\ProyectoAuditSentinel.dll
+C:\Users\HP\PruebasUnitariasProyecto\Servidores\obj\Debug\net9.0\ProyectoAuditSentinel.pdb
+C:\Users\HP\PruebasUnitariasProyecto\Servidores\obj\Debug\net9.0\ref\ProyectoAuditSentinel.dll
