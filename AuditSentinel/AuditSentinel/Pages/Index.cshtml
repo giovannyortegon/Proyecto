@@ -161,6 +161,7 @@
                     <form method="post">
                         <div class="row">
                             <div class="col-md-6 mb-3">
+<<<<<<< HEAD
                                 <input asp-for="Nombre" type="text" class="form-control custom-input" placeholder="Nombre" required>
                             </div>
 
@@ -170,11 +171,27 @@
 
                             <div class="col-md-12 mb-3">
                                 <input asp-for="Email" type="email" class="form-control custom-input" placeholder="Email" required>
+=======
+                                <input asp-for="Correos.Nombre" type="text" class="form-control custom-input" placeholder="Nombre" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <input asp-for="Correos.Empresa" type="text" class="form-control custom-input" placeholder="Empresa" required>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <input asp-for="Correos.Email" type="email" class="form-control custom-input" placeholder="Email" required>
+                                <span asp-validation-for="Correos.Email" class=" text-danger small"></span>
+>>>>>>> 578070a4b6becb5af58574261fca893a65f8eaae
                             </div>
                         </div>
 
                         <div class="mb-3">
+<<<<<<< HEAD
                             <textarea asp-for="Mensaje" class="form-control custom-input" rows="4" placeholder="Mensaje"></textarea>
+=======
+                            <textarea asp-for="Correos.Mensaje" class="form-control custom-input" rows="4" placeholder="Mensaje"></textarea>
+>>>>>>> 578070a4b6becb5af58574261fca893a65f8eaae
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-lg">

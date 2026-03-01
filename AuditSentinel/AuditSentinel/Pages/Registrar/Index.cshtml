@@ -2,11 +2,16 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @model AuditSentinel.Pages.Usuarios.IndexModel
+<<<<<<< HEAD
 @attribute [Authorize(Roles = "Administrador")] 
+=======
+@* @attribute [Authorize(Roles = "Administrador")] *@
+>>>>>>> 578070a4b6becb5af58574261fca893a65f8eaae
 @{
     ViewData["Title"] = "Gestión de Usuarios";
 }
 
+<<<<<<< Updated upstream
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -24,6 +29,12 @@
             </a>
         </div>
     </div>
+=======
+<p>
+
+    <a class="btn btn-primary" asp-page="/Registrar/Registrar">Crear usuario</a>
+</p>
+>>>>>>> Stashed changes
 
     <div class="card shadow-sm border-0 overflow-hidden">
         <div class="card-header bg-white py-3">
