@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AuditSentinel.Data;
-using AuditSentinel.Services; // Asegúrate que este namespace coincida
+using AuditSentinel.Services; 
 
 namespace AuditSentinel.Pages
 {
@@ -16,6 +16,9 @@ namespace AuditSentinel.Pages
         public int TotalVulnerabilidades { get; set; }
         public int TotalReportes { get; set; }
         public int TotalServidores { get; set; }
+
+        [BindProperty]
+        public Models.Correo Correos { get; set; }
 
         public IndexModel(
             ILogger<IndexModel> logger,
@@ -35,17 +38,6 @@ namespace AuditSentinel.Pages
             TotalServidores = _context.Servidores.Count();
         }
 
-        [BindProperty]
-        public string Nombre { get; set; }
-        [BindProperty]
-        public string Empresa { get; set; }
-
-        [BindProperty]
-        public string Email { get; set; }
-
-        [BindProperty]
-        public string Mensaje { get; set; }
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -53,10 +45,10 @@ namespace AuditSentinel.Pages
 
             var mensajeCorreo = $@"
                 <h3>Nueva Solicitud de Auditoría</h3>
-                <p><strong>Nombre:</strong> {Nombre}</p>
-                <p><strong>Empresa:</strong> {Empresa}</p>
-                <p><strong>Email:</strong> {Email}</p>
-                <p><strong>Mensaje:</strong> {Mensaje}</p>
+                <p><strong>Nombre:</strong> {Correos.Nombre}</p>
+                <p><strong>Empresa:</strong> {Correos.Empresa}</p>
+                <p><strong>Email:</strong> {Correos.Email}</p>
+                <p><strong>Mensaje:</strong> {Correos.Mensaje}</p>
             ";
 
             await _emailService.SendEmailAsync(
