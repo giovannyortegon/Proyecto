@@ -8,19 +8,19 @@
     <div class="container">
         <div class="row align-items-center">
 
-            <!-- LADO IZQUIERDO (Texto) -->
+            <!-- LADO IZQUIERDO -->
             <div class="col-md-6">
-                <h1 class="display-4 fw-bold">Protegemos tu infraestructura digital</h1>
-                <p class="lead">
+                <h1 class="display-4 fw-bold"></h1>
+                <p class="lead text-lg-center">
                     Somos una plataforma de auditorías de ciberseguridad para infraestructuras 
                     de red a nivel empresarial, basada en escaneos automatizados y generación de reportes.
                 </p>
-                <a href="#contacto" class="btn btn-primary btn-lg">
+                <a href="#contacto" class="btn btn-primary btn-lg mt-5">
                     Solicitar Auditoría
                 </a>
             </div>
 
-            <!-- LADO DERECHO (Imagen) -->
+            <!-- LADO DERECHO -->
             <div class="col-md-6 text-center">
                 <img src="/img/hero.png"
                      class="img-fluid"
@@ -32,10 +32,10 @@
 </section>
 
 
-<section class="container mt-5">
+<section class="container mt-5 pb-5">
     <h2 class="section-title text-center">Nuestros Servicios</h2>
 
-    <div class="row mt-4">
+    <div class="row mt-5">
         <div class="col-md-4">
             <div class="card p-4 text-center shadow">
                 <h4>Escaneo de Vulnerabilidades</h4>
@@ -105,28 +105,28 @@
 
     <div class="row text-center mt-4">
         <div class="col-md-3">
-            <div class="card p-4 text-center shadow">
+            <div class="card p-4 text-center shadow mb-5">
              <h5>1. Análisis</h5>
              <p>Revisión inicial del sistema y recopilación de información.</p>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="card p-4 text-center shadow">
+            <div class="card p-4 text-center shadow mb-5">
              <h5>2. Escaneo</h5>
              <p>Detección automatizada y manual de vulnerabilidades.</p>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="card p-4 text-center shadow">
+            <div class="card p-4 text-center shadow mb-5">
              <h5>3. Evaluación</h5>
              <p>Clasificación por nivel de riesgo y criticidad.</p>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="card p-4 text-center shadow">
+            <div class="card p-4 text-center shadow mb-5">
              <h5>4. Reporte Final</h5>
              <p>Entrega de informe técnico con recomendaciones.</p>
             </div>
@@ -134,7 +134,61 @@
     </div>
 </section>
 
+<section id="contacto" class="contact-section">
+    <div class="container">
+        <div class="row align-items-center">
 
+            <!-- LADO IZQUIERDO -->
+            <div class="col-md-6 text-light">
+                <p style="color:#0B3D91">// CONTACTO</p>
+                <h2 class="text-primary">Auditoría</h2>
+                <p class="text-muted">
+                    Completa el formulario y nuestro equipo se pondrá en contacto contigo en menos de 24 horas
+                    para evaluar tus necesidades y diseñar un plan de auditoría personalizado.
+                </p>
+
+                <div class="contact-info mt-4">
+                    <p>📧 Email</p>
+                    <p>📞 Teléfono</p>
+                    <p>🕒 Lun - Vie: 9:00 - 18:00</p>
+                </div>
+            </div>
+
+            <!-- LADO DERECHO -->
+            <div class="col-md-6">
+                <div class="contact-card p-4">
+
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <input asp-for="Nombre" type="text" class="form-control custom-input" placeholder="Nombre" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <input asp-for="Empresa" type="text" class="form-control custom-input" placeholder="Empresa" required>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <input asp-for="Email" type="email" class="form-control custom-input" placeholder="Email" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <textarea asp-for="Mensaje" class="form-control custom-input" rows="4" placeholder="Mensaje"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            Enviar Solicitud →
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+@* 
 <section id="contacto" class="container mt-5 mb-5">
     <h2 class="section-title text-center">Solicita una Auditoría</h2>
 
@@ -142,6 +196,10 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <input type="text" name="Nombre" class="form-control" placeholder="Nombre completo" required />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <input type="text" name="Empresa" class="form-control" placeholder="Nombre de tu empresa" required />
             </div>
 
             <div class="col-md-6 mb-3">
@@ -155,6 +213,6 @@
 
         <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
     </form>
-</section>
+</section> *@
 
 

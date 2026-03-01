@@ -3,7 +3,8 @@ using AuditSentinel.Models;
 using AuditSentinel.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using QuestPDF.Infrastructure; 
+using QuestPDF.Infrastructure;
+using AuditSentinel.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 // Logging
+
+builder.Services.AddScoped<EmailService>();
 builder.Logging.ClearProviders();
 builder.Logging.AddSimpleConsole();
 

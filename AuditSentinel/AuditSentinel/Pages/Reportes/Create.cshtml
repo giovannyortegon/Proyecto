@@ -38,7 +38,7 @@
             <select multiple class="form-select"
                     asp-for="SelectedEscaneos"
                     asp-items="Model.EscaneosList"></select>
-            <small class="text-muted">Usa Ctrl/Cmd para seleccionar múltiples.</small>
+            @* <small class="text-muted">Usa Ctrl/Cmd para seleccionar múltiples.</small> *@
             <span asp-validation-for="SelectedEscaneos" class="text-danger"></span>
         </div>
 
