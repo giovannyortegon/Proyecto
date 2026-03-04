@@ -1,10 +1,10 @@
 using AuditSentinel.Data;
+using AuditSentinel.Hubs;
 using AuditSentinel.Models;
 using AuditSentinel.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
-using AuditSentinel.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +34,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 // Logging
-
+builder.Services.AddSignalR();
+builder.Services.AddHostedService<ScannerServerService>();
 builder.Services.AddScoped<EmailService>();
 builder.Logging.ClearProviders();
 builder.Logging.AddSimpleConsole();
@@ -45,9 +46,11 @@ builder.Services.AddRazorPages();
 // ⚡ Configuración de QuestPDF
 QuestPDF.Settings.License = LicenseType.Community;
 
-builder.Services.AddSingleton<INmapScannerService, NmapScannerService>();
+//builder.Services.AddSingleton<INmapScannerService, NmapScannerService>();
 
 var app = builder.Build();
+
+
 
 // Seed de roles
 using (var scope = app.Services.CreateScope())
@@ -90,6 +93,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapHub<EscaneoHub>("/EscaneoHub");
 app.MapRazorPages();
 
 app.Run();
