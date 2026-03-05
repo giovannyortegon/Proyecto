@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AuditSentinel.Data;
+using AuditSentinel.Services; // Asegúrate que este namespace coincida
+using AuditSentinel.Models;
 
 namespace AuditSentinel.Pages
 {
@@ -9,16 +11,26 @@ namespace AuditSentinel.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         private readonly ApplicationDBContext _context;
+        private readonly EmailService _emailService;
 
         public int TotalEscaneos { get; set; }
         public int TotalVulnerabilidades { get; set; }
         public int TotalReportes { get; set; }
         public int TotalServidores { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger, ApplicationDBContext context)
+
+        [BindProperty]
+        public AuditSentinel.Models.Correo Correos { get; set; }
+
+
+        public IndexModel(
+            ILogger<IndexModel> logger,
+            ApplicationDBContext context,
+            EmailService emailService)
         {
             _logger = logger;
             _context = context;
+            _emailService = emailService;
         }
 
         public void OnGet()
@@ -29,22 +41,26 @@ namespace AuditSentinel.Pages
             TotalServidores = _context.Servidores.Count();
         }
 
-        [BindProperty]
-        public string Nombre { get; set; }
-
-        [BindProperty]
-        public string Email { get; set; }
-
-        [BindProperty]
-        public string Mensaje { get; set; }
-
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
-            // Aquí luego podemos guardarlo en base de datos
-            Console.WriteLine($"Nuevo contacto: {Nombre} - {Email}");
+            if (!ModelState.IsValid)
+                return Page();
 
-            return RedirectToPage();
+            var mensajeCorreo = $@"
+                <h3>Nueva Solicitud de Auditoría</h3>
+                <p><strong>Nombre:</strong> {Correos.Nombre}</p>
+                <p><strong>Empresa:</strong> {Correos.Empresa}</p>
+                <p><strong>Email:</strong> {Correos.Email}</p>
+                <p><strong>Mensaje:</strong> {Correos.Mensaje}</p>";
+
+            await _emailService.SendEmailAsync(
+                "Nueva Solicitud AuditSentinel",
+                mensajeCorreo
+            );
+
+            TempData["Exito"] = "Solicitud enviada correctamente.";
+
+            return RedirectToPage("MensajeEnviado");
         }
     }
 }
-

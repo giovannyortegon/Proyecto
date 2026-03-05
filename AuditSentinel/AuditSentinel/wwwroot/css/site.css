@@ -137,3 +137,25 @@ body {
     margin-bottom: 40px;
 }*/
 
+#main-content-wrapper {
+    /* El margen inicial debe ser igual al ancho colapsado del sidebar */
+    margin-left: 70px;
+    transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+}
+
+/* Cuando el sidebar está en HOVER, empujamos el contenido */
+body:has(#app-sidebar:hover) #main-content-wrapper {
+    margin-left: 260px;
+}
+
+/* Soporte para navegadores antiguos sin :has() */
+#app-sidebar:hover ~ #main-content-wrapper {
+    margin-left: 260px;
+}
+
+.footer {
+    position: relative;
+    z-index: 500; /* Siempre por debajo del Sidebar que tiene 2000 */
+}

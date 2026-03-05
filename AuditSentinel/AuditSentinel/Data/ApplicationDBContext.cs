@@ -22,8 +22,9 @@ namespace AuditSentinel.Data
         public DbSet<AuditSentinel.Models.Reportes> Reportes { get; set; }
         public DbSet<AuditSentinel.Models.EscaneosReportes> EscaneosReportes { get; set; }
         public DbSet<AuditSentinel.Models.EscaneosVulnerabilidades> EscaneosVulnerabilidades { get; set; }
+        public DbSet<LogErroresEscaneo> LogErroresEscaneo { get; set; }
+        public DbSet<AuditSentinel.Models.Correo> Correos { get; set; }
 
-        public DbSet<LogErroresEscaneo> LogErroresEscaneos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

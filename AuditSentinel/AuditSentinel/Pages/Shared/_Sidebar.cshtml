@@ -1,72 +1,73 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@* Pages/Shared/_Sidebar.cshtml *@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject SignInManager<AuditSentinel.Models.Usuarios> SignInManager
 @inject UserManager<AuditSentinel.Models.Usuarios> UserManager
 
-<div id="app-sidebar" class="sidebar collapsed d-flex flex-column p-2">
-    <!-- Botón menú -->
-    <button id="sidebar-toggle" type="button" class="btn btn-sm btn-outline-light mb-3">
-        <i class="bi bi-list"></i>
-    </button>
 
-    <!-- Título (solo visible en expanded) -->
-    <div class="brand-title mb-3 d-none d-md-block text-center">Audit Sentinel</div>
+<div id="app-sidebar" class="sidebar collapsed d-flex flex-column shadow-lg">
+    <div class="sidebar-header d-flex align-items-center p-3">
+        <div class="brand-logo d-flex align-items-center">
+            <div class="logo-box bg-white rounded-3 shadow-sm">
+                <i class="bi bi-shield-lock-fill text-primary-custom fs-4"></i>
+            </div>
+            <span class="brand-title fw-bold text-white menu-text ms-2">Audit Sentinel</span>
+        </div>
+    </div>
 
-    <!-- Navegación -->
-    <nav class="nav flex-column">
-        <a asp-page="/Index" class="nav-link d-flex align-items-center text-white">
-            <i class="bi bi-house-door"></i>
+    <hr class="sidebar-divider mx-3 opacity-25 text-white">
+
+    <nav class="nav flex-column flex-nowrap px-2 flex-grow-1 overflow-hidden">
+        <a asp-page="/Index" class="nav-link d-flex align-items-center mb-2">
+            <div class="icon-container"><i class="bi bi-house-door"></i></div>
             <span class="menu-text">Inicio</span>
         </a>
-
-        <a asp-page="/Servidores/Index" class="nav-link d-flex align-items-center text-white">
-            <i class="bi bi-hdd-network"></i>
+        <a asp-page="/Servidores/Index" class="nav-link d-flex align-items-center mb-2">
+            <div class="icon-container"><i class="bi bi-hdd-network"></i></div>
             <span class="menu-text">Servidores</span>
         </a>
-
-        <a asp-page="/Escaneos/Index" class="nav-link d-flex align-items-center text-white">
-            <i class="bi bi-upc-scan"></i>
+        <a asp-page="/Escaneos/Index" class="nav-link d-flex align-items-center mb-2">
+            <div class="icon-container"><i class="bi bi-upc-scan"></i></div>
             <span class="menu-text">Escaneos</span>
         </a>
-
-        <a asp-page="/Reportes/Index" class="nav-link d-flex align-items-center text-white">
-            <i class="bi bi-clipboard-data"></i>
+        <a asp-page="/Reportes/Index" class="nav-link d-flex align-items-center mb-2">
+            <div class="icon-container"><i class="bi bi-clipboard-data"></i></div>
             <span class="menu-text">Reportes</span>
         </a>
-
-        <a asp-page="/Configuracion" class="nav-link d-flex align-items-center text-white">
-            <i class="bi bi-gear"></i>
+        <a asp-page="/Configuracion" class="nav-link d-flex align-items-center mb-2">
+            <div class="icon-container"><i class="bi bi-gear"></i></div>
             <span class="menu-text">Configuración</span>
         </a>
     </nav>
 
-    <div class="mt-auto flex-column" id="LoginInferior">
-
-        
-    @if (SignInManager.IsSignedIn(User))
+    <div class="sidebar-footer p-2 mt-auto border-top border-white border-opacity-10">
+        @if (SignInManager.IsSignedIn(User))
         {
-
-            <i class="bi bi-person-fill"></i>
             @if (User?.Identity?.IsAuthenticated ?? false)
             {
-                <span class="menu-text">@User.Identity.Name</span>
+                <div class="nav-link d-flex align-items-center text-white mb-2 p-1">
+                    <div class="icon-container bg-white bg-opacity-25 rounded-circle">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <span class="menu-text small">@User.Identity.Name</span>
+                </div>
+                <a method="post" asp-area="Identity" asp-page="/Cuenta/Logout" asp-route-returnUrl="@Url.Page("/Index")">
+                    <button type="submit" class="nav-link d-flex align-items-center text-logout border-0 bg-transparent w-100 p-1">
+                        <div class="icon-container"><i class="bi bi-box-arrow-right"></i></div>
+                        <span class="menu-text small fw-bold">Cerrar Sesión</span>
+                    </button>
+                </a>
+  
             }
 
-            <br>
-            <a method="post" asp-page="/Cuenta/Logout" asp-route-returnUrl="@Url.Page("/Index")" class="nav-link justify-content-center d-flex text-white">
-                <span type="submit" class="menu-text align-items-center" style="cursor:pointer">Cerrar sesión</span>
-            </a>
-
-        }else
+        } else
         {
-            <a asp-page="/Cuenta/Login" class="nav-link d-flex align-items-center text-white">
-                @* <button class="btn login-btn d-flex align-items-center"> *@
-                <i class="bi bi-person-fill"></i>
-                <span class="menu-text">Inicio Sesion</span>
-                @* </button> *@
+            <a asp-area="Identity" asp-page="/Cuenta/Login" class="nav-link login-btn-custom d-flex align-items-center mb-2">
+        @* <form asp-area="Identity" asp-page="/Cuenta/Login" class="nav-link login-btn-custom d-flex align-items-center mt-2 mx-2"> *@
+                <div class="icon-container">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <span class="menu-text fw-bold">Iniciar Sesión</span>
             </a>
-        }       
+        }
     </div>
-
 </div>
