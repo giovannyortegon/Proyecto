@@ -27,6 +27,7 @@
         </div>
     </div>
 
+    @* Fila de Identificación y Progreso *@
     <div class="card shadow-sm mb-4 border-0 border-start border-primary border-4">
         <div class="card-body">
             <div class="row align-items-center">
@@ -56,9 +57,6 @@
                 </div>
 
                 <div class="col-lg-3 text-center">
-                    @{
-                        var primeraIp = Model.Escaneo.EscaneosServidores.FirstOrDefault()?.Servidores?.IP ?? "";
-                    }
                     <div id="btnGroupEscaneo">
                         <button id="btnStart" class="btn btn-primary btn-lg w-100 shadow-sm @(Model.Escaneo.Estado == AuditSentinel.Models.EstadoEscaneo.EnProgreso ? "d-none" : "")"
                                 onclick="iniciarEscaneo()">
@@ -75,7 +73,8 @@
         </div>
     </div>
 
-    <div class="row g-4">
+    @* Fila de Información General (Servidores, Reglas, Consola) *@
+    <div class="row g-4 mb-4">
         <div class="col-md-4">
             <div class="card shadow-sm h-100 border-0">
                 <div class="card-header bg-white py-3 border-0">
@@ -92,7 +91,7 @@
                                 </div>
                                 <div class="d-flex justify-content-between mt-1">
                                     <div class="small text-muted">@s.Servidores.SistemaOperativo</div>
-                                    <span id="status-@s.Servidores.NombreServidor" class="badge rounded-pill bg-secondary">Cargando...</span>
+                                    <span id="status-@s.Servidores.NombreServidor" class="badge rounded-pill bg-secondary px-3">Cargando...</span>
                                 </div>
                             </div>
                         }
@@ -115,7 +114,7 @@
                             </div>
                             <div class="ms-3">
                                 <div class="fw-bold small">@p.Plantillas.NombrePlantilla</div>
-                                <div class="text-muted" style="font-size: 0.75rem;">Configuración estandarizada</div>
+                                <div class="text-muted" style="font-size: 0.75rem;">Configuración estándar</div>
                             </div>
                         </div>
                     }
@@ -126,7 +125,7 @@
         <div class="col-md-4">
             <div class="card shadow-sm h-100 border-0 bg-dark">
                 <div class="card-header bg-transparent py-3 border-0">
-                    <h6 class="m-0 font-weight-bold text-white"><i class="bi bi-terminal me-2"></i>Consola de Errores/Actividad</h6>
+                    <h6 class="m-0 font-weight-bold text-white"><i class="bi bi-terminal me-2"></i>Consola de Actividad</h6>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive" style="max-height: 280px;">
@@ -140,57 +139,133 @@
             </div>
         </div>
     </div>
+
+    @* SECCIÓN DE RESULTADOS CON PAGINACIÓN Y SERVIDOR *@
+    @if (Model.Escaneo.Estado == AuditSentinel.Models.EstadoEscaneo.Completado)
+    {
+        <div class="card shadow-sm border-0 animate__animated animate__fadeIn">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="mb-0 text-primary fw-bold">
+                    <i class="bi bi-list-check me-2"></i>Detalle de Hallazgos por Servidor
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="tablaVulnerabilidades" class="table table-hover align-middle w-100">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Servidor</th>
+                                <th>Vulnerabilidad</th>
+                                <th>Riesgo</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Escaneo.EscaneosVulnerabilidades)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="badge bg-light text-dark border">
+                                            <i class="bi bi-hdd-network me-1"></i>
+                                            @(Model.Escaneo.EscaneosServidores.FirstOrDefault()?.Servidores?.NombreServidor)
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold text-dark">@item.Vulnerabilidades.NombreVulnerabilidad</div>
+                                        <div class="text-muted small">@item.Vulnerabilidades.Descripcion</div>
+                                    </td>
+                                    <td>
+                                        @{
+                                            var badgeColor = item.Vulnerabilidades.NivelRiesgo switch
+                                            {
+                                                AuditSentinel.Models.NivelRiesgo.Critico => "bg-danger",
+                                                AuditSentinel.Models.NivelRiesgo.Alto => "bg-warning text-dark",
+                                                AuditSentinel.Models.NivelRiesgo.Medio => "bg-info text-dark",
+                                                _ => "bg-secondary"
+                                            };
+                                        }
+                                        <span class="badge @badgeColor">@item.Vulnerabilidades.NivelRiesgo</span>
+                                    </td>
+                                    <td>
+                                        @if (item.estado == AuditSentinel.Models.Estado.Activa)
+                                        {
+                                            <span class="badge bg-danger-soft text-danger border border-danger">
+                                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Detectada
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success-soft text-success border border-success">
+                                                <i class="bi bi-check-circle-fill me-1"></i> Seguro
+                                            </span>
+                                        }
+                                    </td>
+                                    <td class="small text-muted">@item.FechaEscaneo.ToString("dd/MM/yyyy HH:mm")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 @Html.AntiForgeryToken()
 
 @section Scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+
     <script>
+        $(document).ready(function () {
+            $('#tablaVulnerabilidades').DataTable({
+                "pageLength": 5,
+                "lengthChange": false,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+                },
+                "dom": '<"d-flex justify-content-between mb-2"f>t<"d-flex justify-content-between mt-2"ip>'
+            });
+        });
+
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/escaneoHub")
             .withAutomaticReconnect()
             .build();
 
-        // 1. Recepción de actualizaciones en tiempo real
         connection.on("ReceiveUpdate", (data) => {
-            const bar = document.getElementById('pBar');
-            bar.style.width = data.porcentaje + '%';
-            document.getElementById('progressText').innerText = data.porcentaje + '%';
+            const pBar = document.getElementById('pBar');
+            const progressText = document.getElementById('progressText');
+            if (pBar) pBar.style.width = data.porcentaje + '%';
+            if (progressText) progressText.innerText = data.porcentaje + '%';
 
             const tbody = document.getElementById('logTableBody');
-            if (tbody.innerText.includes("Sistema listo")) tbody.innerHTML = "";
+            if (tbody) {
+                if (tbody.innerText.includes("Sistema listo")) tbody.innerHTML = "";
+                const logRow = `<tr><td class="p-2 border-secondary">[DETECCIÓN] ${data.ultimaVuln} -> <span class="${data.estado == 'Activa' ? 'text-danger fw-bold' : 'text-success'}">${data.estado}</span></td></tr>`;
+                tbody.insertAdjacentHTML('afterbegin', logRow);
+            }
 
-            const logRow = `
-                <tr>
-                    <td class="p-2 border-secondary">
-                        <span class="text-info">[${data.ultimaVuln || 'INFO'}]</span>:
-                        <span class="${data.estado === 'Activa' ? 'text-danger' : 'text-success'}">${data.estado || 'Procesando...'}</span>
-                    </td>
-                </tr>`;
-            tbody.insertAdjacentHTML('afterbegin', logRow);
-
-            if (data.porcentaje >= 100) {
-                resetUI("Finalizado", "bg-success");
+            if (data.esFinal || data.porcentaje >= 100) {
+                setTimeout(() => { location.reload(); }, 2000);
             }
         });
 
-        // 2. Estado de Agentes
         connection.on("AgentStatus", (hostname, isOnline) => {
             const el = document.getElementById('status-' + hostname);
-            if (el) {
-                el.innerText = isOnline ? "En Línea" : "Desconectado";
-                el.className = isOnline ? "badge rounded-pill bg-success" : "badge rounded-pill bg-danger";
-            }
+            if (el) actualizarBadgeEstado(el, isOnline);
         });
 
-        // 3. Iniciar Escaneo
         async function iniciarEscaneo() {
             document.getElementById('btnStart').classList.add('d-none');
             document.getElementById('btnStop').classList.remove('d-none');
             document.getElementById('pBar').classList.add('progress-bar-animated');
             document.getElementById('txtEstado').innerText = "Ejecutando...";
-            document.getElementById('txtEstado').className = "badge rounded-pill bg-warning px-3";
 
             await fetch(`?handler=Iniciar&id=@Model.Escaneo.IdEscaneo`, {
                 method: 'POST',
@@ -198,26 +273,38 @@
             });
         }
 
-        // 4. Detener Escaneo
-        async function detenerEscaneo() {
-            if(!confirm("¿Desea abortar el escaneo?")) return;
-            await fetch(`?handler=Detener&id=@Model.Escaneo.IdEscaneo`, {
-                method: 'POST',
-                headers: { "RequestVerificationToken": document.querySelector('input[name="__RequestVerificationToken"]').value }
-            });
-            resetUI("Abortado", "bg-danger");
-        }
-
-        function resetUI(mensaje, clase) {
-            document.getElementById('btnStart').classList.remove('d-none');
-            document.getElementById('btnStop').classList.add('d-none');
-            document.getElementById('pBar').classList.remove('progress-bar-animated');
-            document.getElementById('txtEstado').innerText = mensaje;
-            document.getElementById('txtEstado').className = `badge rounded-pill ${clase} px-3`;
+        function actualizarBadgeEstado(el, isOnline) {
+            el.innerText = isOnline ? "Online" : "Offline";
+            el.className = isOnline ? "badge rounded-pill bg-success px-3" : "badge rounded-pill bg-secondary px-3";
         }
 
         connection.start().then(() => {
             connection.invoke("JoinScanGroup", @Model.Escaneo.IdEscaneo);
+            @foreach (var item in Model.Escaneo.EscaneosServidores)
+            {
+                    <text>
+                    connection.invoke("IsServerOnline", "@item.Servidores.NombreServidor").then(isOnline => {
+                        const el = document.getElementById('status-@item.Servidores.NombreServidor');
+                        if (el) actualizarBadgeEstado(el, isOnline);
+                    });
+                    </text>
+            }
         });
     </script>
+
+    <style>
+        .bg-danger-soft {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+
+        .bg-success-soft {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+
+        .dataTables_info, .dataTables_paginate {
+            font-size: 0.85rem;
+        }
+    </style>
 }

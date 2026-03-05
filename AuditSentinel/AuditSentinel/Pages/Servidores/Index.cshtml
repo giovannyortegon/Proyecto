@@ -17,6 +17,7 @@
         </a>
     </div>
 
+    @* --- Filtros --- *@
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-white py-3">
             <h6 class="m-0 font-weight-bold text-primary">Filtros de Red</h6>
@@ -45,6 +46,7 @@
         </div>
     </div>
 
+    @* --- Tabla de Servidores --- *@
     <div class="card shadow-sm">
         <div class="card-header bg-white py-3">
             <h6 class="m-0 font-weight-bold text-dark">Servidores Activos</h6>
@@ -55,6 +57,7 @@
                     <thead class="table-light">
                         <tr>
                             <th class="ps-4">@Html.DisplayNameFor(model => model.Servidores[0].NombreServidor)</th>
+                            <th>Estado Agente</th> @* Nueva Columna *@
                             <th>@Html.DisplayNameFor(model => model.Servidores[0].IP)</th>
                             <th>@Html.DisplayNameFor(model => model.Servidores[0].SistemaOperativo)</th>
                             <th>Fecha Registro</th>
@@ -70,6 +73,12 @@
                                     <td class="ps-4">
                                         <span class="fw-bold text-dark">@Html.DisplayFor(modelItem => item.NombreServidor)</span>
                                     </td>
+                                    @* Indicador Dinámico de Conexión *@
+                                    <td>
+                                        <span id="status-@item.NombreServidor" class="badge rounded-pill bg-secondary px-3">
+                                            <i class="bi bi-arrow-repeat spin-icon"></i> Verificando...
+                                        </span>
+                                    </td>
                                     <td>
                                         <code>@Html.DisplayFor(modelItem => item.IP)</code>
                                     </td>
@@ -77,7 +86,7 @@
                                         <i class="bi bi-cpu me-1"></i> @Html.DisplayFor(modelItem => item.SistemaOperativo)
                                     </td>
                                     <td class="small text-muted">
-                                        @Html.DisplayFor(modelItem => item.Create_is)
+                                        @item.Create_is.ToString("dd/MM/yyyy HH:mm")
                                     </td>
                                     <td class="text-end pe-4">
                                         <div class="btn-group shadow-sm">
@@ -98,7 +107,7 @@
                         else
                         {
                             <tr>
-                                <td colspan="5" class="text-center py-5">
+                                <td colspan="6" class="text-center py-5">
                                     <p class="text-muted mb-0">No se encontraron servidores registrados.</p>
                                 </td>
                             </tr>
@@ -108,19 +117,17 @@
             </div>
         </div>
 
+        @* --- Paginación --- *@
         @if (Model.TotalPages > 1)
         {
             <div class="card-footer bg-white border-top-0 py-3">
                 <nav aria-label="Paginación de servidores">
                     <ul class="pagination pagination-sm justify-content-center mb-2">
-                        @* Primero *@
                         <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
                             <a class="page-link" asp-page="./Index" asp-route-pageNumber="1" asp-route-search="@Model.Search">
                                 <i class="bi bi-chevron-double-left"></i>
                             </a>
                         </li>
-
-                        @* Páginas numeradas dinámicas *@
                         @{
                             var start = Math.Max(1, Model.PageNumber - 2);
                             var end = Math.Min(Model.TotalPages, Model.PageNumber + 2);
@@ -131,19 +138,72 @@
                                 </li>
                             }
                         }
-
-                        @* Último *@
                         <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
                             <a class="page-link" asp-page="./Index" asp-route-pageNumber="@Model.TotalPages" asp-route-search="@Model.Search">
                                 <i class="bi bi-chevron-double-right"></i>
                             </a>
                         </li>
                     </ul>
-                    <div class="text-center small text-muted">
-                        Página <strong>@Model.PageNumber</strong> de @Model.TotalPages — Total: @Model.TotalItems servidores
-                    </div>
                 </nav>
             </div>
         }
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/escaneoHub")
+            .withAutomaticReconnect()
+            .build();
+
+        // Escucha cambios de estado globales
+        connection.on("AgentStatus", (hostname, isOnline) => {
+            const el = document.getElementById('status-' + hostname);
+            if (el) {
+                actualizarBadge(el, isOnline);
+            }
+        });
+
+        function actualizarBadge(el, isOnline) {
+            el.innerText = isOnline ? "Online" : "Offline";
+            el.className = isOnline ? "badge rounded-pill bg-success px-3" : "badge rounded-pill bg-secondary px-3";
+        }
+
+        connection.start().then(() => {
+            console.log("Conectado a SignalR - Monitoreo Global");
+
+            // Consulta inicial de estado para cada servidor en la tabla
+            @if (Model.Servidores != null)
+            {
+                    foreach (var s in Model.Servidores)
+                    {
+                            <text>
+                            connection.invoke("IsServerOnline", "@s.NombreServidor").then(isOnline => {
+                                const el = document.getElementById('status-@s.NombreServidor');
+                                if (el) actualizarBadge(el, isOnline);
+                            });
+                            </text>
+                    }
+            }
+        }).catch(err => console.error(err.toString()));
+    </script>
+
+    <style>
+        .spin-icon {
+            display: inline-block;
+            animation: rotation 2s infinite linear;
+        }
+
+        @@keyframes rotation {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(359deg);
+            }
+        }
+    </style>
+}

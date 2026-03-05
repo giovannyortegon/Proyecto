@@ -61,6 +61,8 @@ namespace AuditSentinel.Services
                         {
                             var context = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
 
+                            // 1. Solo buscar escaneos que estén en estado "Pendiente"
+                            // Importante: No debe haber escaneos creados directamente en "Pendiente" si no quieres que inicien solos.
                             var escaneo = await context.Escaneos
                                 .Include(e => e.EscaneosPlantillas).ThenInclude(ep => ep.Plantillas)
                                     .ThenInclude(p => p.PlantillasVulnerabilidades).ThenInclude(pv => pv.Vulnerabilidades)
@@ -68,6 +70,7 @@ namespace AuditSentinel.Services
 
                             if (escaneo != null)
                             {
+                                // Cambiamos a EnProgreso para que ningún otro hilo lo tome
                                 escaneo.Estado = EstadoEscaneo.EnProgreso;
                                 await context.SaveChangesAsync();
 
@@ -79,7 +82,6 @@ namespace AuditSentinel.Services
                                 {
                                     var v = pruebas[i];
 
-                                    // ENVIAR (Usando stream correctamente)
                                     await SendJsonAsync(stream, new
                                     {
                                         type = "exec",
@@ -89,11 +91,9 @@ namespace AuditSentinel.Services
                                         escaneoId = escaneo.IdEscaneo
                                     });
 
-                                    // RECIBIR
                                     var response = await ReceiveJsonDocumentAsync(stream);
                                     bool matched = response.RootElement.GetProperty("matched").GetBoolean();
 
-                                    // GUARDAR EN TABLA RELACIONADA
                                     var resultado = new EscaneosVulnerabilidades
                                     {
                                         IdEscaneo = escaneo.IdEscaneo,
@@ -105,21 +105,23 @@ namespace AuditSentinel.Services
                                     context.EscaneosVulnerabilidades.Add(resultado);
                                     await context.SaveChangesAsync();
 
-                                    // NOTIFICAR SIGNALR
+                                    // Notificar progreso
                                     int progreso = (int)((double)(i + 1) / pruebas.Count * 100);
                                     await _hubContext.Clients.Group($"Escaneo_{escaneo.IdEscaneo}").SendAsync("ReceiveUpdate", new
                                     {
                                         porcentaje = progreso,
                                         ultimaVuln = v.NombreVulnerabilidad,
-                                        estado = matched ? "Activa" : "Inactiva"
+                                        estado = matched ? "Activa" : "Inactiva",
+                                        finalizado = (progreso == 100) // Enviamos bandera de fin
                                     });
                                 }
 
+                                // 2. ACTUALIZAR A COMPLETADO AL FINALIZAR
                                 escaneo.Estado = EstadoEscaneo.Completado;
                                 await context.SaveChangesAsync();
                             }
                         }
-                        await Task.Delay(3000);
+                        await Task.Delay(3000); // Esperar antes de buscar el siguiente escaneo pendiente
                     }
                 }
                 catch { }

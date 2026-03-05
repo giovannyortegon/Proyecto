@@ -32,8 +32,8 @@ namespace AuditSentinel.Models
         [Required]
         [MaxLength(80)]
         [StringLength(80, MinimumLength = 5, ErrorMessage = "El nombre debe tener entre 5 y 80 caracteres.")]
-        [RegularExpression(@"^(?!\d+$)[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]+$",
-            ErrorMessage = "El nombre no puede tener caracteres especiales, contener espacios o ser solo números.")]
+        //[RegularExpression(@"^(?!\d+$)[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]+$",
+        //    ErrorMessage = "El nombre no puede tener caracteres especiales, contener espacios o ser solo números.")]
         [Display(Name = "Nombre Servidor")]
         public string NombreServidor { get; set; }
         [Required]
