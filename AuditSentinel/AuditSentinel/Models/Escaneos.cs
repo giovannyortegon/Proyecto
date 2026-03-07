@@ -4,9 +4,13 @@ namespace AuditSentinel.Models
 {
     public enum EstadoEscaneo
     {
+        [Display(Name = "Pendiente")]
         Pendiente,
+        [Display(Name = "En Progreso")]
         EnProgreso,
+        [Display(Name = "Completado")]
         Completado,
+        [Display(Name = "Fallido")]
         Fallido
     }
     public class Escaneos
