@@ -10,10 +10,12 @@ namespace AuditSentinel.Pages.Escaneos
     public class DetailsModel : PageModel
     {
         private readonly ApplicationDBContext _context;
+        private readonly ExportService _exportService;
 
-        public DetailsModel(ApplicationDBContext context)
+        public DetailsModel(ApplicationDBContext context, ExportService exportService)
         {
             _context = context;
+            _exportService = exportService;
         }
 
         public AuditSentinel.Models.Escaneos Escaneo { get; set; }
@@ -26,47 +28,61 @@ namespace AuditSentinel.Pages.Escaneos
                 .Include(e => e.EscaneosVulnerabilidades).ThenInclude(ev => ev.Vulnerabilidades)
                 .FirstOrDefaultAsync(m => m.IdEscaneo == id);
 
-            if (Escaneo == null)
-            {
-                return NotFound();
-            }
-
+            if (Escaneo == null) return NotFound();
             return Page();
         }
 
-        // Handler para el botón "Ejecutar Scan"
+        public async Task<IActionResult> OnGetExportarAsync(int id, string format)
+        {
+            var escaneo = await _context.Escaneos
+                .Include(e => e.EscaneosServidores).ThenInclude(es => es.Servidores)
+                .Include(e => e.EscaneosPlantillas).ThenInclude(ep => ep.Plantillas)
+                .Include(e => e.EscaneosVulnerabilidades).ThenInclude(ev => ev.Vulnerabilidades)
+                .FirstOrDefaultAsync(m => m.IdEscaneo == id);
+
+            if (escaneo == null) return NotFound();
+
+            var filePath = Path.Combine(Path.GetTempPath(), $"Escaneo_{id}.{format}");
+
+            switch (format.ToLower())
+            {
+                case "csv":
+                    _exportService.ExportEscaneoToCsv(escaneo, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "text/csv", $"Escaneo_{id}.csv");
+                case "html":
+                    _exportService.ExportEscaneoToHtml(escaneo, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "text/html", $"Escaneo_{id}.html");
+                case "pdf":
+                    _exportService.ExportEscaneoToPdf(escaneo, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", $"Escaneo_{id}.pdf");
+                default:
+                    return BadRequest("Formato no soportado.");
+            }
+        }
+
         public async Task<IActionResult> OnPostIniciarAsync(int id)
         {
             var escaneo = await _context.Escaneos
-                .Include(e => e.EscaneosPlantillas) // Cargamos la relación
+                .Include(e => e.EscaneosPlantillas)
                 .FirstOrDefaultAsync(e => e.IdEscaneo == id);
 
             if (escaneo == null) return NotFound();
 
-            // VALIDACIÓN: Si no hay plantilla, no podemos escanear
             if (!escaneo.EscaneosPlantillas.Any())
-            {
-                // Aquí podrías retornar un mensaje de error a la vista
                 return RedirectToPage(new { id = id, error = "No hay plantilla asociada" });
-            }
 
-            // Limpiar resultados anteriores para permitir un re-escaneo limpio
             var resultadosPrevios = _context.EscaneosVulnerabilidades.Where(ev => ev.IdEscaneo == id);
             _context.EscaneosVulnerabilidades.RemoveRange(resultadosPrevios);
 
             escaneo.Estado = EstadoEscaneo.Pendiente;
             await _context.SaveChangesAsync();
-
             return RedirectToPage(new { id = id });
         }
-        // Handler para el botón "Abortar"
+
         public async Task<IActionResult> OnPostDetenerAsync(int id)
         {
-            // Intentar cancelar mediante el token en el servicio ScannerServerService
             if (ScannerServerService.EscaneosEnCurso.TryGetValue(id, out var cts))
-            {
                 cts.Cancel();
-            }
 
             var escaneo = await _context.Escaneos.FindAsync(id);
             if (escaneo != null)
