@@ -1,61 +1,173 @@
 ﻿@page
 @using AuditSentinel.Models
-@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @model AuditSentinel.Pages.Reportes.IndexModel
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = "Administrador,Analista")]
-
 @{
     ViewData["Title"] = "Reportes de Auditoría";
 }
 
 <div class="container-fluid py-4">
+
+    @* ── ENCABEZADO ── *@
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0 text-gray-800">
-            <i class="bi bi-file-earmark-bar-graph"></i> Reportes de Auditoría
-        </h1>
-        <a class="btn btn-primary shadow-sm" asp-page="Create">
-            <i class="bi bi-file-earmark-plus"></i> Nuevo Reporte
-        </a>
+        <div>
+            <h1 class="h3 mb-0 fw-bold text-dark">
+                <i class="bi bi-file-earmark-bar-graph text-primary me-2"></i>Reportes de Auditoría
+            </h1>
+            <p class="text-muted small mb-0">Panel de control de informes y cumplimiento</p>
+        </div>
+        <div class="d-flex gap-2">
+            <div class="btn-group shadow-sm">
+                <a asp-page-handler="Exportar" asp-route-format="pdf"
+                   class="btn btn-danger btn-sm fw-bold">
+                    <i class="bi bi-file-earmark-pdf-fill me-1"></i> PDF
+                </a>
+                <a asp-page-handler="Exportar" asp-route-format="csv"
+                   class="btn btn-success btn-sm fw-bold">
+                    <i class="bi bi-filetype-csv me-1"></i> CSV
+                </a>
+            </div>
+            <a class="btn btn-primary shadow-sm fw-bold" asp-page="Create">
+                <i class="bi bi-file-earmark-plus me-1"></i> Nuevo Reporte
+            </a>
+        </div>
     </div>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-white py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Parámetros del Informe</h6>
-        </div>
-        <div class="card-body">
-            <form method="get" class="row g-3">
-                <div class="col-md-5">
-                    <label class="form-label small fw-bold">Buscar Reporte</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
-                        <input name="search" value="@Model.Search" class="form-control" placeholder="Nombre o descripción..." />
+    @* ── KPIs ── *@
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #0B3D91 !important;">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center"
+                         style="width:48px;height:48px;background:#e8eef8;">
+                        <i class="bi bi-file-earmark-text fs-4 text-primary"></i>
+                    </div>
+                    <div>
+                        <div class="h4 mb-0 fw-bold">@Model.TotalReportes</div>
+                        <div class="small text-muted">Total Reportes</div>
                     </div>
                 </div>
-
-                <div class="col-md-3">
-                    <label class="form-label small fw-bold">Nivel de Cumplimiento</label>
-                    <select name="cumplimiento" class="form-select"
-                            asp-items="Html.GetEnumSelectList<AuditSentinel.Models.Cumplimiento>()">
-                        <option value="">Todos los niveles</option>
-                    </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #28a745 !important;">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center"
+                         style="width:48px;height:48px;background:#e6f9ed;">
+                        <i class="bi bi-hdd-network fs-4 text-success"></i>
+                    </div>
+                    <div>
+                        <div class="h4 mb-0 fw-bold">@Model.TotalEscaneosVinc</div>
+                        <div class="small text-muted">Escaneos Vinculados</div>
+                    </div>
                 </div>
-
-                <div class="col-md-4 d-flex align-items-end gap-2">
-                    <button class="btn btn-outline-primary flex-grow-1" type="submit">
-                        <i class="bi bi-funnel"></i> Filtrar
-                    </button>
-                    <a asp-page="./Index" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-clockwise"></i>
-                    </a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #ffc107 !important;">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center"
+                         style="width:48px;height:48px;background:#fff8e1;">
+                        <i class="bi bi-calendar-check fs-4 text-warning"></i>
+                    </div>
+                    <div>
+                        <div class="h4 mb-0 fw-bold">@Model.ReporteEsteMes</div>
+                        <div class="small text-muted">Reportes Este Mes</div>
+                    </div>
                 </div>
-            </form>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #17a2b8 !important;">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center"
+                         style="width:48px;height:48px;background:#e0f7fa;">
+                        <i class="bi bi-activity fs-4 text-info"></i>
+                    </div>
+                    <div>
+                        <div class="h4 mb-0 fw-bold">@Model.TotalItems</div>
+                        <div class="small text-muted">Resultados Filtrados</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-white py-3">
-            <h6 class="m-0 font-weight-bold text-dark">Historial de Informes Generados</h6>
+    @* ── GRÁFICA + FILTROS ── *@
+    <div class="row g-4 mb-4">
+
+        @* Gráfica de dona — se actualiza sola con datos de la BD *@
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white py-3 border-0">
+                    <h6 class="m-0 fw-bold text-primary">
+                        <i class="bi bi-pie-chart-fill me-1"></i> Distribución por Cumplimiento
+                    </h6>
+                    <small class="text-muted">Se actualiza automáticamente</small>
+                </div>
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    @if (Model.TotalReportes > 0)
+                    {
+                        <canvas id="graficaCumplimiento" style="max-height: 260px;"></canvas>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-pie-chart d-block fs-1 mb-2 opacity-25"></i>
+                            Sin datos disponibles
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @* Filtros *@
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white py-3 border-0">
+                    <h6 class="m-0 fw-bold text-primary">
+                        <i class="bi bi-funnel me-1"></i> Parámetros del Informe
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Buscar Reporte</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                                <input name="search" value="@Model.Search"
+                                       class="form-control" placeholder="Nombre del reporte..." />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Nivel de Cumplimiento</label>
+                            <select name="cumplimiento" class="form-select"
+                                    asp-items="Html.GetEnumSelectList<AuditSentinel.Models.Cumplimiento>()">
+                                <option value="">Todos los niveles</option>
+                            </select>
+                        </div>
+                        <div class="col-12 d-flex gap-2">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-funnel me-1"></i> Filtrar
+                            </button>
+                            <a asp-page="./Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-clockwise me-1"></i> Limpiar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* ── TABLA DE REPORTES ── *@
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 fw-bold text-dark">
+                <i class="bi bi-table me-1"></i> Historial de Informes Generados
+            </h6>
+            <small class="text-muted">@Model.TotalItems reporte(s) encontrado(s)</small>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -65,7 +177,7 @@
                             <th class="ps-4">Nombre del Reporte</th>
                             <th>Cumplimiento</th>
                             <th>Fecha de Creación</th>
-                            <th class="text-center">Escaneos Incluidos</th>
+                            <th class="text-center">Escaneos</th>
                             <th class="text-end pe-4">Acciones</th>
                         </tr>
                     </thead>
@@ -74,13 +186,18 @@
                         {
                             foreach (var r in Model.Items)
                             {
+                                @* Color de badge según cumplimiento *@
+                                var nivel = r.cumplimiento.ToString().ToLower();
+                                var badge = nivel.Contains("no") ? "bg-danger-subtle text-danger border-danger-subtle"
+                                          : nivel.Contains("parcial") ? "bg-warning-subtle text-warning border-warning-subtle"
+                                          : "bg-success-subtle text-success border-success-subtle";
                                 <tr>
                                     <td class="ps-4">
                                         <div class="fw-bold text-dark">@r.NombreReporte</div>
-                                        <div class="small text-muted text-truncate" style="max-width: 250px;">ID: #@r.IdReporte</div>
+                                        <div class="small text-muted">REP-@r.IdReporte.ToString("D4")</div>
                                     </td>
                                     <td>
-                                        <span class="badge bg-info-subtle text-info border border-info-subtle rounded-pill px-3">
+                                        <span class="badge @badge border rounded-pill px-3">
                                             @r.cumplimiento
                                         </span>
                                     </td>
@@ -90,19 +207,22 @@
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <span class="badge rounded-circle bg-light text-dark border p-2" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+                                        <span class="badge rounded-pill bg-light text-dark border px-3">
                                             @(r.EscaneosReportes?.Count ?? 0)
                                         </span>
                                     </td>
                                     <td class="text-end pe-4">
                                         <div class="btn-group shadow-sm">
-                                            <a asp-page="Details" asp-route-id="@r.IdReporte" class="btn btn-sm btn-outline-secondary" title="Ver Detalles">
+                                            <a asp-page="Details" asp-route-id="@r.IdReporte"
+                                               class="btn btn-sm btn-outline-secondary" title="Ver Detalles">
                                                 <i class="bi bi-file-earmark-text"></i>
                                             </a>
-                                            <a asp-page="Edit" asp-route-id="@r.IdReporte" class="btn btn-sm btn-outline-primary" title="Editar">
+                                            <a asp-page="Edit" asp-route-id="@r.IdReporte"
+                                               class="btn btn-sm btn-outline-primary" title="Editar">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <a asp-page="Delete" asp-route-id="@r.IdReporte" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                            <a asp-page="Delete" asp-route-id="@r.IdReporte"
+                                               class="btn btn-sm btn-outline-danger" title="Eliminar">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>
@@ -114,7 +234,7 @@
                         {
                             <tr>
                                 <td colspan="5" class="text-center py-5 text-muted">
-                                    <i class="bi bi-file-earmark-x d-block fs-1 mb-2"></i>
+                                    <i class="bi bi-file-earmark-x d-block fs-1 mb-2 opacity-50"></i>
                                     No se encontraron reportes registrados.
                                 </td>
                             </tr>
@@ -127,23 +247,25 @@
         @if (Model.TotalPages > 1)
         {
             <div class="card-footer bg-white border-top-0 py-3">
-                <nav aria-label="Paginación">
+                <nav>
                     <ul class="pagination pagination-sm justify-content-center mb-2">
                         <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
-                            <a class="page-link" asp-route-pageNumber="@(Model.PageNumber - 1)" asp-route-search="@Model.Search" asp-route-cumplimiento="@Model.Cumplimiento">
+                            <a class="page-link" asp-route-pageNumber="@(Model.PageNumber - 1)"
+                               asp-route-search="@Model.Search" asp-route-cumplimiento="@Model.Cumplimiento">
                                 <i class="bi bi-chevron-left"></i>
                             </a>
                         </li>
-
                         @for (int i = 1; i <= Model.TotalPages; i++)
                         {
                             <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                                <a class="page-link" asp-route-pageNumber="@i" asp-route-search="@Model.Search" asp-route-cumplimiento="@Model.Cumplimiento">@i</a>
+                                <a class="page-link" asp-route-pageNumber="@i"
+                                   asp-route-search="@Model.Search"
+                                   asp-route-cumplimiento="@Model.Cumplimiento">@i</a>
                             </li>
                         }
-
                         <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
-                            <a class="page-link" asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-search="@Model.Search" asp-route-cumplimiento="@Model.Cumplimiento">
+                            <a class="page-link" asp-route-pageNumber="@(Model.PageNumber + 1)"
+                               asp-route-search="@Model.Search" asp-route-cumplimiento="@Model.Cumplimiento">
                                 <i class="bi bi-chevron-right"></i>
                             </a>
                         </li>
@@ -156,3 +278,49 @@
         }
     </div>
 </div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('graficaCumplimiento');
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels:   @Html.Raw(Model.GraficaLabels),
+                datasets: [{
+                    data:            @Html.Raw(Model.GraficaValores),
+                    backgroundColor: @Html.Raw(Model.GraficaColores),
+                    borderWidth: 2,
+                    borderColor: '#fff',
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                cutout: '62%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { font: { size: 11 }, padding: 12 }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => ` ${ctx.label}: ${ctx.parsed} reporte(s)`
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+<style>
+    .bg-danger-subtle  { background-color: #fee2e2 !important; }
+    .bg-warning-subtle { background-color: #fef9c3 !important; }
+    .bg-success-subtle { background-color: #dcfce7 !important; }
+    .border-danger-subtle  { border-color: #fca5a5 !important; }
+    .border-warning-subtle { border-color: #fde047 !important; }
+    .border-success-subtle { border-color: #86efac !important; }
+</style>
+}

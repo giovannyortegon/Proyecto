@@ -18,9 +18,18 @@
             </h1>
         </div>
         <div class="d-flex gap-2">
-            <a asp-page="Edit" asp-route-id="@Model.Reporte.IdReporte" class="btn btn-primary shadow-sm fw-bold">
+            <a asp-page="Edit" asp-route-id="@Model.Reporte.IdReporte"
+               class="btn btn-primary shadow-sm fw-bold">
                 <i class="bi bi-pencil-square me-1"></i> Editar Reporte
             </a>
+
+            @* ── Botón Exportar PDF ── *@
+            <a asp-page-handler="ExportarPdf"
+               asp-route-id="@Model.Reporte.IdReporte"
+               class="btn btn-danger shadow-sm fw-bold">
+                <i class="bi bi-file-earmark-pdf-fill me-1"></i> Exportar PDF
+            </a>
+
             <button class="btn btn-outline-dark shadow-sm" onclick="window.print()">
                 <i class="bi bi-printer me-1"></i> Imprimir
             </button>
@@ -40,8 +49,12 @@
                     <div class="text-center py-3">
                         @{
                             var cumplimiento = Model.Reporte.cumplimiento.ToString().ToLower();
-                            var iconClass = cumplimiento.Contains("alto") || cumplimiento.Contains("completo") ? "text-success bi-shield-check" : "text-warning bi-shield-exclamation";
-                            var badgeClass = cumplimiento.Contains("alto") || cumplimiento.Contains("completo") ? "bg-success" : "bg-warning text-dark";
+                            var iconClass  = cumplimiento.Contains("alto") || cumplimiento.Contains("completo")
+                                ? "text-success bi-shield-check"
+                                : "text-warning bi-shield-exclamation";
+                            var badgeClass = cumplimiento.Contains("alto") || cumplimiento.Contains("completo")
+                                ? "bg-success"
+                                : "bg-warning text-dark";
                         }
                         <i class="bi @iconClass" style="font-size: 4rem;"></i>
                         <h4 class="fw-bold mt-2">@Model.Reporte.cumplimiento</h4>
@@ -68,7 +81,9 @@
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-dark">Evidencia Técnica (Escaneos Asociados)</h6>
-                    <span class="badge bg-light text-primary border border-primary-subtle">@Model.Reporte.EscaneosReportes.Count Escaneos</span>
+                    <span class="badge bg-light text-primary border border-primary-subtle">
+                        @Model.Reporte.EscaneosReportes.Count Escaneos
+                    </span>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -91,12 +106,19 @@
                                         <td class="text-center">
                                             @{
                                                 var estado = x.Escaneos?.Estado.ToString();
-                                                var eBadge = estado == "Finalizado" ? "bg-success-subtle text-success border-success-subtle" : "bg-light text-muted border";
+                                                var eBadge = estado == "Finalizado"
+                                                    ? "bg-success-subtle text-success border-success-subtle"
+                                                    : "bg-light text-muted border";
                                             }
                                             <span class="badge @eBadge border px-2">@estado</span>
                                         </td>
+                                        @* ── Ver fuente restaurado ── *@
                                         <td class="text-end pe-4">
-                                            <a asp-page="/Escaneos/Details" asp-route-id="@x.Escaneos?.IdEscaneo" class="btn btn-sm btn-link text-decoration-none">Ver fuente</a>
+                                            <a asp-page="/Escaneos/Details"
+                                               asp-route-id="@x.Escaneos?.IdEscaneo"
+                                               class="btn btn-sm btn-link text-decoration-none">
+                                                Ver fuente
+                                            </a>
                                         </td>
                                     </tr>
                                 }
@@ -110,30 +132,13 @@
 </div>
 
 <style>
-    .x-small {
-        font-size: 0.75rem;
-    }
-
-    .bg-success-subtle {
-        background-color: #dcfce7 !important;
-    }
-
-    .border-success-subtle {
-        border-color: #86efac !important;
-    }
+    .x-small { font-size: 0.75rem; }
+    .bg-success-subtle     { background-color: #dcfce7 !important; }
+    .border-success-subtle { border-color: #86efac !important; }
 
     @@media print {
-        .btn, nav, .breadcrumb {
-            display: none !important;
-        }
-
-        .card {
-            border: 1px solid #ddd !important;
-            shadow: none !important;
-        }
-
-        body {
-            background: white !important;
-        }
+        .btn, nav, .breadcrumb { display: none !important; }
+        .card { border: 1px solid #ddd !important; }
+        body  { background: white !important; }
     }
 </style>

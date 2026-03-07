@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-// Alias para evitar conflicto de nombres
 using EscaneoModel = AuditSentinel.Models.Escaneos;
 
 namespace AuditSentinel.Pages.Escaneos
@@ -19,15 +18,16 @@ namespace AuditSentinel.Pages.Escaneos
     public class IndexModel : PageModel
     {
         private readonly ApplicationDBContext _context;
+        private readonly ExportService _exportService;
 
-        public IndexModel(ApplicationDBContext context)
+        public IndexModel(ApplicationDBContext context, ExportService exportService)
         {
             _context = context;
+            _exportService = exportService;
         }
 
         public string? Search { get; set; }
         public EstadoEscaneo? BEstado { get; set; }
-
         public IList<EscaneoModel> ListaEscaneos { get; set; } = new List<EscaneoModel>();
 
         [BindProperty(SupportsGet = true)]
@@ -62,36 +62,28 @@ namespace AuditSentinel.Pages.Escaneos
                 .ToListAsync();
         }
 
-        public async Task<IActionResult> OnGetExportAsync(string format)
+        public async Task<IActionResult> OnGetExportarAsync(string format)
         {
-            var query = _context.Escaneos.AsQueryable();
+            var results = await _context.Escaneos
+                .OrderByDescending(e => e.FechaEscaneo)
+                .ToListAsync();
 
-            if (!string.IsNullOrWhiteSpace(Search))
-                query = query.Where(e => e.NombreEscaneo.Contains(Search));
-
-            if (BEstado.HasValue)
-                query = query.Where(ee => ee.Estado == BEstado.Value);
-
-            var results = await query.OrderByDescending(e => e.FechaEscaneo).ToListAsync();
-
-            var service = new ExportService();
             var filePath = Path.Combine(Path.GetTempPath(), $"Escaneos.{format}");
 
             switch (format.ToLower())
             {
                 case "csv":
-                    service.ExportToCsv(results, filePath);
-                    break;
+                    _exportService.ExportToCsv(results, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "text/csv", "Escaneos.csv");
                 case "html":
-                    service.ExportToHtml(results, filePath);
-                    break;
+                    _exportService.ExportToHtml(results, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "text/html", "Escaneos.html");
                 case "pdf":
-                    service.ExportToPdf(results, filePath);
-                    break;
+                    _exportService.ExportToPdf(results, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", "Escaneos.pdf");
+                default:
+                    return BadRequest("Formato no soportado.");
             }
-
-            var fileBytes = System.IO.File.ReadAllBytes(filePath);
-            return File(fileBytes, "application/octet-stream", $"Escaneos.{format}");
         }
     }
 }
