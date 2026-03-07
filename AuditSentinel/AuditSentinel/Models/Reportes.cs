@@ -4,8 +4,11 @@ namespace AuditSentinel.Models
 {
     public enum Cumplimiento
     {
+        [Display(Name = "Cumple")]
         Cumple,
+        [Display(Name = "No Cumple")]
         NoCumple,
+        [Display(Name = "Parcialmente Cumple")]
         ParcialmenteCumple
     }
     public class Reportes
