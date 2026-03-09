@@ -91,7 +91,7 @@ namespace AuditSentinel.Pages.Reportes
                 container.Page(page =>
                 {
                     page.Margin(30);
-                    page.Size(PageSizes.A4);
+                    page.Size(QuestPDF.Helpers.PageSizes.A4);
 
                     // ── ENCABEZADO ──
                     page.Header().Column(col =>
