@@ -108,7 +108,7 @@ namespace AuditSentinel.Pages.Escaneos
                 .Select(p => new SelectListItem
                 {
                     Value = p.IdPlantilla.ToString(),
-                    Text = p.NombrePlantilla
+                    Text = p.NombrePlantilla.ToString()
                 }).ToList();
         }
     }
