@@ -1,47 +1,47 @@
 ﻿/* wwwroot/css/sidebar.css */
-.sidebar {
-    position: sticky; /* se queda visible al hacer scroll */
-    top: 0;
+/*.sidebar {
+    position: sticky;*/ /* se queda visible al hacer scroll */
+    /*top: 0;
     z-index: 1020;
     background-color: #000066;
     transition: width 0.25s ease, transform 0.25s ease;
     overflow: hidden;
     color: white;
-    width: 220px; /* ancho original */
-    height: 100vh; /* altura según contenido */
-    padding: 10px; /* espacio interno */
-    min-height: 600px; /*xd*/
-}
+    width: 220px;*/ /* ancho original */
+    /*height: 100vh;*/ /* altura según contenido */
+    /*padding: 10px;*/ /* espacio interno */
+    /*min-height: 600px;*/ /*xd*/
+/*}*/
 
     /* Tamaño cuando está colapsado */
-    .sidebar.collapsed {
-        width: 55px; /* ancho compacto */
-    }
+    /*.sidebar.collapsed {
+        width: 55px;*/ /* ancho compacto */
+    /*}*/
 
     /* Tamaño cuando está expandido */
-    .sidebar.expanded {
-        width: 220px; /* ancho original */
-    }
+    /*.sidebar.expanded {
+        width: 220px;*/ /* ancho original */
+    /*}*/
 
     /* Enlaces */
-    .sidebar a {
+    /*.sidebar a {
         color: white;
         text-decoration: none;
     }
 
     .sidebar .nav-link {
         border-radius: 6px;
-        margin: 2px 0; /* menos espacio vertical */
-        padding: 6px 8px; /* más compacto */
-        font-size: 0.9rem; /* texto un poco más pequeño */
-    }
+        margin: 2px 0;*/ /* menos espacio vertical */
+        /*padding: 6px 8px;*/ /* más compacto */
+        /*font-size: 0.9rem;*/ /* texto un poco más pequeño */
+    /*}
 
         .sidebar .nav-link:hover {
             background-color: rgba(255, 255, 255, 0.08);
-        }
+        }*/
 
     /* Ocultar textos en colapsado */
-    .sidebar.collapsed .brand-title,
+    /*.sidebar.collapsed .brand-title,
     .sidebar.collapsed .login-text,
     .sidebar.collapsed .menu-text {
         display: none !important;
@@ -49,23 +49,23 @@
 
     .sidebar.collapsed #LoginInferior .btn {
         justify-content: center;
-    }
+    }*/
 
 /* Texto del menú */
-.menu-text {
+/*.menu-text {
     margin-left: 8px;
     white-space: nowrap;
-}
+}*/
 
 /* Marca/título */
-.brand-title {
+/*.brand-title {
     font-size: 1rem;
     font-weight: bold;
     color: white;
-}
+}*/
 
 /* Botón login */
-.login-btn {
+/*.login-btn {
     width: 100%;
     background-color: #1a1aff;
     color: white;
@@ -73,14 +73,119 @@
     margin-top: 8px;
     padding: 6px;
     font-size: 0.9rem;
-}
+}*/
 
 /* Ajustes responsivos */
-@media (max-width: 576px) {
+/*@media (max-width: 576px) {
     .sidebar.expanded {
-        position: relative; /* también se mueve en móviles */
-        left: 0;
+        position: relative;*/ /* también se mueve en móviles */
+        /*left: 0;
         top: 0;
         z-index: 1040;
     }
+}*/
+:root {
+    --sentinel-primary: #0a58ca;
+    --sidebar-collapsed: 70px;
+    --sidebar-expanded: 260px;
+    --transition-speed: 0.35s;
+}
+
+#app-sidebar {
+    background-color: var(--sentinel-primary);
+    width: var(--sidebar-collapsed);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 2000;
+    transition: width var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-x: hidden;
+}
+
+    #app-sidebar:hover {
+        width: var(--sidebar-expanded);
+    }
+
+.icon-container {
+    min-width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.menu-text, .brand-title {
+    opacity: 0;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+    margin-left: 10px;
+    display: none;
+}
+
+#app-sidebar:hover .menu-text,
+#app-sidebar:hover .brand-title {
+    opacity: 1;
+    display: block;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 8px;
+    padding: 0.5rem !important;
+    text-decoration: none;
+}
+
+    .nav-link:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: white !important;
+    }
+
+.text-primary-custom {
+    color: var(--sentinel-primary);
+}
+
+.text-logout {
+    color: #ffcccc;
+}
+
+.logo-box {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* Logout*/
+.login-btn-custom {
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo translúcido blanco */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    color: white !important;
+    text-decoration: none;
+}
+
+    .login-btn-custom:hover {
+        background-color: #ffffff; /* Cambio a blanco sólido en hover */
+        color: #0a58ca !important; /* Texto en azul primario */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transform: translateY(-1px);
+    }
+
+        /* Aseguramos que el icono cambie de color también en hover */
+        .login-btn-custom:hover i {
+            color: #0a58ca !important;
+        }
+
+/* Alineación del icono idéntica al resto del menú */
+.icon-container {
+    min-width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }

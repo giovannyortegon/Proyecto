@@ -1,12 +1,87 @@
-﻿@page
+@page
 @model AuditSentinel.Pages.MensajeEnviadoModel
 @{
-    ViewData["Title"] = "Mensaje Enviado";
+    ViewData["Title"] = "Solicitud Enviada - AuditSentinel";
 }
 
-<div class="container text-center mt-5">
-    <h2>✅ Solicitud enviada correctamente</h2>
-    <p>Nos pondremos en contacto contigo en menos de 24 horas.</p>
-    <a href="/" class="btn btn-primary mt-3">Volver al inicio</a>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden p-5 text-center animate-fade-in" style="max-width: 600px;">
+        
+        <div class="success-icon-container mb-4">
+            <div class="success-circle bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 100px; height: 100px;">
+                <i class="bi bi-check-all text-success" style="font-size: 4rem;"></i>
+            </div>
+        </div>
+
+        <h1 class="display-6 fw-bold text-dark mb-3">¡Solicitud Procesada!</h1>
+        <p class="lead text-muted mb-4">
+            Tu mensaje ha sido enviado correctamente a nuestro centro de operaciones de seguridad (SOC).
+        </p>
+
+        <div class="bg-light rounded-3 p-3 mb-4 border-start border-primary border-4 text-start">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-clock-history text-primary me-3 fs-3"></i>
+                <div>
+                    <h6 class="mb-1 fw-bold text-dark">Tiempo estimado de respuesta</h6>
+                    <p class="small text-muted mb-0">Un analista de AuditSentinel se pondrá en contacto contigo en menos de <strong>24 horas hábiles</strong>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2">
+            <a href="/" class="btn btn-primary btn-lg shadow-blue fw-bold rounded-3">
+                <i class="bi bi-house-door me-2"></i>Volver al Inicio
+            </a>
+            <a href="/Reportes" class="btn btn-outline-secondary">
+                Ver historial de reportes
+            </a>
+        </div>
+    </div>
 </div>
-}
+
+<style>
+    /* Animación de entrada suave */
+    .animate-fade-in {
+        animation: fadeInUp 0.5s ease-out;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Sombras personalizadas */
+    .shadow-blue {
+        box-shadow: 0 8px 20px rgba(10, 88, 202, 0.25);
+    }
+
+    /* Estilo del botón primario para coincidir con el Sidebar */
+    .btn-primary {
+        background-color: #0a58ca;
+        border-color: #0a58ca;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #084298;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(10, 88, 202, 0.4);
+    }
+
+    /* Efecto de pulso suave en el icono */
+    .success-circle {
+        animation: pulseSuccess 2s infinite;
+    }
+
+    @@keyframes pulseSuccess {
+        0% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.2); }
+        70% { box-shadow: 0 0 0 15px rgba(25, 135, 84, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0); }
+    }
+</style>

@@ -1,14 +1,10 @@
-﻿
-using AuditSentinel.Data;
+﻿using AuditSentinel.Data;
 using AuditSentinel.Models;
+using AuditSentinel.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AuditSentinel.Pages.Reportes
 {
@@ -16,61 +12,81 @@ namespace AuditSentinel.Pages.Reportes
     public class IndexModel : PageModel
     {
         private readonly ApplicationDBContext _context;
-        public IndexModel(ApplicationDBContext context) => _context = context;
+        private readonly ExportService _exportService;
 
-        // Filtros
-        [BindProperty(SupportsGet = true)]
-        public string? Search { get; set; }
+        public IndexModel(ApplicationDBContext context, ExportService exportService)
+        {
+            _context = context;
+            _exportService = exportService;
+        }
 
-        [BindProperty(SupportsGet = true)]
-        public Cumplimiento? Cumplimiento { get; set; }
+        // ── Filtros ──────────────────────────────────────────────────────
+        [BindProperty(SupportsGet = true)] public string? Search { get; set; }
+        [BindProperty(SupportsGet = true)] public Cumplimiento? Cumplimiento { get; set; }
 
-        // Datos
+        // ── Tabla + Paginación ───────────────────────────────────────────
         public IList<AuditSentinel.Models.Reportes> Items { get; set; } = new List<AuditSentinel.Models.Reportes>();
-
-        // Paginación
-        [BindProperty(SupportsGet = true)]
-        public int PageNumber { get; set; } = 1;
-
-        public int PageSize { get; set; } = 10;
+        [BindProperty(SupportsGet = true)] public int PageNumber { get; set; } = 1;
+        public int PageSize   { get; set; } = 10;
         public int TotalItems { get; set; }
         public int TotalPages { get; set; }
 
+        // ── KPIs ─────────────────────────────────────────────────────────
+        public int TotalReportes     { get; set; }
+        public int TotalEscaneosVinc { get; set; }
+        public int ReporteEsteMes    { get; set; }
+
+        // ── Datos gráfica de dona para Chart.js ──────────────────────────
+        public string GraficaLabels  { get; set; } = "[]";
+        public string GraficaValores { get; set; } = "[]";
+        public string GraficaColores { get; set; } = "[]";
+
         public async Task<IActionResult> OnGetAsync(string? search, Cumplimiento? cumplimiento)
         {
-            // Mantener compatibilidad con parámetros explícitos (opcional)
-            Search = search ?? Search;
+            Search       = search       ?? Search;
             Cumplimiento = cumplimiento ?? Cumplimiento;
 
-            // Base query con relaciones y sin tracking
+            // ── Todos los reportes para KPIs y gráfica ───────────────────
+            var todos = await _context.Reportes
+                .Include(r => r.EscaneosReportes)
+                .AsNoTracking()
+                .ToListAsync();
+
+            TotalReportes     = todos.Count;
+            TotalEscaneosVinc = todos.Sum(r => r.EscaneosReportes?.Count ?? 0);
+            ReporteEsteMes    = todos.Count(r => r.Creado.Month == DateTime.Now.Month
+                                              && r.Creado.Year  == DateTime.Now.Year);
+
+            // ── Agrupar por cumplimiento para la gráfica ─────────────────
+            var grupos = todos
+                .GroupBy(r => r.cumplimiento.ToString())
+                .Select(g => new { Label = g.Key, Count = g.Count() })
+                .OrderByDescending(g => g.Count)
+                .ToList();
+
+            var paleta = new[] { "#28a745","#ffc107","#dc3545","#007bff","#6f42c1","#17a2b8","#fd7e14" };
+
+            GraficaLabels  = "[" + string.Join(",", grupos.Select(g => $"\"{g.Label}\""))  + "]";
+            GraficaValores = "[" + string.Join(",", grupos.Select(g => g.Count.ToString())) + "]";
+            GraficaColores = "[" + string.Join(",", grupos.Select((g, i) => $"\"{paleta[i % paleta.Length]}\"")) + "]";
+
+            // ── Query filtrada para la tabla ─────────────────────────────
             var query = _context.Reportes
                 .Include(r => r.EscaneosReportes)
                 .AsNoTracking()
                 .AsQueryable();
 
-            // Filtro: búsqueda por nombre (extiende a Descripcion si existe)
             if (!string.IsNullOrWhiteSpace(Search))
-            {
-                var s = Search.Trim();
-                query = query.Where(r => r.NombreReporte.Contains(s));
-                // Si tu modelo tiene Descripcion:
-                // query = query.Where(r => r.NombreReporte.Contains(s) || r.Descripcion.Contains(s));
-            }
+                query = query.Where(r => r.NombreReporte.Contains(Search.Trim()));
 
-            // Filtro: cumplimiento
             if (Cumplimiento.HasValue)
-            {
                 query = query.Where(r => r.cumplimiento == Cumplimiento.Value);
-            }
 
-            // Total y páginas
             TotalItems = await query.CountAsync();
             TotalPages = (int)Math.Ceiling(TotalItems / (double)PageSize);
-
             if (PageNumber < 1) PageNumber = 1;
             if (TotalPages > 0 && PageNumber > TotalPages) PageNumber = TotalPages;
 
-            // Orden + paginación aplicados sobre el MISMO query (con filtros)
             Items = await query
                 .OrderByDescending(r => r.Creado)
                 .Skip((PageNumber - 1) * PageSize)
@@ -78,6 +94,33 @@ namespace AuditSentinel.Pages.Reportes
                 .ToListAsync();
 
             return Page();
+        }
+
+        // ── Exportar ─────────────────────────────────────────────────────
+        public async Task<IActionResult> OnGetExportarAsync(string format)
+        {
+            var items = await _context.Reportes
+                .Include(r => r.EscaneosReportes)
+                .AsNoTracking()
+                .OrderByDescending(r => r.Creado)
+                .ToListAsync();
+
+            var filePath = Path.Combine(Path.GetTempPath(), $"Reportes.{format}");
+
+            switch (format.ToLower())
+            {
+                case "csv":
+                    _exportService.ExportReportesToCsv(items, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "text/csv", "Reportes.csv");
+                case "html":
+                    _exportService.ExportReportesToHtml(items, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "text/html", "Reportes.html");
+                case "pdf":
+                    _exportService.ExportReportesToPdf(items, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", "Reportes.pdf");
+                default:
+                    return BadRequest("Formato no soportado.");
+            }
         }
     }
 }

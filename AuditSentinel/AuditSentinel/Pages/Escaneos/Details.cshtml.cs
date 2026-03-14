@@ -9,106 +9,88 @@ namespace AuditSentinel.Pages.Escaneos
 {
     public class DetailsModel : PageModel
     {
-        private readonly INmapScannerService _nmapService;
         private readonly ApplicationDBContext _context;
+        private readonly ExportService _exportService;
 
-        public DetailsModel(INmapScannerService nmapService, ApplicationDBContext context)
+        public DetailsModel(ApplicationDBContext context, ExportService exportService)
         {
-            _nmapService = nmapService;
             _context = context;
+            _exportService = exportService;
         }
-        [BindProperty(SupportsGet = true)]
-        public int Id { get; set; }
+
         public AuditSentinel.Models.Escaneos Escaneo { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
             Escaneo = await _context.Escaneos
-                .Include(e => e.EscaneosServidores)
-                    .ThenInclude(es => es.Servidores)
-                .Include(e => e.EscaneosPlantillas)
-                    .ThenInclude(ep => ep.Plantillas)
-                .FirstOrDefaultAsync(e => e.IdEscaneo == id);
+                .Include(e => e.EscaneosServidores).ThenInclude(es => es.Servidores)
+                .Include(e => e.EscaneosPlantillas).ThenInclude(ep => ep.Plantillas)
+                .Include(e => e.EscaneosVulnerabilidades).ThenInclude(ev => ev.Vulnerabilidades)
+                .FirstOrDefaultAsync(m => m.IdEscaneo == id);
 
-            if (Escaneo == null)
-                return NotFound();
-
+            if (Escaneo == null) return NotFound();
             return Page();
         }
 
-
-        // Manejador para iniciar el escaneo vía AJAX
-        public IActionResult OnPostIniciar(string ip)
-        {
-            // Ejecución asíncrona en el servicio (Fire and Forget)
-            _ = _nmapService.EjecutarEscaneoAsync(Id, ip);
-            return new JsonResult(new { iniciado = true });
-        }
-
-        // Manejador para detener el escaneo vía AJAX
-        public IActionResult OnPostDetener()
-        {
-            _nmapService.DetenerEscaneo(Id);
-            return new JsonResult(new { detenido = true });
-        }
-
-        // Manejador para obtener progreso y logs de errores vía AJAX
-        public async Task<IActionResult> OnGetEstado()
-        {
-            var progreso = _nmapService.ObtenerProgreso(Id);
-
-            // Consultamos los errores específicos de este escaneo
-            var errores = await _context.LogErroresEscaneos
-                .Where(l => l.EscaneoId == Id)
-                .OrderByDescending(l => l.FechaError)
-                .Select(l => new {
-                    l.FechaError,
-                    l.Fase,
-                    l.Mensaje,
-                    l.ComandoEjecutado
-                })
-                .ToListAsync();
-
-            return new JsonResult(new { porcentaje = progreso, logs = errores });
-        }
-        
-
-        //  Exportación individual desde Detalles
-        public async Task<IActionResult> OnGetExportAsync(int id, string format)
+        public async Task<IActionResult> OnGetExportarAsync(int id, string format)
         {
             var escaneo = await _context.Escaneos
-                .Include(e => e.EscaneosServidores)
-                    .ThenInclude(es => es.Servidores)
-                .Include(e => e.EscaneosPlantillas)
-                    .ThenInclude(ep => ep.Plantillas)
-                .FirstOrDefaultAsync(e => e.IdEscaneo == id);
+                .Include(e => e.EscaneosServidores).ThenInclude(es => es.Servidores)
+                .Include(e => e.EscaneosPlantillas).ThenInclude(ep => ep.Plantillas)
+                .Include(e => e.EscaneosVulnerabilidades).ThenInclude(ev => ev.Vulnerabilidades)
+                .FirstOrDefaultAsync(m => m.IdEscaneo == id);
 
-            if (escaneo == null)
-                return NotFound();
+            if (escaneo == null) return NotFound();
 
-            var service = new ExportService();
             var filePath = Path.Combine(Path.GetTempPath(), $"Escaneo_{id}.{format}");
 
             switch (format.ToLower())
             {
                 case "csv":
-                    service.ExportEscaneoToCsv(escaneo, filePath);
-                    break;
+                    _exportService.ExportEscaneoToCsv(escaneo, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "text/csv", $"Escaneo_{id}.csv");
                 case "html":
-                    service.ExportEscaneoToHtml(escaneo, filePath);
-                    break;
+                    _exportService.ExportEscaneoToHtml(escaneo, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "text/html", $"Escaneo_{id}.html");
                 case "pdf":
-                    service.ExportEscaneoToPdf(escaneo, filePath);
-                    break;
+                    _exportService.ExportEscaneoToPdf(escaneo, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", $"Escaneo_{id}.pdf");
                 default:
-                    return BadRequest("Formato no soportado");
+                    return BadRequest("Formato no soportado.");
             }
-
-            var fileBytes = System.IO.File.ReadAllBytes(filePath);
-            return File(fileBytes, "application/octet-stream", $"Escaneo_{id}.{format}");
         }
 
+        public async Task<IActionResult> OnPostIniciarAsync(int id)
+        {
+            var escaneo = await _context.Escaneos
+                .Include(e => e.EscaneosPlantillas)
+                .FirstOrDefaultAsync(e => e.IdEscaneo == id);
 
+            if (escaneo == null) return NotFound();
 
+            if (!escaneo.EscaneosPlantillas.Any())
+                return RedirectToPage(new { id = id, error = "No hay plantilla asociada" });
+
+            var resultadosPrevios = _context.EscaneosVulnerabilidades.Where(ev => ev.IdEscaneo == id);
+            _context.EscaneosVulnerabilidades.RemoveRange(resultadosPrevios);
+
+            escaneo.Estado = EstadoEscaneo.Pendiente;
+            await _context.SaveChangesAsync();
+            return RedirectToPage(new { id = id });
+        }
+
+        public async Task<IActionResult> OnPostDetenerAsync(int id)
+        {
+            if (ScannerServerService.EscaneosEnCurso.TryGetValue(id, out var cts))
+                cts.Cancel();
+
+            var escaneo = await _context.Escaneos.FindAsync(id);
+            if (escaneo != null)
+            {
+                escaneo.Estado = EstadoEscaneo.Fallido;
+                await _context.SaveChangesAsync();
+            }
+            return new OkResult();
+        }
     }
 }

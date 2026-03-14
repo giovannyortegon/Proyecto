@@ -1,21 +1,26 @@
+using System.Linq;
 using AuditSentinel.Data;
+using AuditSentinel.Hubs;
 using AuditSentinel.Models;
 using AuditSentinel.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
-using AuditSentinel.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración de la cadena de conexión
+// ==========================
+// CONEXIÓN A BASE DE DATOS
+// ==========================
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
 
-// Agregar soporte para identity
+// ==========================
+// IDENTITY
+// ==========================
 builder.Services.AddIdentity<Usuarios, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 6;
@@ -26,30 +31,40 @@ builder.Services.AddIdentity<Usuarios, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDBContext>()
 .AddDefaultTokenProviders();
 
-// Configuración de cookies
+// ==========================
+// COOKIES
+// ==========================
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Cuenta/Login";
     options.AccessDeniedPath = "/Cuenta/AccessDenied";
 });
 
-// Logging
-
+// ==========================
+// SERVICIOS
+// ==========================
+builder.Services.AddSignalR();
+builder.Services.AddHostedService<ScannerServerService>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<GraficaService>();
+builder.Services.AddScoped<ExportService>();
+
 builder.Logging.ClearProviders();
 builder.Logging.AddSimpleConsole();
 
-// Razor Pages
 builder.Services.AddRazorPages();
 
-// ⚡ Configuración de QuestPDF
+// ==========================
+// LICENCIA QUESTPDF
+// ==========================
 QuestPDF.Settings.License = LicenseType.Community;
-
-builder.Services.AddSingleton<INmapScannerService, NmapScannerService>();
 
 var app = builder.Build();
 
-// Seed de roles
+
+// ==========================
+// CREACIÓN AUTOMÁTICA DE ROLES
+// ==========================
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -60,24 +75,29 @@ using (var scope = app.Services.CreateScope())
     {
         if (!await roleManager.RoleExistsAsync(role))
         {
-            var create = await roleManager.CreateAsync(new IdentityRole(role));
-            if (!create.Succeeded)
+            var result = await roleManager.CreateAsync(new IdentityRole(role));
+
+            if (!result.Succeeded)
             {
-                var errs = string.Join("; ", create.Errors.Select(e => $"{e.Code}: {e.Description}"));
-                Console.WriteLine($"[SEED ROLES] Error creando rol '{role}': {errs}");
+                var errores = string.Join("; ", result.Errors.Select(e => $"{e.Code}: {e.Description}"));
+                Console.WriteLine($"Error creando rol {role}: {errores}");
             }
         }
     }
 }
 
+
+// ==========================
+// MANEJO DE ERRORES (CORREGIDO)
+// ==========================
 if (app.Environment.IsDevelopment())
 {
+    // En desarrollo: página de excepción detallada del framework
     app.UseDeveloperExceptionPage();
-    app.UseExceptionHandler("/Error/500");
-    app.UseStatusCodePagesWithRedirects("/Error/{0}");
 }
 else
 {
+    //En producción: páginas de error personalizadas
     app.UseExceptionHandler("/Error/500");
     app.UseStatusCodePagesWithReExecute("/Error/{0}");
     app.UseHsts();
@@ -90,6 +110,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapHub<EscaneoHub>("/EscaneoHub");
 app.MapRazorPages();
 
 app.Run();

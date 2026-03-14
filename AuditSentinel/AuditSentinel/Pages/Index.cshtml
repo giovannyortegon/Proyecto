@@ -1,219 +1,277 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Inicio";
+    ViewData["Title"] = "Inicio - AuditSentinel";
 }
 
-<section class="hero py-5">
+<section class="hero-section py-5 d-flex align-items-center bg-white">
     <div class="container">
         <div class="row align-items-center">
-
-            <!-- LADO IZQUIERDO -->
-            <div class="col-md-6">
-                <h1 class="display-4 fw-bold"></h1>
-                <p class="lead text-lg-center">
-                    Somos una plataforma de auditorías de ciberseguridad para infraestructuras 
-                    de red a nivel empresarial, basada en escaneos automatizados y generación de reportes.
+            <div class="col-md-6 animate-fade-in">
+                <span class="badge bg-primary-soft text-primary px-3 py-2 mb-3 fw-bold rounded-pill">ESTÁNDAR EMPRESARIAL v2.5</span>
+                <h1 class="display-3 fw-bold mb-4">Protege tu <span class="text-gradient">Infraestructura</span> de Red</h1>
+                <p class="lead text-muted mb-5">
+                    Plataforma especializada en auditorías de ciberseguridad. Automatizamos el escaneo de vulnerabilidades y generamos reportes técnicos de alta precisión.
                 </p>
-                <a href="#contacto" class="btn btn-primary btn-lg mt-5">
-                    Solicitar Auditoría
-                </a>
+                <div class="d-flex gap-3">
+                    <a href="#contacto" class="btn btn-primary btn-lg shadow-blue px-4 rounded-3">
+                        <i class="bi bi-shield-lock me-2"></i>Solicitar Auditoría
+                    </a>
+                    <a href="/Escaneos" class="btn btn-outline-secondary btn-lg px-4 rounded-3">
+                        Explorar Dashboard
+                    </a>
+                </div>
             </div>
-
-            <!-- LADO DERECHO -->
-            <div class="col-md-6 text-center">
-                <img src="/img/hero.png"
-                     class="img-fluid"
-                     alt="Ciberseguridad y servidor">
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-<section class="container mt-5 pb-5">
-    <h2 class="section-title text-center">Nuestros Servicios</h2>
-
-    <div class="row mt-5">
-        <div class="col-md-4">
-            <div class="card p-4 text-center shadow">
-                <h4>Escaneo de Vulnerabilidades</h4>
-                <p>Identificamos fallas de seguridad en aplicaciones y servidores.</p>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card p-4 text-center shadow">
-                <h4>Generación de Reportes</h4>
-                <p>Documentación detallada con análisis técnico y nivel de riesgo.</p>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card p-4 text-center shadow">
-                <h4>Evaluación de Servidores</h4>
-                <p>Revisión integral de infraestructura y configuración.</p>
+            <div class="col-md-6 text-center d-none d-md-block ">
+                <div class="hero-image-container">
+                    <img src="/img/hero.png" class="img-fluid floating-anim rounded" alt="Ciberseguridad">
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-
-<section class="hero text-center text-white bg-dark p-5 mb-5 mt-5">
-    <h5>Auditorías de Vulnerabilidades </h5>
-    <p>Protegemos tus servidores, detectamos vulnerabilidades y generamos reportes detallados.</p>
-    <a href="/Escaneos" class="btn btn-primary btn-lg">Ver Escaneos</a>
-</section>
-
-<section class="stats-section container text-center">
-    <h6 class="section-title">Estadísticas Generales</h6>
-
-    <div class="row">
-        <div class="col-md-3">
-            <div class="stats-box">
-                <h6>@Model.TotalEscaneos</h6>
-                <p>Escaneos Realizados</p>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="stats-box">
-                <h6>@Model.TotalVulnerabilidades</h6>
-                <p>Vulnerabilidades Detectadas</p>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="stats-box">
-                <h6>@Model.TotalReportes</h6>
-                <p>Reportes Generados</p>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="stats-box">
-                <h6>@Model.TotalServidores</h6>
-                <p>Servidores Analizados</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="container mt-5">
-    <h2 class="section-title text-center">Nuestra Metodología</h2>
-
-    <div class="row text-center mt-4">
-        <div class="col-md-3">
-            <div class="card p-4 text-center shadow mb-5">
-             <h5>1. Análisis</h5>
-             <p>Revisión inicial del sistema y recopilación de información.</p>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card p-4 text-center shadow mb-5">
-             <h5>2. Escaneo</h5>
-             <p>Detección automatizada y manual de vulnerabilidades.</p>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card p-4 text-center shadow mb-5">
-             <h5>3. Evaluación</h5>
-             <p>Clasificación por nivel de riesgo y criticidad.</p>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card p-4 text-center shadow mb-5">
-             <h5>4. Reporte Final</h5>
-             <p>Entrega de informe técnico con recomendaciones.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="contacto" class="contact-section">
+<section class="services-section py-5 bg-light-soft rounded">
     <div class="container">
-        <div class="row align-items-center">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold h1">Nuestros Servicios</h2>
+            <div class="divider mx-auto"></div>
+        </div>
 
-            <!-- LADO IZQUIERDO -->
-            <div class="col-md-6 text-light">
-                <p style="color:#0B3D91">// CONTACTO</p>
-                <h2 class="text-primary">Auditoría</h2>
-                <p class="text-muted">
-                    Completa el formulario y nuestro equipo se pondrá en contacto contigo en menos de 24 horas
-                    para evaluar tus necesidades y diseñar un plan de auditoría personalizado.
-                </p>
-
-                <div class="contact-info mt-4">
-                    <p>📧 Email</p>
-                    <p>📞 Teléfono</p>
-                    <p>🕒 Lun - Vie: 9:00 - 18:00</p>
+        <div class="row g-4 mt-2">
+            <div class="col-md-4">
+                <div class="custom-card-white h-100">
+                    <div class="icon-box bg-primary-soft text-primary mb-4">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    <h4 class="fw-bold">Escaneo de Vulnerabilidades</h4>
+                    <p class="text-muted small mb-0">Detección profunda de puertos abiertos, servicios obsoletos y fallas críticas en tiempo real.</p>
                 </div>
             </div>
 
-            <!-- LADO DERECHO -->
-            <div class="col-md-6">
-                <div class="contact-card p-4">
+            <div class="col-md-4">
+                <div class="custom-card-white h-100 border-primary-top">
+                    <div class="icon-box bg-primary text-white mb-4">
+                        <i class="bi bi-file-earmark-bar-graph"></i>
+                    </div>
+                    <h4 class="fw-bold">Generación de Reportes</h4>
+                    <p class="text-muted small mb-0">Documentación técnica detallada con análisis de impacto y recomendaciones de mitigación.</p>
+                </div>
+            </div>
 
+            <div class="col-md-4">
+                <div class="custom-card-white h-100">
+                    <div class="icon-box bg-primary-soft text-primary mb-4">
+                        <i class="bi bi-cpu"></i>
+                    </div>
+                    <h4 class="fw-bold">Evaluación de Servidores</h4>
+                    <p class="text-muted small mb-0">Análisis exhaustivo de configuraciones para garantizar la estabilidad y el endurecimiento (hardening).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="stats-banner py-5 text-muted text-center">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3 col-6">
+                <h2 class="display-5 fw-bold text-primary">@Model.TotalEscaneos</h2>
+                <p class="text-uppercase small tracking-wider opacity-75">Escaneos</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <h2 class="display-5 fw-bold text-danger">@Model.TotalVulnerabilidades</h2>
+                <p class="text-uppercase small tracking-wider opacity-75">Vulnerabilidades</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <h2 class="display-5 fw-bold text-success">@Model.TotalReportes</h2>
+                <p class="text-uppercase small tracking-wider opacity-75">Reportes</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <h2 class="display-5 fw-bold text-info">@Model.TotalServidores</h2>
+                <p class="text-uppercase small tracking-wider opacity-75">Servidores</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light-soft rounded">
+    <div class="container">
+        <div class="text-center mb-5 mt-4">
+            <h2 class="fw-bold h1">Nuestra Metodología</h2>
+            <p class="text-muted">Proceso estandarizado para la máxima seguridad.</p>
+        </div>
+
+        <div class="row g-4 text-center mt-2">
+            @{
+                var pasos = new[] {
+                        new { n = "01", t = "Análisis", p = "Recopilación de información y activos críticos." },
+                        new { n = "02", t = "Escaneo", p = "Detección automatizada y manual de brechas." },
+                        new { n = "03", t = "Evaluación", p = "Clasificación de criticidad y nivel de riesgo." },
+                        new { n = "04", t = "Reporte", p = "Entrega de informe técnico con recomendaciones." }
+                        };
+            }
+            @foreach (var paso in pasos)
+            {
+                <div class="col-md-3">
+                    <div class="custom-card-white h-100">
+                        <div class="step-circle mb-3">@paso.n</div>
+                        <h5 class="fw-bold">@paso.t</h5>
+                        <p class="text-muted small mb-0">@paso.p</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section id="contacto" class="contact-section py-5 bg">
+    <div class="container py-4">
+        <div class="row align-items-center">
+            <div class="col-md-5 text-white pe-lg-5 mb-5 mb-md-0">
+                <h6 class="display-8 text-primary fw-bold tracking-wider mb-3"> CONTACTO</h6>
+                <h2 class="display-4 text-primary fw-bold mb-4">Auditoría Profesional</h2>
+                <p class="text-muted lead mb-4">
+                    Complete el formulario y nuestro equipo diseñará un plan personalizado en menos de 24 horas.
+                </p>
+                <div class="contact-detail d-flex align-items-center gap-3 mb-3">
+                    <i class="bi bi-envelope-at text-primary fs-4"></i>
+                    <span class="text-muted">soporte@auditsentinel.com</span>
+                </div>
+                <div class="contact-detail d-flex align-items-center gap-3">
+                    <i class="bi bi-geo-alt text-primary fs-4"></i>
+                    <span class="text-muted">Centro de Operaciones de Seguridad (SOC)</span>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <div class="custom-card-white p-4 p-md-5 shadow-lg border-0">
+                    <h3 class="fw-bold mb-4 text-dark text-center text-md-start">Enviar Solicitud</h3>
                     <form method="post">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <input asp-for="Correos.Nombre" type="text" class="form-control custom-input" placeholder="Nombre" required>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Nombre</label>
+                                <input asp-for="Correos.Nombre" type="text" class="form-control rounded-3 py-2 bg-light border-0" placeholder="Su nombre" required>
                             </div>
-
-                            <div class="col-md-6 mb-3">
-                                <input asp-for="Correos.Empresa" type="text" class="form-control custom-input" placeholder="Empresa" required>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Empresa</label>
+                                <input asp-for="Correos.Empresa" type="text" class="form-control rounded-3 py-2 bg-light border-0" placeholder="Nombre de empresa" required>
                             </div>
-
-                            <div class="col-md-12 mb-3">
-                                <input asp-for="Correos.Email" type="email" class="form-control custom-input" placeholder="Email" required>
-                                <span asp-validation-for="Correos.Email" class=" text-danger small"></span>
+                            <div class="col-md-12">
+                                <label class="form-label small fw-bold text-muted">Email Corporativo</label>
+                                <input asp-for="Correos.Email" type="email" class="form-control rounded-3 py-2 bg-light border-0" placeholder="correo@empresa.com" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label small fw-bold text-muted">Mensaje</label>
+                                <textarea asp-for="Correos.Mensaje" class="form-control rounded-3 bg-light border-0" rows="4" placeholder="¿En qué podemos ayudarle?"></textarea>
+                            </div>
+                            <div class="col-md-12 mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg w-100 rounded-3 shadow-blue fw-bold">
+                                    Enviar Solicitud <i class="bi bi-arrow-right ms-2"></i>
+                                </button>
                             </div>
                         </div>
-
-                        <div class="mb-3">
-                            <textarea asp-for="Correos.Mensaje" class="form-control custom-input" rows="4" placeholder="Mensaje"></textarea>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            Enviar Solicitud →
-                        </button>
                     </form>
-
                 </div>
             </div>
-
         </div>
     </div>
 </section>
-@* 
-<section id="contacto" class="container mt-5 mb-5">
-    <h2 class="section-title text-center">Solicita una Auditoría</h2>
 
-    <form method="post">
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <input type="text" name="Nombre" class="form-control" placeholder="Nombre completo" required />
-            </div>
+<style>
+    :root {
+        --sentinel-blue: #0B3D91;
+        --sentinel-light: #4E73DF;
+    }
 
-            <div class="col-md-6 mb-3">
-                <input type="text" name="Empresa" class="form-control" placeholder="Nombre de tu empresa" required />
-            </div>
+    /* TARJETA BLANCA ESTANDARIZADA */
+    .custom-card-white {
+        background: #ffffff;
+        border-radius: 20px; /* Bordes redondeados */
+        padding: 2rem;
+        border: 1px solid rgba(0,0,0,0.05);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-            <div class="col-md-6 mb-3">
-                <input type="email" name="Email" class="form-control" placeholder="Correo electrónico" required />
-            </div>
-        </div>
+        .custom-card-white:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
 
-        <div class="mb-3">
-            <textarea name="Mensaje" class="form-control" rows="4" placeholder="Describe tu necesidad"></textarea>
-        </div>
+    /* Bordes superiores opcionales para destacar */
+    .border-primary-top {
+        border-top: 5px solid var(--sentinel-blue);
+    }
 
-        <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
-    </form>
-</section> *@
+    /* Estilos Metodología */
+    .step-circle {
+        width: 50px;
+        height: 50px;
+        background: var(--sentinel-blue);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin: 0 auto 1rem;
+    }
 
+    /* Estilos Generales */
+    .text-gradient {
+        background: linear-gradient(135deg, var(--sentinel-blue), var(--sentinel-light));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 
+    .bg-light-soft {
+        background-color: #f4f7fa;
+    }
+
+    .bg-primary-soft {
+        background-color: rgba(11, 61, 145, 0.08);
+    }
+
+    .shadow-blue {
+        box-shadow: 0 8px 20px rgba(11, 61, 145, 0.25);
+    }
+
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+
+    .divider {
+        width: 60px;
+        height: 4px;
+        background: var(--sentinel-blue);
+        border-radius: 2px;
+    }
+
+    .floating-anim {
+        animation: float 5s ease-in-out infinite;
+    }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-15px);
+        }
+    }
+
+    /* Inputs de formulario */
+    .form-control:focus {
+        background-color: #fff !important;
+        border: 1px solid var(--sentinel-light) !important;
+        box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.1) !important;
+    }
+</style>
