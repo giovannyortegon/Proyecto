@@ -31,9 +31,8 @@ namespace AuditSentinel.Models
         public int IdServidor { get; set; }
         [Required]
         [MaxLength(80)]
-        [StringLength(80, MinimumLength = 5, ErrorMessage = "El nombre debe tener entre 5 y 80 caracteres.")]
-        [RegularExpression(@"^(?!\d+$)[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]+([-_][a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]+)*$",
-    ErrorMessage = "El nombre solo puede contener letras, números y guiones (- o _), no puede tener espacios, caracteres especiales ni ser solo números.")]
+        [StringLength(15, MinimumLength = 5, ErrorMessage = "El nombre debe tener entre 5 y 80 caracteres.")]
+        [RegularExpression(@"^(?!\d+$)[a-zA-Z0-9_-]+$", ErrorMessage = "El nombre no puede contener espacios, tildes ni ser solo números.")]
         [Display(Name = "Nombre Servidor")]
         public string NombreServidor { get; set; }
         [Required]
