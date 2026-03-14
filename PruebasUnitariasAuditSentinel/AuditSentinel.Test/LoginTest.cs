@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Xunit;
 
-namespace PruebasUnitariasAuditSentinel
+namespace AuditSentinel.Test
 {
     public class LoginTest
     {

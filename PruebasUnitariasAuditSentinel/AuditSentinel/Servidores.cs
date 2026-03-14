@@ -1,8 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace AuditSentinel.Models
+namespace ProyectoAuditSentinel
 {
+
     public enum SistemaOperativo
     {
 
@@ -49,9 +54,6 @@ namespace AuditSentinel.Models
 
         [Display(Name = "Fecha Creacion")]
         public DateTime Create_is { get; set; } = DateTime.Now;
-
-        public ICollection<EscaneosServidores> EscaneosServidores { get; set; }
-
 
     }
 }

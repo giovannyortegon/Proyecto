@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuditSentinel
+namespace AuditSentinel.Test
 {
     public class Login
     {
