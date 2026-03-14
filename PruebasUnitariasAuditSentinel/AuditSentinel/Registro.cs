@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace AuditSentinel.Models
+namespace AuditSentinel
 {
     public class Registro
     {
@@ -17,24 +21,24 @@ namespace AuditSentinel.Models
 
         public string Nombre { get; set; }
 
-        [Required(ErrorMessage = "El nombre es obligatoria")]
+        [Required(ErrorMessage = "El apellido es obligatorio")]
         [StringLength(100, ErrorMessage = "El nombre no debe exceder 100 caracteres")]
         [MinLength(4, ErrorMessage = "El nombre debe tener al menos 4 caracteres")]
         [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$",
             ErrorMessage = "El nombre no debe tener caracteres especiales ni números.")]
-        [Display(Name = "Apellido")]
+        [Display(Name = "Apelido")]
         public string Apellido { get; set; }
 
         public string UserName { get; set; }
 
-        // validacion correo
+        // Username property with validation
         [Required(ErrorMessage = "El correo electronico es obligatorio")]
         [EmailAddress(ErrorMessage = "El correo electronico no es valido")]
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Formato de correo inválido.")]
         [Display(Name = "Correo Electronico")]
         public string Email { get; set; }
 
-        // validacion contrasena
+        // Password property with validation
         [Required(ErrorMessage = "La contraseña es obligatoria")]
         [DataType(DataType.Password)]
         [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w\s]).{8,}$",

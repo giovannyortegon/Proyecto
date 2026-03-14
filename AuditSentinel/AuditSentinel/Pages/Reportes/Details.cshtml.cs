@@ -1,4 +1,4 @@
-using AuditSentinel.Data;
+ï»¿using AuditSentinel.Data;
 using AuditSentinel.Models;
 using AuditSentinel.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -24,11 +24,11 @@ namespace AuditSentinel.Pages.Reportes
 
         public AuditSentinel.Models.Reportes Reporte { get; set; } = new();
 
-        // Ruta web de la gráfica para mostrar en pantalla
+        // Ruta web de la grï¿½fica para mostrar en pantalla
         public string RutaGraficaWeb { get; set; } = string.Empty;
 
         // ================================
-        // CARGAR PÁGINA — genera gráfica
+        // CARGAR Pï¿½GINA ï¿½ genera grï¿½fica
         // ================================
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -39,22 +39,22 @@ namespace AuditSentinel.Pages.Reportes
 
             if (Reporte == null) return NotFound();
 
-            // Generar gráfica y guardarla en wwwroot/img/
+            // Generar grï¿½fica y guardarla en wwwroot/img/
             try
             {
-                // Usamos un nombre de archivo único por reporte para la vista web
+                // Usamos un nombre de archivo ï¿½nico por reporte para la vista web
                 string nombreArchivo = $"grafica_reporte_{Reporte.IdReporte}.png";
                 string rutaFisica = Path.Combine(
                     Directory.GetCurrentDirectory(), "wwwroot", "img", nombreArchivo);
 
-                // Reutilizamos GenerarGraficaReporte pero guardamos también en wwwroot
+                // Reutilizamos GenerarGraficaReporte pero guardamos tambiï¿½n en wwwroot
                 _graficaService.GenerarGraficaReporteWeb(Reporte, rutaFisica);
 
                 RutaGraficaWeb = $"/img/{nombreArchivo}?t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Advertencia: no se pudo generar la gráfica: {ex.Message}");
+                Console.WriteLine($"Advertencia: no se pudo generar la grï¿½fica: {ex.Message}");
                 RutaGraficaWeb = string.Empty;
             }
 
@@ -62,7 +62,7 @@ namespace AuditSentinel.Pages.Reportes
         }
 
         // ================================
-        // EXPORTAR PDF CON GRÁFICA
+        // EXPORTAR PDF CON GRï¿½FICA
         // ================================
         public async Task<IActionResult> OnGetExportarPdfAsync(int id)
         {
@@ -73,7 +73,7 @@ namespace AuditSentinel.Pages.Reportes
 
             if (reporte == null) return NotFound();
 
-            // Generar gráfica para el PDF (ruta temporal)
+            // Generar grï¿½fica para el PDF (ruta temporal)
             string graficaPath = string.Empty;
             try
             {
@@ -81,7 +81,7 @@ namespace AuditSentinel.Pages.Reportes
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Advertencia: no se pudo generar la gráfica: {ex.Message}");
+                Console.WriteLine($"Advertencia: no se pudo generar la grï¿½fica: {ex.Message}");
             }
 
             var filePath = Path.Combine(Path.GetTempPath(), $"Reporte_{id}.pdf");
@@ -91,7 +91,11 @@ namespace AuditSentinel.Pages.Reportes
                 container.Page(page =>
                 {
                     page.Margin(30);
+
                     page.Size(595, 842);
+
+                    page.Size(QuestPDF.Helpers.PageSizes.A4);
+
 
                     // -- ENCABEZADO --
                     page.Header().Column(col =>
@@ -102,7 +106,7 @@ namespace AuditSentinel.Pages.Reportes
                             {
                                 c.Item().Text("AuditSentinel")
                                     .FontSize(10).FontColor("#666666");
-                                c.Item().Text($"Informe de Auditoría: {reporte.NombreReporte}")
+                                c.Item().Text($"Informe de Auditorï¿½a: {reporte.NombreReporte}")
                                     .FontSize(18).Bold().FontColor("#0B3D91");
                             });
                             row.ConstantItem(120).AlignRight().Column(c =>
@@ -130,7 +134,7 @@ namespace AuditSentinel.Pages.Reportes
                                     .FontSize(11).Bold();
                                 c.Item().Text($"Referencia: REP-{reporte.IdReporte:D4}")
                                     .FontSize(10).FontColor("#555555");
-                                c.Item().Text($"Fecha de creación: {reporte.Creado:f}")
+                                c.Item().Text($"Fecha de creaciï¿½n: {reporte.Creado:f}")
                                     .FontSize(10).FontColor("#555555");
                             });
                         });
@@ -138,10 +142,10 @@ namespace AuditSentinel.Pages.Reportes
                         col.Item().LineHorizontal(0.5f).LineColor("#CCCCCC");
                         col.Item().PaddingTop(12);
 
-                        // -- GRÁFICA DE TORTA --
+                        // -- GRï¿½FICA DE TORTA --
                         if (!string.IsNullOrEmpty(graficaPath) && System.IO.File.Exists(graficaPath))
                         {
-                            col.Item().Text("Distribución de Estados de Escaneos")
+                            col.Item().Text("Distribuciï¿½n de Estados de Escaneos")
                                 .FontSize(13).Bold().FontColor("#0B3D91");
 
                             col.Item().PaddingTop(8).PaddingBottom(12)
@@ -154,7 +158,7 @@ namespace AuditSentinel.Pages.Reportes
                         }
 
                         // -- TABLA DE ESCANEOS --
-                        col.Item().Text("Evidencia Técnica — Escaneos Asociados")
+                        col.Item().Text("Evidencia Tï¿½cnica ï¿½ Escaneos Asociados")
                             .FontSize(13).Bold().FontColor("#0B3D91");
 
                         col.Item().PaddingTop(8).Table(table =>
@@ -192,11 +196,11 @@ namespace AuditSentinel.Pages.Reportes
                         });
                     });
 
-                    // -- PIE DE PÁGINA --
+                    // -- PIE DE Pï¿½GINA --
                     page.Footer().AlignCenter()
                         .Text(txt =>
                         {
-                            txt.Span("AuditSentinel © 2025 — Página ")
+                            txt.Span("AuditSentinel ï¿½ 2025 ï¿½ Pï¿½gina ")
                                 .FontSize(8).FontColor("#AAAAAA");
                             txt.CurrentPageNumber().FontSize(8).FontColor("#AAAAAA");
                             txt.Span(" de ").FontSize(8).FontColor("#AAAAAA");

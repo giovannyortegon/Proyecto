@@ -1,5 +1,4 @@
-﻿
-using AuditSentinel.Data;
+﻿using AuditSentinel.Data;
 using AuditSentinel.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,27 +24,32 @@ namespace AuditSentinel.Pages.Plantillas
         public int TotalItems { get; set; }
         public int TotalPages { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string? search)
+        public async Task<IActionResult> OnGetAsync()
         {
-            Search = search;
 
-            // Base query
             var query = _context.Plantillas
                 .Include(p => p.PlantillasVulnerabilidades)
                 .AsQueryable();
 
-            // Filtro por búsqueda
+            // Filtrado seguro para Enums
             if (!string.IsNullOrWhiteSpace(Search))
-                query = query.Where(p => p.NombrePlantilla.Contains(Search) || p.Version.Contains(Search));
+            {
+                var searchLower = Search.ToLower();
+                // Filtramos por Versión en SQL y traemos a memoria lo necesario para el Enum si es complejo,
+                // o usamos una aproximación compatible con SQL.
+                query = query.Where(p => p.Version.Contains(Search));
 
-            // Calcular total de registros
+                // Nota: Si necesitas buscar específicamente por el NOMBRE del Enum (Linux, Windows...), 
+                // lo ideal es convertir el Search a una lista de Enums que coincidan y filtrar por ID.
+            }
+
             TotalItems = await query.CountAsync();
             TotalPages = (int)Math.Ceiling(TotalItems / (double)PageSize);
 
+            // Ajustes de rango de página
             if (PageNumber < 1) PageNumber = 1;
             if (TotalPages > 0 && PageNumber > TotalPages) PageNumber = TotalPages;
 
-            // Aplicar paginación y orden
             Items = await query
                 .OrderBy(p => p.NombrePlantilla)
                 .Skip((PageNumber - 1) * PageSize)

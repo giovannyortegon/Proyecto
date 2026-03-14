@@ -46,6 +46,11 @@ namespace AuditSentinel.Data
                 .HasConversion<string>()
                 .HasMaxLength(30);
 
+            modelBuilder.Entity<Plantillas>()
+                .Property(s => s.NombrePlantilla)
+                .HasConversion<string>()
+                .HasMaxLength(30);
+
             // Almacenar enum como string
             modelBuilder.Entity<Escaneos>()
                 .Property(e => e.Estado)

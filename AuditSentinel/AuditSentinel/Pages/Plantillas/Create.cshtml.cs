@@ -17,6 +17,7 @@ namespace AuditSentinel.Pages.Plantillas
 
         [BindProperty] public AuditSentinel.Models.Plantillas Plantilla { get; set; } = new();
 
+        public List<SelectListItem> OpcionesPlantillas { get; set; }
         public List<SelectListItem> VulnerabilidadesList { get; set; } = new();
 
         [BindProperty] public int[] SelectedVulnerabilidades { get; set; } = Array.Empty<int>();
@@ -34,6 +35,14 @@ namespace AuditSentinel.Pages.Plantillas
 
         public async Task OnGetAsync()
         {
+            OpcionesPlantillas = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "WS_2022_Standard", Text = "Windows Server 2022 Standard" },
+                new SelectListItem { Value = "WS_2019_Datacenter", Text = "Windows Server 2019 Datacenter" },
+                new SelectListItem { Value = "WS_2016_Standard", Text = "Windows Server 2016 Standard" },
+                new SelectListItem { Value = "WS_2012_Datacenter", Text = "Windows Server 2012 Datacenter" },
+
+            };
             await LoadVulsAsync();
         }
 
