@@ -1,8 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace AuditSentinel.Models
+namespace ProyectoAuditSentinel
 {
+
     public enum SistemaOperativo
     {
 
@@ -31,8 +36,8 @@ namespace AuditSentinel.Models
         public int IdServidor { get; set; }
         [Required]
         [MaxLength(80)]
-        [StringLength(15, MinimumLength = 5, ErrorMessage = "El nombre debe tener entre 5 y 80 caracteres.")]
-        [RegularExpression(@"^(?!\d+$)[a-zA-Z0-9_-]+$", ErrorMessage = "El nombre no puede contener espacios, tildes ni ser solo números.")]
+        [StringLength(80, MinimumLength = 5, ErrorMessage = "El nombre debe tener entre 5 y 80 caracteres.")]
+        [RegularExpression(@"^(?!\d+$)[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]+$", ErrorMessage = "El nombre no puede tener caracteres especiales o ser solo numeros. ")]
         [Display(Name = "Nombre Servidor")]
         public string NombreServidor { get; set; }
         [Required]
@@ -49,9 +54,6 @@ namespace AuditSentinel.Models
 
         [Display(Name = "Fecha Creacion")]
         public DateTime Create_is { get; set; } = DateTime.Now;
-
-        public ICollection<EscaneosServidores> EscaneosServidores { get; set; }
-
 
     }
 }
