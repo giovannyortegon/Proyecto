@@ -37,10 +37,10 @@ namespace AuditSentinel.Pages.Plantillas
         {
             OpcionesPlantillas = new List<SelectListItem>
             {
-                new SelectListItem { Value = "WS_2022_Standard", Text = "Windows Server 2022 Standard" },
-                new SelectListItem { Value = "WS_2019_Datacenter", Text = "Windows Server 2019 Datacenter" },
-                new SelectListItem { Value = "WS_2016_Standard", Text = "Windows Server 2016 Standard" },
-                new SelectListItem { Value = "WS_2012_Datacenter", Text = "Windows Server 2012 Datacenter" },
+                new SelectListItem { Value = "Windows Server 2022", Text = "Windows Server 2022" },
+                new SelectListItem { Value = "Windows Server 2019", Text = "Windows Server 2019" },
+                new SelectListItem { Value = "Windows Server 2016", Text = "Windows Server 2016" },
+                new SelectListItem { Value = "Windows Server 2012", Text = "Windows Server 2012" },
 
             };
             await LoadVulsAsync();

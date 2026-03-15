@@ -1,4 +1,5 @@
-
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Antiforgery;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace AuditSentinel.Pages.Cuenta
 {
     // Opcional: si quieres que solo usuarios autenticados vean la página
-    // [Authorize]
+    //[Authorize]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<AuditSentinel.Models.Usuarios> _signInManager;

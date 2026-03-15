@@ -1,11 +1,12 @@
-using System.Linq;
 using AuditSentinel.Data;
 using AuditSentinel.Hubs;
 using AuditSentinel.Models;
 using AuditSentinel.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,18 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Cuenta/Login";
     options.AccessDeniedPath = "/Cuenta/AccessDenied";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    options.SlidingExpiration = true;
+
+    options.Cookie.Name = "AuthCookie";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // usa HTTPS
+    options.Cookie.SameSite = SameSiteMode.Lax; // o Strict si tu flujo lo permi
+});
+
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "X-CSRF-TOKEN"; // Opcional: configurar el nombre del header
 });
 
 // ==========================
@@ -109,6 +122,15 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseAntiforgery();
+
+
+app.MapGet("/Cuenta/MantenerActivo", [Authorize] () =>
+{
+    // Devolver algo mínimo. El simple hecho de llegar aquí ya cuenta como actividad.
+    return Results.Ok(new { utc = DateTimeOffset.UtcNow });
+});
+
 
 app.MapHub<EscaneoHub>("/EscaneoHub");
 app.MapRazorPages();
