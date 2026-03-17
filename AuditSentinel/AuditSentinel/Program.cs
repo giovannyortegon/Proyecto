@@ -39,7 +39,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Cuenta/Login";
     options.AccessDeniedPath = "/Cuenta/AccessDenied";
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(2);
     options.SlidingExpiration = true;
 
     options.Cookie.Name = "AuthCookie";
@@ -107,6 +107,8 @@ if (app.Environment.IsDevelopment())
 {
     // En desarrollo: página de excepción detallada del framework
     app.UseDeveloperExceptionPage();
+    app.UseExceptionHandler("/Error/500");
+    app.UseStatusCodePagesWithReExecute("/Error/{0}");
 }
 else
 {

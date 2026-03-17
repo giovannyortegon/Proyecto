@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuditSentinel.Pages.Reportes
 {
-    [Authorize(Roles = "Analista,Administrador")]
+    //[Authorize(Roles = "Analista,Administrador")]
     public class IndexModel : PageModel
     {
         private readonly ApplicationDBContext _context;
