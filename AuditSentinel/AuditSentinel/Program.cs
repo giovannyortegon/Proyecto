@@ -107,6 +107,8 @@ if (app.Environment.IsDevelopment())
 {
     // En desarrollo: página de excepción detallada del framework
     app.UseDeveloperExceptionPage();
+    app.UseExceptionHandler("/Error/500");
+    app.UseStatusCodePagesWithReExecute("/Error/{0}");
 }
 else
 {
