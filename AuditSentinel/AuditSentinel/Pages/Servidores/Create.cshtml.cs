@@ -1,5 +1,6 @@
 ﻿using AuditSentinel.Data;
 using AuditSentinel.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace AuditSentinel.Pages.Servidores
 {
+    [Authorize(Roles = "Analista,Administrador")]
     public class CreateModel : PageModel
     {
         private readonly AuditSentinel.Data.ApplicationDBContext _context;
