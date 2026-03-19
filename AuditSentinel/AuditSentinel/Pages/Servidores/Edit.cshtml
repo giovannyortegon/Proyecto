@@ -46,15 +46,17 @@
                                     </div>
                                     <span asp-validation-for="Servidores.NombreServidor" class="text-danger small"></span>
                                 </div>
+                                <div class="mb-3">
+                                    <label asp-for="Servidores.SistemaOperativo" class="form-label"></label>
 
-                                <div class="mb-0">
-                                    <label asp-for="Servidores.SistemaOperativo" class="form-label small fw-bold text-muted text-uppercase">Plataforma Instalada <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light"><i class="bi bi-cpu"></i></span>
-                                        <input asp-for="Servidores.SistemaOperativo" class="form-control" placeholder="Ej: Ubuntu 22.04, Windows 2022..." />
-                                    </div>
-                                    <span asp-validation-for="Servidores.SistemaOperativo" class="text-danger small"></span>
+                                    <select asp-for="Servidores.SistemaOperativo"
+                                            class="form-select"
+                                            asp-items="@Model.SistemasOperativos">                                        
+                                    </select>
+
+                                    <span asp-validation-for="Servidores.SistemaOperativo" class="text-danger"></span>
                                 </div>
+
                             </div>
                         </div>
                     </div>

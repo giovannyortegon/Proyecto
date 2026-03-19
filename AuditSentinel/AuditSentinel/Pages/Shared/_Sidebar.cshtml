@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity;
+@using System.Security.Claims;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @inject SignInManager<AuditSentinel.Models.Usuarios> SignInManager
 @inject UserManager<AuditSentinel.Models.Usuarios> UserManager
@@ -16,7 +17,7 @@
 
     <hr class="sidebar-divider mx-3 opacity-25 text-white">
 
-    <nav class="nav flex-column flex-nowrap px-2 flex-grow-1 overflow-hidden">
+    <nav class="nav flex-column flex-nowrap p-1 flex-grow-1 overflow-hidden">
         <a asp-page="/Index" class="nav-link d-flex align-items-center mb-2">
             <div class="icon-container"><i class="bi bi-house-door"></i></div>
             <span class="menu-text">Inicio</span>
@@ -39,17 +40,19 @@
         </a>
     </nav>
 
-    <div class="sidebar-footer p-2 mt-auto border-top border-white border-opacity-10">
+    <div class="sidebar-footer p-1 mt-auto border-top border-white border-opacity-10">
         @if (SignInManager.IsSignedIn(User))
         {
             @if (User?.Identity?.IsAuthenticated ?? false)
             {
-                <div class="nav-link d-flex align-items-center text-white mb-2 p-1">
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                <a asp-page="/Registrar/Details" asp-route-id="@userId" class="nav-link d-flex align-items-center text-white mb-3 p-1">
                     <div class="icon-container bg-white bg-opacity-25 rounded-circle">
                         <i class="bi bi-person-fill"></i>
                     </div>
                     <span class="menu-text small">@User.Identity.Name</span>
-                </div>
+                </a>
                 <a method="post" asp-area="Identity" asp-page="/Cuenta/Logout" asp-route-returnUrl="@Url.Page("/Index")">
                     <button type="submit" class="nav-link d-flex align-items-center text-logout border-0 bg-transparent w-100 p-1">
                         <div class="icon-container"><i class="bi bi-box-arrow-right"></i></div>

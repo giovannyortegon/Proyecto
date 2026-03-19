@@ -64,9 +64,9 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-cpu"></i></span>
                                     <select asp-for="Servidores.SistemaOperativo" class="form-select">
-                                        <option value="">-- Seleccione la plataforma instalada --</option>
+                                        <option value="">-- Seleccione Sistema Operativo --</option>
                                         <optgroup label="Open Source">
-                                            <option value="@nameof(AuditSentinel.Models.SistemaOperativo.Linux)">🐧 Linux Distributions</option>
+                                            <option value="@nameof(AuditSentinel.Models.SistemaOperativo.Linux)">Linux Distributions</option>
                                         </optgroup>
                                         <optgroup label="Microsoft Windows Server">
                                             <option value="@nameof(AuditSentinel.Models.SistemaOperativo.WindowsServer2012)">Windows Server 2012</option>

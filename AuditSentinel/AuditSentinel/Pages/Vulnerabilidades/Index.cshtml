@@ -1,4 +1,5 @@
 ﻿@page
+@using AuditSentinel.Models
 @model AuditSentinel.Pages.Vulnerabilidades.IndexModel
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = "Administrador,Analista")]
@@ -23,18 +24,23 @@
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body">
             <form method="get" class="row g-3">
-                <div class="col-md-5">
+                <div class="col-md-8">
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
                         <input name="search" value="@Model.Search" class="form-control bg-light border-start-0 ps-0" placeholder="Buscar por nombre o descripción..." />
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <select name="riesgo" class="form-select bg-light"
-                            asp-items="Html.GetEnumSelectList<AuditSentinel.Models.NivelRiesgo>()">
-                        <option value="">-- Todos los niveles de Riesgo --</option>
+@*                 <div class="col-md-3">
+                    <select asp-for="Riesgo" asp-items="Html.GetEnumSelectList<NivelRiesgo>()" class="form-select">
+                        <option value="">Todos los estados</option>
+                        @foreach (var riesgo in Enum.GetValues(typeof(NivelRiesgo)))
+                        {
+                            <option value="@riesgo" selected="@(Model.Riesgo == (NivelRiesgo)riesgo)">
+                                @riesgo
+                            </option>
+                        } 
                     </select>
-                </div>
+                </div> *@
                 <div class="col-md-2">
                     <button class="btn btn-outline-primary w-100 fw-bold" type="submit">
                         <i class="bi bi-funnel"></i> Filtrar
@@ -65,22 +71,22 @@
                             foreach (var v in Model.Items)
                             {
                                 var riesgo = v.NivelRiesgo.ToString();
-                                var badgeClass = riesgo.ToLower() switch
+                                var badgeClass = riesgo switch
                                 {
-                                    "crítico" or "alto" => "bg-danger",
-                                    "medio" => "bg-warning text-dark",
-                                    "bajo" => "bg-success",
+                                    "Crítico" or "Critico" => "bg-secondary",
+                                    "Alto" => "bg-danger",
+                                    "Medio" => "bg-warning text-dark",
+                                    "Bajo" => "bg-success",
                                     _ => "bg-secondary"
                                 };
-
                                 <tr>
                                     <td class="ps-4">
                                         <div class="fw-bold text-dark">@v.NombreVulnerabilidad</div>
                                         <div class="text-muted x-small">ID: #@v.IdVulnerabilidad</div>
                                     </td>
                                     <td class="text-center">
-                                        <span class="badge @badgeClass rounded-pill px-3 py-2 text-uppercase fw-bold" style="min-width: 85px; font-size: 0.7rem;">
-                                            @v.NivelRiesgo
+                                        <span class="badge @badgeClass  rounded-pill px-3 py-2 fw-bold" style="min-width: 85px; font-size: 0.7rem;">
+                                            @riesgo
                                         </span>
                                     </td>
                                     <td class="text-center text-muted small">
@@ -140,10 +146,10 @@
                         }
 
                         <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
-                            <a class="page-link" asp-page="./Index" asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-search="@Model.Search"><i class="bi bi-chevron-right"></i></a>
+                            <a class="page-link" asp-page="./Index" asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-search="@Model.Search" ><i class="bi bi-chevron-right"></i></a>
                         </li>
                         <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
-                            <a class="page-link" asp-page="./Index" asp-route-pageNumber="@Model.TotalPages" asp-route-search="@Model.Search"><i class="bi bi-chevron-double-right"></i></a>
+                            <a class="page-link" asp-page="./Index" asp-route-pageNumber="@Model.TotalPages" asp-route-search="@Model.Search" ><i class="bi bi-chevron-double-right"></i></a>
                         </li>
                     </ul>
                     <div class="text-center x-small text-muted">

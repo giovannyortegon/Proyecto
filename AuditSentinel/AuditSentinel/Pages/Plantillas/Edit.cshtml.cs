@@ -15,6 +15,14 @@ namespace AuditSentinel.Pages.Plantillas
         private readonly ApplicationDBContext _context;
         public EditModel(ApplicationDBContext context) => _context = context;
 
+        public List<SelectListItem> OpcionesSistemas { get; set; } = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "Windows Server 2022", Text = "Windows Server 2022" },
+            new SelectListItem { Value = "Windows Server 2019", Text = "Windows Server 2019" },
+            new SelectListItem { Value = "Windows Server 2016", Text = "Windows Server 2016" },
+            new SelectListItem { Value = "Windows Server 2012", Text = "Windows Server 2012" },
+        };
+
         [BindProperty] public AuditSentinel.Models.Plantillas Plantilla { get; set; } = new();
         public List<SelectListItem> VulnerabilidadesList { get; set; } = new();
         [BindProperty] public int[] SelectedVulnerabilidades { get; set; } = Array.Empty<int>();
@@ -62,6 +70,7 @@ namespace AuditSentinel.Pages.Plantillas
             // Actualizar campos simples
             dbPlantilla.NombrePlantilla = Plantilla.NombrePlantilla;
             dbPlantilla.Version = Plantilla.Version;
+ 
 
             // Validar existencia de vulnerabilidades seleccionadas
             var vulsValidas = await _context.Vulnerabilidades
@@ -96,6 +105,18 @@ namespace AuditSentinel.Pages.Plantillas
                 var entidad = dbPlantilla.PlantillasVulnerabilidades
                     .First(pv => pv.IdVulnerabilidad == idVul);
                 _context.PlantillasVulnerabilidades.Remove(entidad);
+            }
+
+
+            // Verificar si ya existe un registro con ese nombre
+            var existe = await _context.Plantillas
+                .AnyAsync(s => s.NombrePlantilla == Plantilla.NombrePlantilla);
+
+
+            if (existe)
+            {
+                ModelState.AddModelError("Plantilla.NombrePlantilla", "Ya existe una plantilla con este nombre.");
+                return Page(); // No guarda y vuelve a la página con el mensaje
             }
 
             await _context.SaveChangesAsync();

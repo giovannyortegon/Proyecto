@@ -1,5 +1,8 @@
 ﻿@page "{id:int}"
+@using Microsoft.AspNetCore.Authorization
 @model AuditSentinel.Pages.Escaneos.DeleteModel
+@attribute [Authorize(Roles = "Analista,Administrador")]
+
 
 @{
     ViewData["Title"] = "Confirmar Eliminación";

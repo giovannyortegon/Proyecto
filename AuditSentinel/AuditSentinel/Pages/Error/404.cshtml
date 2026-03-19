@@ -2,7 +2,7 @@
 @model AuditSentinel.Pages.Error.NotFoundModel
 @{
     Layout = null;
-    ViewData["Title"] = "404 - Recurso no encontrado";
+    ViewData["Title"] = "404 - Recurso no localizado";
 }
 
 <!DOCTYPE html>
@@ -15,61 +15,72 @@
     <style>
         :root {
             --primary-blue: #0a58ca;
-            --dark-navy: #020617;
-            --accent-cyan: #22d3ee;
+            --light-bg: #ffffff; /* Fondo Blanco Puro */
+            --accent-cyan: #0dcaf0; /* Cian más visible en fondo claro */
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --terminal-box-bg: #f1f5f9;
         }
 
         body {
             margin: 0;
             height: 100vh;
-            background: radial-gradient(circle at center, #1e3a8a 0%, #020617 100%);
+            background-color: var(--light-bg);
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            color: #f0f9ff;
+            color: var(--text-dark);
             overflow: hidden;
         }
 
-        /* Contenedor con efecto de profundidad */
+        /* Rejilla de fondo técnica sutil en gris claro */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 45px 45px;
+            z-index: -1;
+        }
+
+        /* Contenedor principal claro */
         .error-container {
             text-align: center;
-            padding: 3rem;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
+            max-width: 550px;
             width: 90%;
             position: relative;
         }
 
-        /* Código 404 con efecto de glitch sutil */
         .error-code {
-            font-size: 8rem;
+            font-size: 9rem;
             font-weight: 900;
-            line-height: 1;
+            line-height: 0.8;
             margin: 0;
-            background: linear-gradient(to bottom, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text-dark);
             letter-spacing: -5px;
-            position: relative;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
         }
 
-        /* Icono de Radar/Escaneo */
+        /* Caja de Escaneo */
         .radar-box {
             position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 1.5rem auto;
-            border: 2px solid var(--accent-cyan);
+            width: 110px;
+            height: 110px;
+            margin: 2.5rem auto;
+            border: 2px solid rgba(13, 202, 240, 0.2);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
+            background-color: rgba(13, 202, 240, 0.02);
         }
 
             .radar-box::after {
@@ -77,102 +88,103 @@
                 position: absolute;
                 width: 100%;
                 height: 100%;
-                border: 1px solid var(--accent-cyan);
+                border: 2px solid var(--accent-cyan);
                 border-radius: 50%;
-                animation: pulse 2s infinite;
+                animation: pulse 2.5s infinite;
             }
 
         .bi-search {
-            font-size: 3rem;
+            font-size: 2.8rem;
             color: var(--accent-cyan);
-            animation: scan 3s infinite ease-in-out;
+            animation: scan-move 4s infinite ease-in-out;
         }
 
         .oops {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             font-weight: 800;
             margin-top: 1rem;
-            color: #fff;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .message {
-            font-size: 1.1rem;
-            color: #94a3b8;
-            margin: 1rem 0 2rem;
-            line-height: 1.5;
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin: 1.2rem 0 2.5rem;
+            line-height: 1.6;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
+        /* Caja de ruta estilo terminal clara */
         .path-box {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 0.75rem;
+            background: var(--terminal-box-bg);
+            padding: 0.85rem 1.25rem;
             border-radius: 0.75rem;
-            font-family: monospace;
+            font-family: 'Consolas', 'Monaco', monospace;
             font-size: 0.85rem;
-            color: var(--accent-cyan);
-            border: 1px solid rgba(34, 211, 238, 0.2);
-            margin-bottom: 2rem;
-            word-break: break-all;
+            color: var(--primary-blue); /* Texto azul para terminal clara */
+            border: 1px solid #e2e8f0;
+            margin-bottom: 3rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        /* Botón estilo AuditSentinel */
+        .bi-terminal {
+            color: var(--text-muted);
+        }
+
         .btn-back {
             display: inline-flex;
             align-items: center;
             background: var(--primary-blue);
-            color: white;
-            padding: 0.8rem 2rem;
+            color: #fff;
+            padding: 1rem 2.5rem;
             border-radius: 12px;
-            font-weight: 600;
+            font-weight: 700;
             text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 15px -3px rgba(10, 88, 202, 0.4);
+            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(10, 88, 202, 0.2);
         }
 
             .btn-back:hover {
                 background: #084298;
-                transform: translateY(-2px);
-                box-shadow: 0 20px 25px -5px rgba(10, 88, 202, 0.5);
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(10, 88, 202, 0.3);
+                color: #fff;
             }
 
-        /* Animaciones */
+        /* Animaciones escapadas para CSHTML */
         @@keyframes pulse {
-            0%
+            0% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
 
-        {
-            transform: scale(1);
-            opacity: 0.5;
+            100% {
+                transform: scale(1.7);
+                opacity: 0;
+            }
         }
 
-        100% {
-            transform: scale(1.5);
-            opacity: 0;
-        }
+        @@keyframes scan-move {
+            0%, 100% {
+                transform: rotate(-8deg) scale(1);
+                filter: brightness(1);
+            }
 
-        }
-
-        @@keyframes scan {
-            0%, 100%
-
-        {
-            transform: rotate(-10deg) scale(1);
-        }
-
-        50% {
-            transform: rotate(10deg) scale(1.1);
-        }
-
-        }
-
-        /* Fondo de partículas sutil */
-        .bg-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: -1;
+            50% {
+                transform: rotate(8deg) scale(1.1);
+                filter: brightness(1.1);
+            }
         }
     </style>
 </head>
@@ -186,21 +198,24 @@
             <i class="bi bi-search"></i>
         </div>
 
-        <div class="oops">Recurso No Encontrado</div>
+        <div class="oops">Objetivo no encontrado</div>
 
         <p class="message">
-            El sistema de auditoría no ha podido localizar el objeto o página solicitada en el servidor.
+            El escaneo de directorios ha finalizado sin resultados. Es posible que el recurso haya sido purgado o la ruta sea incorrecta.
         </p>
 
         @if (!string.IsNullOrEmpty(Model.OriginalPath))
         {
             <div class="path-box">
-                <i class="bi bi-terminal me-2"></i> @Model.OriginalPath
+                <i class="bi bi-terminal"></i>
+                <span>root@@audit-sentinel:~# @Model.OriginalPath</span>
             </div>
         }
 
+        <br />
+
         <a href="/" class="btn-back">
-            <i class="bi bi-shield-check me-2"></i> Volver al Centro de Control
+            <i class="bi bi-cpu me-2"></i> Volver a Inicio
         </a>
     </div>
 </body>

@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AuditSentinel.Data;
+using AuditSentinel.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AuditSentinel.Data;
-using AuditSentinel.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AuditSentinel.Pages.Servidores
 {
@@ -22,9 +23,22 @@ namespace AuditSentinel.Pages.Servidores
 
         [BindProperty]
         public AuditSentinel.Models.Servidores Servidores { get; set; } = default!;
-
+        public List<SelectListItem> SistemasOperativos { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+                SistemasOperativos = Enum.GetValues(typeof(SistemaOperativo))
+                .Cast<SistemaOperativo>()
+                .Select(e => new SelectListItem
+                {
+                    Value = e.ToString(),
+                    Text = e.GetType()
+                            .GetMember(e.ToString())[0]
+                            .GetCustomAttributes(typeof(DisplayAttribute), false)
+                            .Cast<DisplayAttribute>()
+                            .FirstOrDefault()?.Name ?? e.ToString()
+                })
+                .ToList();
+
             if (id == null)
             {
                 return NotFound();
