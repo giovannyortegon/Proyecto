@@ -72,19 +72,22 @@ namespace AuditSentinel.Pages.Usuarios
             user.Nombre = Registro.Nombre;
             user.Apellido = Registro.Apellido;
             user.Email = Registro.Email;
+            user.UserName = Registro.Email;
 
             var update = await _userManager.UpdateAsync(user);
             if (!update.Succeeded)
             {
                 foreach (var e in update.Errors)
                     ModelState.AddModelError(string.Empty, e.Description);
-
+                // Recargar roles para la vista en caso de error
                 AvailableRoles = _roleManager.Roles
                     .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
                     .ToList();
-                return Page();
-            }
 
+                return Page();
+
+            }
+ 
             // Actualiza roles: quita los que ya no están y agrega los nuevos
             var currentRoles = await _userManager.GetRolesAsync(user);
             var toAdd = Registro.Rol.Except(currentRoles).ToArray();
@@ -98,6 +101,8 @@ namespace AuditSentinel.Pages.Usuarios
                     foreach (var e in r1.Errors)
                         ModelState.AddModelError(string.Empty, e.Description);
                     return Page();
+
+
                 }
             }
 
@@ -115,6 +120,8 @@ namespace AuditSentinel.Pages.Usuarios
                 {
                     foreach (var e in r2.Errors)
                         ModelState.AddModelError(string.Empty, e.Description);
+                    
+                    //return RedirectToPage("Confirmacion", new { id = user.Id });
                     return Page();
                 }
             }
@@ -123,7 +130,10 @@ namespace AuditSentinel.Pages.Usuarios
             if (User?.Identity?.Name != null && user.UserName == User.Identity.Name)
                 await _signInManager.RefreshSignInAsync(user);
 
-            return RedirectToPage("Index");
+            TempData["MensajeExito"] = "Usuario actualizado correctamente.";
+
+            //return RedirectToPage("Index");
+            return RedirectToPage("Confirmacion", new { id = user.Id });
         }
     }
 }

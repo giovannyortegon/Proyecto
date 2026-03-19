@@ -17,30 +17,34 @@ namespace AuditSentinel.Pages.Vulnerabilidades
         public IList<AuditSentinel.Models.Vulnerabilidades> Items { get; set; } = new List<AuditSentinel.Models.Vulnerabilidades>();
 
         // (Opcional) filtros simples
+        [BindProperty(SupportsGet = true)]
         public string? Search { get; set; }
+        [BindProperty(SupportsGet = true)]
         public NivelRiesgo? Riesgo { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public int PageNumber { get; set; } = 1;
-
+        [BindProperty(SupportsGet = true)]
         public int PageSize { get; set; } = 10;   // <<< 5 por página
 
         // Datos para la UI
         public int TotalItems { get; set; }
         public int TotalPages { get; set; }
 
-        public async Task OnGetAsync(string? search, NivelRiesgo? riesgo)
+        public async Task OnGetAsync()
         {
-            Search = search;
-            Riesgo = riesgo;
+            //Search = search;
+            //Riesgo = riesgo;
 
             var query = _context.Vulnerabilidades.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(Search))
-                query = query.Where(v => v.NombreVulnerabilidad.Contains(Search) || (v.Descripcion != null && v.Descripcion.Contains(Search)));
+                query = query.Where(v => v.NombreVulnerabilidad.Contains(Search));
 
-            if (Riesgo.HasValue)
-                query = query.Where(v => v.NivelRiesgo == Riesgo.Value);
+            //if (Riesgo.HasValue) {
+            //    query = query.Where(vr => vr.NivelRiesgo == Riesgo.Value);
+            //    Console.WriteLine($"Riesgo recibido: {Riesgo.Value}");
+            //}
 
             // Total de registros (para calcular páginas)
             TotalItems = await query.CountAsync();

@@ -1,12 +1,14 @@
 ﻿using AuditSentinel.Data;
 using AuditSentinel.Models;
 using AuditSentinel.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuditSentinel.Pages.Escaneos
 {
+    [Authorize(Roles = "Analista,Administrador")]
     public class DetailsModel : PageModel
     {
         private readonly ApplicationDBContext _context;

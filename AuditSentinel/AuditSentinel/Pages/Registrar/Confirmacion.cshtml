@@ -1,0 +1,144 @@
+﻿@page "{id}"
+@using Microsoft.AspNetCore.Authorization
+@model AuditSentinel.Pages.Registrar.ConfirmacionModel
+@attribute [Authorize(Roles = "Administrador")]
+@{
+    ViewData["Title"] = "Confirmación de Cambios";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            @if (TempData["MensajeExito"] != null)
+            {
+                <div class="alert alert-success border-0 shadow-sm rounded-4 mb-4 p-3 animate__animated animate__fadeInDown">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-success rounded-circle p-2 me-3">
+                            <i class="bi bi-check-lg text-white fs-5"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">@TempData["MensajeExito"]</h6>
+                            <small class="text-dark opacity-75">@TempData["DetallesCambio"]</small>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-primary py-4 text-center border-0">
+                    <div class="bg-white bg-opacity-25 rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 60px; height: 60px;">
+                        <i class="bi bi-person-check-fill text-white fs-2"></i>
+                    </div>
+                    <h4 class="text-white fw-bold mb-0">Registro Actualizado</h4>
+                    <p class="text-white-50 small mb-0">Los protocolos de identidad han sido verificados</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5 bg-white">
+                    <h6 class="text-uppercase text-muted small fw-bold mb-4 tracking-wider">Detalles del Perfil</h6>
+
+                    <div class="info-group mb-4">
+                        <div class="d-flex align-items-center mb-1">
+                            <i class="bi bi-envelope-at text-primary me-2"></i>
+                            <span class="text-muted small fw-bold">Usuario / Email</span>
+                        </div>
+                        <div class="ps-4 fs-5 fw-semibold text-dark">
+                            @Model.UsuarioActualizado.UserName
+                        </div>
+                    </div>
+
+                    <div class="info-group mb-4">
+                        <div class="d-flex align-items-center mb-1">
+                            <i class="bi bi-person-badge text-primary me-2"></i>
+                            <span class="text-muted small fw-bold">Nombre Completo</span>
+                        </div>
+                        <div class="ps-4 fs-5 fw-semibold text-dark">
+                            @Model.UsuarioActualizado.Nombre @Model.UsuarioActualizado.Apellido
+                        </div>
+                    </div>
+
+                    <hr class="my-4 opacity-10">
+
+                    <div class="d-grid">
+                        <a asp-page="./Index" class="btn btn-primary btn-lg rounded-3 shadow-blue fw-bold py-3">
+                            <i class="bi bi-arrow-left me-2"></i> Volver a la Lista de Usuarios
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light border-0 py-3 text-center">
+                    <span class="text-muted small">
+                        <i class="bi bi-shield-fill-check text-success me-1"></i>
+                        AuditSentinel Identity Protection System
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Variables de AuditSentinel */
+    :root {
+        --sentinel-primary: #0a58ca;
+    }
+
+    /* Estilos de botones */
+    .btn-primary {
+        background-color: var(--sentinel-primary);
+        border-color: var(--sentinel-primary);
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #084298;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(10, 88, 202, 0.25);
+        }
+
+    /* Sombras y bordes */
+    .rounded-4 {
+        border-radius: 1.25rem !important;
+    }
+
+    .shadow-blue {
+        box-shadow: 0 8px 15px rgba(10, 88, 202, 0.2);
+    }
+
+    .tracking-wider {
+        letter-spacing: 1px;
+    }
+
+    /* Animación de la alerta */
+    .animate__fadeInDown {
+        animation: fadeInDown 0.5s both;
+    }
+
+    @@keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translate3d(0, -20px, 0);
+        }
+
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    /* Personalización de la cabecera */
+    .card-header.bg-primary {
+        background: linear-gradient(135deg, #0a58ca 0%, #084298 100%) !important;
+    }
+
+    /* Estilo para los grupos de información */
+    .info-group {
+        border-left: 3px solid #f1f5f9;
+        padding-left: 1rem;
+        transition: border-color 0.3s;
+    }
+
+        .info-group:hover {
+            border-left-color: var(--sentinel-primary);
+        }
+</style>

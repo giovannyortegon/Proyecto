@@ -1,6 +1,12 @@
 ﻿@page "{id:int}"
 @using AuditSentinel.Models
+@using Microsoft.AspNetCore.Authorization
 @model AuditSentinel.Pages.Escaneos.EditModel
+@attribute [Authorize(Roles = "Analista,Administrador")]
+
+@{
+    ViewData["Title"] = "Gestión de Escaneos";
+}
 
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -34,7 +40,7 @@
                             <label asp-for="Escaneo.NombreEscaneo" class="form-label small fw-bold text-muted text-uppercase">Nombre del Escaneo</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-end-0"><i class="bi bi-info-circle"></i></span>
-                                <input asp-for="Escaneo.NombreEscaneo" class="form-control bg-light border-start-0 ps-0" placeholder="Nombre descriptivo..." />
+                                <input asp-for="Escaneo.NombreEscaneo" class="form-control bg-light border-start-0 ps-0" placeholder="Nombre descriptivo..." readonly />
                             </div>
                             <span asp-validation-for="Escaneo.NombreEscaneo" class="text-danger small"></span>
                         </div>
@@ -45,7 +51,7 @@
                                 <span class="input-group-text bg-light border-end-0"><i class="bi bi-toggle-on"></i></span>
                                 <select asp-for="Escaneo.Estado"
                                         asp-items="Html.GetEnumSelectList<EstadoEscaneo>()"
-                                        class="form-select bg-light border-start-0 ps-0">
+                                        class="form-control bg-light border-start-0 ps-0">
                                 </select>
                             </div>
                         </div>
