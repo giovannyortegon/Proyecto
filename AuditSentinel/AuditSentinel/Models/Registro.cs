@@ -17,11 +17,11 @@ namespace AuditSentinel.Models
 
         public string Nombre { get; set; }
 
-        [Required(ErrorMessage = "El nombre es obligatoria")]
-        [StringLength(100, ErrorMessage = "El nombre no debe exceder 100 caracteres")]
-        [MinLength(4, ErrorMessage = "El nombre debe tener al menos 4 caracteres")]
+        [Required(ErrorMessage = "El apellido es obligatoria")]
+        [StringLength(100, ErrorMessage = "El apellido no debe exceder 100 caracteres")]
+        [MinLength(4, ErrorMessage = "El apellido debe tener al menos 4 caracteres")]
         [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$",
-            ErrorMessage = "El nombre no debe tener caracteres especiales ni números.")]
+            ErrorMessage = "El apellido no debe tener caracteres especiales ni números.")]
         [Display(Name = "Apellido")]
         public string Apellido { get; set; }
 

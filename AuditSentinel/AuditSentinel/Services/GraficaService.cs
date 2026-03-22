@@ -3,7 +3,7 @@ using System.Diagnostics;
 using AuditSentinel.Data;
 using AuditSentinel.Models;
 using MatplotlibCS;
-using MatplotlibCS.PlotItems;
+using MatplotlibCS.PlotItems; 
 
 namespace AuditSentinel.Services
 {
