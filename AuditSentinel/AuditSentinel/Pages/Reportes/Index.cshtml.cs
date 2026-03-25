@@ -68,8 +68,16 @@ namespace AuditSentinel.Pages.Reportes
 
             GraficaLabels  = "[" + string.Join(",", grupos.Select(g => $"\"{g.Label}\""))  + "]";
             GraficaValores = "[" + string.Join(",", grupos.Select(g => g.Count.ToString())) + "]";
-            GraficaColores = "[" + string.Join(",", grupos.Select((g, i) => $"\"{paleta[i % paleta.Length]}\"")) + "]";
-
+            GraficaColores = "[" + string.Join(",", grupos.Select(g => {
+                var color = g.Label switch
+                {
+                    "Cumple" => "#28a745",  // verde
+                    "NoCumple" => "#dc3545",  // rojo
+                    "ParcialmenteCumple" => "#ffc107",  // amarillo
+                    _ => "#6c757d"   // gris para cualquier otro
+                };
+                return $"\"{color}\"";
+            })) + "]";
             // ── Query filtrada para la tabla ─────────────────────────────
             var query = _context.Reportes
                 .Include(r => r.EscaneosReportes)
