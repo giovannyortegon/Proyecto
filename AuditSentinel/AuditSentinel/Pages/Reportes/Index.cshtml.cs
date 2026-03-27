@@ -74,7 +74,6 @@ namespace AuditSentinel.Pages.Reportes
                     "Cumple" => "#28a745",  // verde
                     "NoCumple" => "#dc3545",  // rojo
                     "ParcialmenteCumple" => "#ffc107",  // amarillo
-                    _ => "#6c757d"   // gris para cualquier otro
                 };
                 return $"\"{color}\"";
             })) + "]";

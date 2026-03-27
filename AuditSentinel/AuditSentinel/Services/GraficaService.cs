@@ -1,9 +1,8 @@
-#nullable enable
-using System.Diagnostics;
 using AuditSentinel.Data;
 using AuditSentinel.Models;
 using MatplotlibCS;
 using MatplotlibCS.PlotItems;
+using System.Diagnostics;
 
 namespace AuditSentinel.Services
 {
