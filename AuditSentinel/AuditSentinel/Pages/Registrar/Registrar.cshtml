@@ -75,7 +75,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="mb-3">
+@*                                 <div class="mb-3">
                                     <label class="form-label small fw-bold text-muted">Contraseña</label>
                                     <input asp-for="Registro.Password" class="form-control" type="password" placeholder="Mínimo 8 caracteres" />
                                     <span asp-validation-for="Registro.Password" class="text-danger small"></span>
@@ -83,6 +83,29 @@
                                 <div class="mb-0">
                                     <label class="form-label small fw-bold text-muted">Confirmar Contraseña</label>
                                     <input asp-for="Registro.ConfirmacionPassword" class="form-control" type="password" placeholder="Repita la contraseña" />
+                                    <span asp-validation-for="Registro.ConfirmacionPassword" class="text-danger small"></span>
+                                </div> *@
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold text-muted">Contraseña</label>
+                                    <div class="input-group">
+                                        <input asp-for="Registro.Password" class="form-control border-end-0" type="password" placeholder="Mínimo 8 caracteres" />
+
+                                        <span class="input-group-text bg-white border-start-0 text-muted toggle-password" data-target="Registro_Password" style="cursor: pointer;" title="Mostrar/Ocultar contraseña">
+                                            <i class="bi bi-eye toggle-icon"></i>
+                                        </span>
+                                    </div>
+                                    <span asp-validation-for="Registro.Password" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-0">
+                                    <label class="form-label small fw-bold text-muted">Confirmar Contraseña</label>
+                                    <div class="input-group">
+                                        <input asp-for="Registro.ConfirmacionPassword" class="form-control border-end-0" type="password" placeholder="Repita la contraseña" />
+
+                                        <span class="input-group-text bg-white border-start-0 text-muted toggle-password" data-target="Registro_ConfirmacionPassword" style="cursor: pointer;" title="Mostrar/Ocultar contraseña">
+                                            <i class="bi bi-eye toggle-icon"></i>
+                                        </span>
+                                    </div>
                                     <span asp-validation-for="Registro.ConfirmacionPassword" class="text-danger small"></span>
                                 </div>
                             </div>
@@ -136,6 +159,36 @@
         color: #6c757d;
     }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Seleccionamos todos los botones de "ver contraseña"
+        const toggleButtons = document.querySelectorAll(".toggle-password");
+
+        toggleButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                // Obtenemos el ID del input asociado desde el data-target
+                const targetId = this.getAttribute("data-target");
+                const passwordInput = document.getElementById(targetId);
+                const toggleIcon = this.querySelector(".toggle-icon");
+
+                if (passwordInput) {
+                    // Alternar el tipo de input (password <-> text)
+                    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                    passwordInput.setAttribute("type", type);
+
+                    // Alternar el ícono (ojo abierto <-> ojo cerrado)
+                    if (type === "text") {
+                        toggleIcon.classList.remove("bi-eye");
+                        toggleIcon.classList.add("bi-eye-slash");
+                    } else {
+                        toggleIcon.classList.remove("bi-eye-slash");
+                        toggleIcon.classList.add("bi-eye");
+                    }
+                }
+            });
+        });
+    });
+</script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

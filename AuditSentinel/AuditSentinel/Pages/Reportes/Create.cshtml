@@ -1,5 +1,7 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization
 @model AuditSentinel.Pages.Reportes.CreateModel
+@attribute [Authorize(Roles = "Administrador,Analista,Auditor")]
 @{
     ViewData["Title"] = "Nuevo Reporte de Auditoría";
 }
