@@ -1,0 +1,32 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AuditSentinel
+{
+    public enum EstadoEscaneo
+    {
+        [Display(Name = "Pendiente")]
+        Pendiente,
+        [Display(Name = "En Progreso")]
+        EnProgreso,
+        [Display(Name = "Completado")]
+        Completado,
+        [Display(Name = "Fallido")]
+        Fallido
+    }
+    public class Escaneos
+    {
+        [Key]
+        public int IdEscaneo { get; set; }
+        [Required]
+        [MaxLength(80)]
+        [StringLength(80, MinimumLength = 5, ErrorMessage = "El nombre debe tener entre 5 y 80 caracteres.")]
+        [RegularExpression(@"^(?!\d+$)[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]+$", ErrorMessage = "El nombre de usuario no puede tener caracteres especiales o ser solo numeros. ")]
+        [Display(Name = "Nombre Escaneo")]
+        public string NombreEscaneo { get; set; }
+
+        [Display(Name = "Estado")]
+        public EstadoEscaneo Estado { get; set; }   
+        [Display(Name = "Fecha Escaneo")]
+        public DateTime FechaEscaneo { get; set; } = DateTime.Now;     
+    }
+}
