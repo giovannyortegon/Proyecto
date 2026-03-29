@@ -8,8 +8,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AuditSentinel.Pages.Usuarios
 {
+<<<<<<< HEAD
 
     [Authorize(Roles = "Administrador")]
+=======
+    //[Authorize(Roles = "Administrador")]
+>>>>>>> 91f32e4ed8ae39de2a45c9d57f17af7071673aaa
     public class IndexModel : PageModel
     {
         private readonly UserManager<AuditSentinel.Models.Usuarios> _userManager;
@@ -21,30 +25,25 @@ namespace AuditSentinel.Pages.Usuarios
 
         public List<AuditSentinel.Models.Registro> Users { get; set; } = new();
 
-    
-        // Puedes usar esta bandera para mostrar un mensaje en la vista
         public bool IsEmpty => Users.Count == 0;
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var all = await Task.FromResult(_userManager.Users.ToList()); // si quieres, luego lo mejoramos con EF async
+            var all = await Task.FromResult(_userManager.Users.ToList());
 
             if (all == null || !all.Any())
-            {
-                // No hay datos: devuelves la página igual (lista vacía)
                 return Page();
-            }
-            
+
             foreach (var u in all)
             {
-                Users.Add(new AuditSentinel.Models.Registro 
+                Users.Add(new AuditSentinel.Models.Registro
                 {
-                    Id = u.Id,
-                    Nombre = u.Nombre ?? string.Empty,
+                    Id       = u.Id,
+                    Nombre   = u.Nombre   ?? string.Empty,
                     Apellido = u.Apellido ?? string.Empty,
                     UserName = u.UserName ?? string.Empty,
-                    Email = u.Email,
-                    Rol = (await _userManager.GetRolesAsync(u)).ToList()
+                    Email    = u.Email,
+                    Rol      = (await _userManager.GetRolesAsync(u)).ToList()
                 });
             }
 

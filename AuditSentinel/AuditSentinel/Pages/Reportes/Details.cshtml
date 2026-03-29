@@ -22,14 +22,11 @@
                class="btn btn-primary shadow-sm fw-bold">
                 <i class="bi bi-pencil-square me-1"></i> Editar Reporte
             </a>
-
-            @* ── Botón Exportar PDF ── *@
             <a asp-page-handler="ExportarPdf"
                asp-route-id="@Model.Reporte.IdReporte"
                class="btn btn-danger shadow-sm fw-bold">
                 <i class="bi bi-file-earmark-pdf-fill me-1"></i> Exportar PDF
             </a>
-
             <button class="btn btn-outline-dark shadow-sm" onclick="window.print()">
                 <i class="bi bi-printer me-1"></i> Imprimir
             </button>
@@ -40,8 +37,12 @@
     </div>
 
     <div class="row g-4">
+
+        @* ── COLUMNA IZQUIERDA: Cumplimiento + Gráfica ── *@
         <div class="col-lg-4">
-            <div class="card shadow-sm border-0 h-100">
+
+            @* Resumen de Cumplimiento *@
+            <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-white py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Resumen de Cumplimiento</h6>
                 </div>
@@ -60,9 +61,7 @@
                         <h4 class="fw-bold mt-2">@Model.Reporte.cumplimiento</h4>
                         <span class="badge @badgeClass rounded-pill px-3">Estado de Auditoría</span>
                     </div>
-
                     <hr class="text-light">
-
                     <ul class="list-group list-group-flush small">
                         <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                             <span class="text-muted fw-bold text-uppercase">Referencia</span>
@@ -75,8 +74,36 @@
                     </ul>
                 </div>
             </div>
+
+            @* Gráfica de Torta — debajo del resumen *@
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="bi bi-pie-chart-fill me-1"></i> Distribución de Escaneos
+                    </h6>
+                </div>
+                <div class="card-body text-center py-3">
+                    @if (!string.IsNullOrEmpty(Model.RutaGraficaWeb))
+                    {
+                        <img src="@Model.RutaGraficaWeb"
+                             class="img-fluid rounded"
+                             alt="Gráfica de estados de escaneos"
+                             style="max-width: 100%;" />
+                    }
+                    else
+                    {
+                        <div class="text-muted py-4">
+                            <i class="bi bi-exclamation-circle d-block fs-2 mb-2"></i>
+                            No se pudo generar la gráfica.<br>
+                            <small>Verifica que Python y matplotlib estén instalados.</small>
+                        </div>
+                    }
+                </div>
+            </div>
+
         </div>
 
+        @* ── COLUMNA DERECHA: Escaneos asociados ── *@
         <div class="col-lg-8">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
@@ -112,7 +139,6 @@
                                             }
                                             <span class="badge @eBadge border px-2">@estado</span>
                                         </td>
-                                        @* ── Ver fuente restaurado ── *@
                                         <td class="text-end pe-4">
                                             <a asp-page="/Escaneos/Details"
                                                asp-route-id="@x.Escaneos?.IdEscaneo"
@@ -128,6 +154,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 

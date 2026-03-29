@@ -1,4 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
+<<<<<<< HEAD
 # Visual Studio Version 18
 VisualStudioVersion = 18.3.11520.95 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -6,6 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditSentinel", "AuditSenti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditSentinelTest", "..\AuditSentinelTest\AuditSentinelTest.csproj", "{63DE7841-6235-0B1A-9954-61028A9B5974}"
 EndProject
+=======
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditSentinel", "AuditSentinel.csproj", "{92B2CE61-3C41-529C-22E8-B4A5E2340F4B}"
+EndProject
+>>>>>>> 91f32e4ed8ae39de2a45c9d57f17af7071673aaa
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,10 +24,13 @@ Global
 		{92B2CE61-3C41-529C-22E8-B4A5E2340F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92B2CE61-3C41-529C-22E8-B4A5E2340F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92B2CE61-3C41-529C-22E8-B4A5E2340F4B}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{63DE7841-6235-0B1A-9954-61028A9B5974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63DE7841-6235-0B1A-9954-61028A9B5974}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63DE7841-6235-0B1A-9954-61028A9B5974}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63DE7841-6235-0B1A-9954-61028A9B5974}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+>>>>>>> 91f32e4ed8ae39de2a45c9d57f17af7071673aaa
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
