@@ -4,6 +4,8 @@ namespace AuditSentinel.Models
 {
     public enum EstadoEscaneo
     {
+        [Display(Name = "Nuevo")]
+        Nuevo,
         [Display(Name = "Pendiente")]
         Pendiente,
         [Display(Name = "En Progreso")]
