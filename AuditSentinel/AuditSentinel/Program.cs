@@ -60,7 +60,7 @@ builder.Services.AddSignalR();
 builder.Services.AddHostedService<ScannerServerService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<GraficaService>();
-builder.Services.AddScoped<ExportService>();
+//builder.Services.AddScoped<ExportService>();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddSimpleConsole();

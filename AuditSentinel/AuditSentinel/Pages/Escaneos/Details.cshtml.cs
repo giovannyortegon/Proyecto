@@ -12,12 +12,12 @@ namespace AuditSentinel.Pages.Escaneos
     public class DetailsModel : PageModel
     {
         private readonly ApplicationDBContext _context;
-        private readonly ExportService _exportService;
+        //private readonly ExportService _exportService;
 
-        public DetailsModel(ApplicationDBContext context, ExportService exportService)
+        public DetailsModel(ApplicationDBContext context)
         {
             _context = context;
-            _exportService = exportService;
+            //_exportService = exportService;
         }
 
         public AuditSentinel.Models.Escaneos Escaneo { get; set; }
@@ -33,35 +33,6 @@ namespace AuditSentinel.Pages.Escaneos
             if (Escaneo == null) return NotFound();
             return Page();
         }
-
-        public async Task<IActionResult> OnGetExportarAsync(int id, string format)
-        {
-            var escaneo = await _context.Escaneos
-                .Include(e => e.EscaneosServidores).ThenInclude(es => es.Servidores)
-                .Include(e => e.EscaneosPlantillas).ThenInclude(ep => ep.Plantillas)
-                .Include(e => e.EscaneosVulnerabilidades).ThenInclude(ev => ev.Vulnerabilidades)
-                .FirstOrDefaultAsync(m => m.IdEscaneo == id);
-
-            if (escaneo == null) return NotFound();
-
-            var filePath = Path.Combine(Path.GetTempPath(), $"Escaneo_{id}.{format}");
-
-            switch (format.ToLower())
-            {
-                case "csv":
-                    _exportService.ExportEscaneoToCsv(escaneo, filePath);
-                    return File(System.IO.File.ReadAllBytes(filePath), "text/csv", $"Escaneo_{id}.csv");
-                case "html":
-                    _exportService.ExportEscaneoToHtml(escaneo, filePath);
-                    return File(System.IO.File.ReadAllBytes(filePath), "text/html", $"Escaneo_{id}.html");
-                case "pdf":
-                    _exportService.ExportEscaneoToPdf(escaneo, filePath);
-                    return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", $"Escaneo_{id}.pdf");
-                default:
-                    return BadRequest("Formato no soportado.");
-            }
-        }
-
         public async Task<IActionResult> OnPostIniciarAsync(int id)
         {
             var escaneo = await _context.Escaneos
@@ -75,8 +46,15 @@ namespace AuditSentinel.Pages.Escaneos
 
             var resultadosPrevios = _context.EscaneosVulnerabilidades.Where(ev => ev.IdEscaneo == id);
             _context.EscaneosVulnerabilidades.RemoveRange(resultadosPrevios);
+            Console.WriteLine($"Estado Actual: {escaneo.Estado}");
 
-            escaneo.Estado = EstadoEscaneo.Pendiente;
+            if (escaneo.Estado == EstadoEscaneo.Nuevo)
+            {
+                escaneo.Estado = EstadoEscaneo.Pendiente;
+            }
+
+            Console.WriteLine($"Estado Actual: {escaneo.Estado}");
+
             await _context.SaveChangesAsync();
             return RedirectToPage(new { id = id });
         }

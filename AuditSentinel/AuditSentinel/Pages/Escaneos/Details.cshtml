@@ -1,4 +1,5 @@
 ﻿@page "{id:int}"
+@using AuditSentinel.Models
 @using Microsoft.AspNetCore.Authorization
 @model AuditSentinel.Pages.Escaneos.DetailsModel
 @attribute [Authorize(Roles = "Analista,Administrador")]
@@ -61,7 +62,7 @@
 
                 <div class="col-lg-3 text-center">
                     <div id="btnGroupEscaneo">
-                        <button id="btnStart" class="btn btn-primary btn-lg w-100 shadow-sm @(Model.Escaneo.Estado == AuditSentinel.Models.EstadoEscaneo.EnProgreso ? "d-none" : "")"
+                        @* <button id="btnStart" class="btn btn-primary btn-lg w-100 shadow-sm @(Model.Escaneo.Estado == AuditSentinel.Models.EstadoEscaneo.EnProgreso ? "d-none" : "")"
                                 onclick="iniciarEscaneo()">
                             <i class="bi bi-play-circle-fill me-2"></i> Ejecutar Scan
                         </button>
@@ -69,7 +70,34 @@
                         <button id="btnStop" class="btn btn-outline-danger btn-lg w-100 @(Model.Escaneo.Estado == AuditSentinel.Models.EstadoEscaneo.EnProgreso ? "" : "d-none")"
                                 onclick="detenerEscaneo()">
                             <i class="bi bi-stop-circle-fill me-2"></i> Abortar
-                        </button>
+                        </button> *@
+
+                        <form method="post">
+                            @Html.AntiForgeryToken()
+                        </form>
+
+                        <div class="d-grid gap-2 mt-3">
+
+                            <!-- BOTÓN INICIAR -->
+                            <button id="btnStart"
+                                    class="btn btn-success btn-lg"
+                                    onclick="iniciarEscaneo()"
+                                    @(Model.Escaneo.Estado == EstadoEscaneo.EnProgreso ? "hidden" : "")>
+                                <i class="bi bi-play-circle-fill me-2"></i>
+                                Iniciar Escaneo
+                            </button>
+
+                            <!-- BOTÓN DETENER -->
+                            <button id="btnStop"
+                                    class="btn btn-danger btn-lg"
+                                    onclick="detenerEscaneo()"
+                                    @(Model.Escaneo.Estado == EstadoEscaneo.EnProgreso ? "" : "hidden")>
+                                <i class="bi bi-stop-circle-fill me-2"></i>
+                                Detener Escaneo
+                            </button>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -215,7 +243,9 @@
     }
 </div>
 
-@Html.AntiForgeryToken()
+@* @Html.AntiForgeryToken() *@
+
+
 
 @section Scripts {
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -265,16 +295,53 @@
         });
 
         async function iniciarEscaneo() {
-            document.getElementById('btnStart').classList.add('d-none');
-            document.getElementById('btnStop').classList.remove('d-none');
-            document.getElementById('pBar').classList.add('progress-bar-animated');
-            document.getElementById('txtEstado').innerText = "Ejecutando...";
 
-            await fetch(`?handler=Iniciar&id=@Model.Escaneo.IdEscaneo`, {
-                method: 'POST',
-                headers: { "RequestVerificationToken": document.querySelector('input[name="__RequestVerificationToken"]').value }
-            });
+            toggleButtons(true);
+
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            const response = await fetch(
+                `?handler=Iniciar&id=@Model.Escaneo.IdEscaneo`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': token
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                alert('Error al iniciar el escaneo');
+                toggleButtons(false);
+            }
         }
+
+        async function detenerEscaneo() {
+
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            const response = await fetch(
+                `?handler=Detener&id=@Model.Escaneo.IdEscaneo`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': token
+                    }
+                }
+            );
+
+            if (response.ok) {
+                toggleButtons(false);
+            } else {
+                alert('No fue posible detener el escaneo');
+            }
+        }
+
+        function toggleButtons(enProceso) {
+            document.getElementById('btnStart').hidden = enProceso;
+            document.getElementById('btnStop').hidden = !enProceso;
+        }
+
 
         function actualizarBadgeEstado(el, isOnline) {
             el.innerText = isOnline ? "Online" : "Offline";
@@ -285,15 +352,16 @@
             connection.invoke("JoinScanGroup", @Model.Escaneo.IdEscaneo);
             @foreach (var item in Model.Escaneo.EscaneosServidores)
             {
-                    <text>
-                    connection.invoke("IsServerOnline", "@item.Servidores.NombreServidor").then(isOnline => {
-                        const el = document.getElementById('status-@item.Servidores.NombreServidor');
-                        if (el) actualizarBadgeEstado(el, isOnline);
-                    });
-                    </text>
+                            <text>
+                            connection.invoke("IsServerOnline", "@item.Servidores.NombreServidor").then(isOnline => {
+                                const el = document.getElementById('status-@item.Servidores.NombreServidor');
+                                if (el) actualizarBadgeEstado(el, isOnline);
+                            });
+                            </text>
             }
         });
     </script>
+    
 
     <style>
         .bg-danger-soft {
