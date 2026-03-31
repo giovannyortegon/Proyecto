@@ -9,6 +9,7 @@ namespace AuditSentinel.Models
         public int EmailId { get; set; }
         public string Nombre { get; set; }
         public string Empresa { get; set; }
+
         [Required(ErrorMessage = "El correo electrónico es obligatorio")]
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$",
         ErrorMessage = "Debe ingresar un correo electrónico válido")]

@@ -12,12 +12,12 @@ namespace AuditSentinel.Pages.Reportes
     public class IndexModel : PageModel
     {
         private readonly ApplicationDBContext _context;
-        private readonly ExportService _exportService;
+        //private readonly ExportService _exportService;
 
-        public IndexModel(ApplicationDBContext context, ExportService exportService)
+        public IndexModel(ApplicationDBContext context)
         {
             _context = context;
-            _exportService = exportService;
+            //_exportService = exportService;
         }
 
         // ── Filtros ──────────────────────────────────────────────────────
@@ -97,30 +97,30 @@ namespace AuditSentinel.Pages.Reportes
         }
 
         // ── Exportar ─────────────────────────────────────────────────────
-        public async Task<IActionResult> OnGetExportarAsync(string format)
-        {
-            var items = await _context.Reportes
-                .Include(r => r.EscaneosReportes)
-                .AsNoTracking()
-                .OrderByDescending(r => r.Creado)
-                .ToListAsync();
+        //public async Task<IActionResult> OnGetExportarAsync(string format)
+        //{
+        //    var items = await _context.Reportes
+        //        .Include(r => r.EscaneosReportes)
+        //        .AsNoTracking()
+        //        .OrderByDescending(r => r.Creado)
+        //        .ToListAsync();
 
-            var filePath = Path.Combine(Path.GetTempPath(), $"Reportes.{format}");
+        //    var filePath = Path.Combine(Path.GetTempPath(), $"Reportes.{format}");
 
-            switch (format.ToLower())
-            {
-                case "csv":
-                    _exportService.ExportReportesToCsv(items, filePath);
-                    return File(System.IO.File.ReadAllBytes(filePath), "text/csv", "Reportes.csv");
-                case "html":
-                    _exportService.ExportReportesToHtml(items, filePath);
-                    return File(System.IO.File.ReadAllBytes(filePath), "text/html", "Reportes.html");
-                case "pdf":
-                    _exportService.ExportReportesToPdf(items, filePath);
-                    return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", "Reportes.pdf");
-                default:
-                    return BadRequest("Formato no soportado.");
-            }
-        }
+        //    switch (format.ToLower())
+        //    {
+        //        case "csv":
+        //            _exportService.ExportReportesToCsv(items, filePath);
+        //            return File(System.IO.File.ReadAllBytes(filePath), "text/csv", "Reportes.csv");
+        //        case "html":
+        //            _exportService.ExportReportesToHtml(items, filePath);
+        //            return File(System.IO.File.ReadAllBytes(filePath), "text/html", "Reportes.html");
+        //        case "pdf":
+        //            _exportService.ExportReportesToPdf(items, filePath);
+        //            return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", "Reportes.pdf");
+        //        default:
+        //            return BadRequest("Formato no soportado.");
+        //    }
+        //}
     }
 }

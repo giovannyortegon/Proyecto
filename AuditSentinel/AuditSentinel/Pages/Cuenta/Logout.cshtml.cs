@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AuditSentinel.Pages.Cuenta
 {
-    // Opcional: si quieres que solo usuarios autenticados vean la página
-    //[Authorize]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<AuditSentinel.Models.Usuarios> _signInManager;

@@ -33,8 +33,7 @@ namespace AuditSentinel.Pages.Vulnerabilidades
 
         public async Task OnGetAsync()
         {
-            //Search = search;
-            //Riesgo = riesgo;
+
 
             var query = _context.Vulnerabilidades.AsQueryable();
 

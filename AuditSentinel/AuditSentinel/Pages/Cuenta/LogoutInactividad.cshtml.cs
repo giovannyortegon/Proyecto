@@ -7,8 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AuditSentinel.Pages.Cuenta
 {
-    // Opcional: si quieres que solo usuarios autenticados vean la página
-    //[Authorize]
+
     public class LogoutInactividadModel : PageModel
     {
         private readonly SignInManager<AuditSentinel.Models.Usuarios> _signInManager;
@@ -18,7 +17,6 @@ namespace AuditSentinel.Pages.Cuenta
             _signInManager = signInManager;
         }
 
-        // No hacemos logout por GET para evitar CSRF. Solo mostramos la vista con el botón.
         public void OnGet() { }
 
         [ValidateAntiForgeryToken]
@@ -26,12 +24,9 @@ namespace AuditSentinel.Pages.Cuenta
         {
             await _signInManager.SignOutAsync();
 
-            // Si usas cookies o caches adicionales, puedes limpiarlos aquí.
-
             if (!string.IsNullOrWhiteSpace(returnUrl))
                 return LocalRedirect(returnUrl);
 
-            // Redirige a inicio luego de cerrar sesión
             return RedirectToPage("/Index");
         }
     }
