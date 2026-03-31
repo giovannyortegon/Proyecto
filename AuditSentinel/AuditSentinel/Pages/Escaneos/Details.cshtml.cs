@@ -12,12 +12,11 @@ namespace AuditSentinel.Pages.Escaneos
     public class DetailsModel : PageModel
     {
         private readonly ApplicationDBContext _context;
-        //private readonly ExportService _exportService;
+        public string ErrorMensaje { get; set; }
 
         public DetailsModel(ApplicationDBContext context)
         {
             _context = context;
-            //_exportService = exportService;
         }
 
         public AuditSentinel.Models.Escaneos Escaneo { get; set; }
@@ -33,44 +32,56 @@ namespace AuditSentinel.Pages.Escaneos
             if (Escaneo == null) return NotFound();
             return Page();
         }
-        public async Task<IActionResult> OnPostIniciarAsync(int id)
+
+        public async Task<IActionResult> OnPostIniciarAsync(int id, string error = null)
         {
-            var escaneo = await _context.Escaneos
+            Escaneo = await _context.Escaneos
                 .Include(e => e.EscaneosPlantillas)
                 .FirstOrDefaultAsync(e => e.IdEscaneo == id);
 
-            if (escaneo == null) return NotFound();
+            if (Escaneo == null)
+                return NotFound();
 
-            if (!escaneo.EscaneosPlantillas.Any())
-                return RedirectToPage(new { id = id, error = "No hay plantilla asociada" });
 
-            var resultadosPrevios = _context.EscaneosVulnerabilidades.Where(ev => ev.IdEscaneo == id);
-            _context.EscaneosVulnerabilidades.RemoveRange(resultadosPrevios);
-            Console.WriteLine($"Estado Actual: {escaneo.Estado}");
+            if (!Escaneo.EscaneosPlantillas.Any())
+                return RedirectToPage(new { id, error = "No hay plantilla asociada" });
 
-            if (escaneo.Estado == EstadoEscaneo.Nuevo)
-            {
-                escaneo.Estado = EstadoEscaneo.Pendiente;
+            if (Escaneo.Estado == EstadoEscaneo.Completado) {
+                return RedirectToPage(new { id, error = "No se puede iniciar un escaneo en estado COMPLETADO" });
             }
 
-            Console.WriteLine($"Estado Actual: {escaneo.Estado}");
+            var resultadosPrevios = _context.EscaneosVulnerabilidades
+                .Where(ev => ev.IdEscaneo == id);
+
+            _context.EscaneosVulnerabilidades.RemoveRange(resultadosPrevios);
+
+            if (Escaneo.Estado != EstadoEscaneo.Nuevo || Escaneo.Estado != EstadoEscaneo.Fallido)
+            {
+                Escaneo.Estado = EstadoEscaneo.Pendiente;
+                Escaneo.FechaEscaneo = DateTime.Now;
+            }
 
             await _context.SaveChangesAsync();
-            return RedirectToPage(new { id = id });
+         
+            return RedirectToPage(new { id });
         }
-
         public async Task<IActionResult> OnPostDetenerAsync(int id)
         {
-            if (ScannerServerService.EscaneosEnCurso.TryGetValue(id, out var cts))
-                cts.Cancel();
+            // Cargar la propiedad para mantener la estabilidad de la página
+            Escaneo = await _context.Escaneos.FindAsync(id);
 
-            var escaneo = await _context.Escaneos.FindAsync(id);
-            if (escaneo != null)
+            if (ScannerServerService.EscaneosEnCurso.TryRemove(id, out var cts))
             {
-                escaneo.Estado = EstadoEscaneo.Fallido;
+                cts.Cancel();
+            }
+
+            if (Escaneo != null)
+            {
+                Escaneo.Estado = EstadoEscaneo.Fallido;
                 await _context.SaveChangesAsync();
             }
-            return new OkResult();
+
+            return RedirectToPage(new { id });
         }
     }
 }

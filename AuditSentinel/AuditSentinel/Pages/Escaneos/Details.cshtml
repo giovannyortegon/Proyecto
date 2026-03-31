@@ -31,7 +31,6 @@
         </div>
     </div>
 
-    @* Fila de Identificación y Progreso *@
     <div class="card shadow-sm mb-4 border-0 border-start border-primary border-4">
         <div class="card-body">
             <div class="row align-items-center">
@@ -39,8 +38,16 @@
                     <div class="text-xs fw-bold text-primary text-uppercase mb-1">ID Operación</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">#@Model.Escaneo.IdEscaneo</div>
                     <div class="mt-2">
-                        <span id="txtEstado" class="badge rounded-pill @(Model.Escaneo.Estado.ToString() == "Completado" ? "bg-success" : "bg-info") px-3">
-                            @Model.Escaneo.Estado
+                        <span class="badge rounded-pill px-3 @(Model.Escaneo.Estado == EstadoEscaneo.Pendiente ? "bg-warning text-dark" :
+                                    Model.Escaneo.Estado == EstadoEscaneo.EnProgreso ? "bg-primary" :
+                                    Model.Escaneo.Estado == EstadoEscaneo.Completado ? "bg-success" :
+                                    Model.Escaneo.Estado == EstadoEscaneo.Fallido ? "bg-danger" :
+                                    "bg-secondary")">
+
+                            @(Model.Escaneo.Estado == EstadoEscaneo.Pendiente ? "Pendiente" :
+                                                        Model.Escaneo.Estado == EstadoEscaneo.EnProgreso ? "En Progreso" :
+                                                        Model.Escaneo.Estado.ToString())
+
                         </span>
                     </div>
                 </div>
@@ -62,49 +69,43 @@
 
                 <div class="col-lg-3 text-center">
                     <div id="btnGroupEscaneo">
-                        @* <button id="btnStart" class="btn btn-primary btn-lg w-100 shadow-sm @(Model.Escaneo.Estado == AuditSentinel.Models.EstadoEscaneo.EnProgreso ? "d-none" : "")"
-                                onclick="iniciarEscaneo()">
-                            <i class="bi bi-play-circle-fill me-2"></i> Ejecutar Scan
-                        </button>
+                            <form method="post" >
+                                <input type="hidden" name="id" value="@Model.Escaneo.IdEscaneo" />
 
-                        <button id="btnStop" class="btn btn-outline-danger btn-lg w-100 @(Model.Escaneo.Estado == AuditSentinel.Models.EstadoEscaneo.EnProgreso ? "" : "d-none")"
-                                onclick="detenerEscaneo()">
-                            <i class="bi bi-stop-circle-fill me-2"></i> Abortar
-                        </button> *@
+                            @if (TempData["Error"] != null)
+                            {
+                                <div class="alert alert-danger">
+                                    @TempData["Error"]
+                                </div>
+                            }
 
-                        <form method="post">
-                            @Html.AntiForgeryToken()
-                        </form>
+                            @if (Model.Escaneo.Estado == EstadoEscaneo.Pendiente || Model.Escaneo.Estado == EstadoEscaneo.EnProgreso                                                        )
+                                {
+                                    <button type="submit"
+                                            asp-page-handler="Detener"
+                                            class="btn btn-danger btn-lg w-100">
+                                        <i class="bi bi-stop-circle-fill me-2"></i>
+                                        Detener Escaneo
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="submit"
+                                            asp-page-handler="Iniciar"
+                                            class="btn btn-primary btn-lg w-100">
+                                        <i class="bi bi-play-circle-fill me-2"></i>
+                                        Iniciar Escaneo
+                                    </button>
+                                }
 
-                        <div class="d-grid gap-2 mt-3">
-
-                            <!-- BOTÓN INICIAR -->
-                            <button id="btnStart"
-                                    class="btn btn-success btn-lg"
-                                    onclick="iniciarEscaneo()"
-                                    @(Model.Escaneo.Estado == EstadoEscaneo.EnProgreso ? "hidden" : "")>
-                                <i class="bi bi-play-circle-fill me-2"></i>
-                                Iniciar Escaneo
-                            </button>
-
-                            <!-- BOTÓN DETENER -->
-                            <button id="btnStop"
-                                    class="btn btn-danger btn-lg"
-                                    onclick="detenerEscaneo()"
-                                    @(Model.Escaneo.Estado == EstadoEscaneo.EnProgreso ? "" : "hidden")>
-                                <i class="bi bi-stop-circle-fill me-2"></i>
-                                Detener Escaneo
-                            </button>
-
-                        </div>
-
+                                @Html.AntiForgeryToken()
+                            </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    @* Fila de Información General (Servidores, Reglas, Consola) *@
     <div class="row g-4 mb-4">
         <div class="col-md-4">
             <div class="card shadow-sm h-100 border-0">
@@ -115,7 +116,7 @@
                     <div class="list-group list-group-flush">
                         @foreach (var s in Model.Escaneo.EscaneosServidores)
                         {
-                            <div class="list-group-item border-0 border-bottom">
+                            <div class="list-group-item border-0">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="fw-bold">@s.Servidores.NombreServidor</span>
                                     <code class="small px-2 py-1 bg-light rounded text-primary">@s.Servidores.IP</code>
@@ -160,9 +161,9 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive" style="max-height: 280px;">
-                        <table class="table table-dark table-sm table-hover mb-0" style="font-family: 'Courier New', Courier, monospace; font-size: 0.8rem;">
+                        <table class="table-dark table-sm table-hover mb-0" style="font-family: 'Courier New', Courier, monospace; font-size: 0.8rem;">
                             <tbody id="logTableBody">
-                                <tr><td class="text-center text-muted p-4">Sistema listo para monitoreo...</td></tr>
+                                <tr><td class="text-center text-terminal p-4">Sistema listo para monitoreo...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -171,7 +172,6 @@
         </div>
     </div>
 
-    @* SECCIÓN DE RESULTADOS CON PAGINACIÓN Y SERVIDOR *@
     @if (Model.Escaneo.Estado == AuditSentinel.Models.EstadoEscaneo.Completado)
     {
         <div class="card shadow-sm border-0 animate__animated animate__fadeIn">
@@ -243,10 +243,6 @@
     }
 </div>
 
-@* @Html.AntiForgeryToken() *@
-
-
-
 @section Scripts {
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -256,6 +252,9 @@
 
     <script>
         $(document).ready(function () {
+            if ($.fn.DataTable.isDataTable('#tablaVulnerabilidades')) {
+                $('#tablaVulnerabilidades').DataTable().destroy();
+            }
             $('#tablaVulnerabilidades').DataTable({
                 "pageLength": 5,
                 "lengthChange": false,
@@ -266,6 +265,7 @@
             });
         });
 
+        /* ========== SIGNALR ========== */
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/escaneoHub")
             .withAutomaticReconnect()
@@ -280,7 +280,7 @@
             const tbody = document.getElementById('logTableBody');
             if (tbody) {
                 if (tbody.innerText.includes("Sistema listo")) tbody.innerHTML = "";
-                const logRow = `<tr><td class="p-2 border-secondary">[DETECCIÓN] ${data.ultimaVuln} -> <span class="${data.estado == 'Activa' ? 'text-danger fw-bold' : 'text-success'}">${data.estado}</span></td></tr>`;
+                const logRow = `<tr><td class="text-terminal p-2 border-secondary">[DETECCIÓN] ${data.ultimaVuln} -> <span class="${data.estado == 'Activa' ? 'text-danger fw-bold' : 'text-success'}">${data.estado}</span></td></tr>`;
                 tbody.insertAdjacentHTML('afterbegin', logRow);
             }
 
@@ -294,54 +294,11 @@
             if (el) actualizarBadgeEstado(el, isOnline);
         });
 
-        async function iniciarEscaneo() {
-
-            toggleButtons(true);
-
-            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-
-            const response = await fetch(
-                `?handler=Iniciar&id=@Model.Escaneo.IdEscaneo`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'RequestVerificationToken': token
-                    }
-                }
-            );
-
-            if (!response.ok) {
-                alert('Error al iniciar el escaneo');
-                toggleButtons(false);
-            }
-        }
-
-        async function detenerEscaneo() {
-
-            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-
-            const response = await fetch(
-                `?handler=Detener&id=@Model.Escaneo.IdEscaneo`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'RequestVerificationToken': token
-                    }
-                }
-            );
-
-            if (response.ok) {
-                toggleButtons(false);
-            } else {
-                alert('No fue posible detener el escaneo');
-            }
-        }
-
-        function toggleButtons(enProceso) {
+        /* ========== ACCIONES ========== */
+            function toggleButtons(enProceso) {
             document.getElementById('btnStart').hidden = enProceso;
             document.getElementById('btnStop').hidden = !enProceso;
         }
-
 
         function actualizarBadgeEstado(el, isOnline) {
             el.innerText = isOnline ? "Online" : "Offline";
@@ -352,18 +309,32 @@
             connection.invoke("JoinScanGroup", @Model.Escaneo.IdEscaneo);
             @foreach (var item in Model.Escaneo.EscaneosServidores)
             {
-                            <text>
-                            connection.invoke("IsServerOnline", "@item.Servidores.NombreServidor").then(isOnline => {
-                                const el = document.getElementById('status-@item.Servidores.NombreServidor');
-                                if (el) actualizarBadgeEstado(el, isOnline);
-                            });
-                            </text>
+                    <text>
+                    connection.invoke("IsServerOnline", "@item.Servidores.NombreServidor").then(isOnline => {
+                        const el = document.getElementById('status-@item.Servidores.NombreServidor');
+                        if (el) actualizarBadgeEstado(el, isOnline);
+                    });
+                    </text>
             }
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+                    const error = '@Request.Query["error"]';
+
+                    if (error) {
+                        alert(error);
+                    }
+                });
+
     </script>
-    
 
     <style>
+
+        .text-terminal {
+            color: #00ff66 !important; /* verde terminal */ 
+            font-family: 'Courier New', Courier, monospace;
+        }
+
         .bg-danger-soft {
             background-color: #fee2e2;
             color: #dc2626;
