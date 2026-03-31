@@ -20,7 +20,7 @@ namespace AuditSentinel.Pages.Registrar
         {
             if (string.IsNullOrEmpty(id)) return NotFound();
 
-            // Ahora _userManager ya no será null
+
             UsuarioActualizado = await _userManager.FindByIdAsync(id);
 
             if (UsuarioActualizado == null) return NotFound();

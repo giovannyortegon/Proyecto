@@ -41,7 +41,7 @@ namespace AuditSentinel.Pages.Registrar
             if (result.Succeeded)
             {
                 TempData["MensajeExito"] = "Contraseña actualizada con éxito.";
-                //return RedirectToPage("./Index");
+            
                 return RedirectToPage("./Confirmacion", new { id = user.Id });
             }
 
