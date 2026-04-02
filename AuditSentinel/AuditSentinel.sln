@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36603.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditSentinel", "AuditSentinel\AuditSentinel.csproj", "{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditSentinelTest", "AuditSentinelTest\AuditSentinelTest.csproj", "{B9BE2761-9A50-81F8-01C4-22657A9417B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1B28578-291B-4D56-8B34-5CC2E9DAB5CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9BE2761-9A50-81F8-01C4-22657A9417B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9BE2761-9A50-81F8-01C4-22657A9417B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9BE2761-9A50-81F8-01C4-22657A9417B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9BE2761-9A50-81F8-01C4-22657A9417B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
