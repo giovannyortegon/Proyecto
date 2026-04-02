@@ -10,18 +10,14 @@ using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ==========================
 // CONEXIÓN A BASE DE DATOS
-// ==========================
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
 
-// ==========================
 // IDENTITY
-// ==========================
 builder.Services.AddIdentity<Usuarios, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 6;
@@ -32,9 +28,7 @@ builder.Services.AddIdentity<Usuarios, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDBContext>()
 .AddDefaultTokenProviders();
 
-// ==========================
 // COOKIES
-// ==========================
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Cuenta/Login";
@@ -53,9 +47,7 @@ builder.Services.AddAntiforgery(options =>
     options.HeaderName = "X-CSRF-TOKEN"; // Opcional: configurar el nombre del header
 });
 
-// ==========================
 // SERVICIOS
-// ==========================
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<ScannerServerService>();
 builder.Services.AddScoped<EmailService>();
@@ -67,17 +59,14 @@ builder.Logging.AddSimpleConsole();
 
 builder.Services.AddRazorPages();
 
-// ==========================
 // LICENCIA QUESTPDF
-// ==========================
 QuestPDF.Settings.License = LicenseType.Community;
 
 var app = builder.Build();
 
 
-// ==========================
+
 // CREACIÓN AUTOMÁTICA DE ROLES
-// ==========================
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -100,9 +89,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 
-// ==========================
-// MANEJO DE ERRORES (CORREGIDO)
-// ==========================
+
+// MANEJO DE ERRORES 
 if (app.Environment.IsDevelopment())
 {
     // En desarrollo: página de excepción detallada del framework

@@ -11,7 +11,7 @@ namespace AuditSentinel.Data
         {
         }
 
-        // Agregar Modelos
+        // Modelos
         public DbSet<AuditSentinel.Models.Servidores> Servidores { get; set; }
         public DbSet<AuditSentinel.Models.Escaneos> Escaneos { get; set; }
         public DbSet<AuditSentinel.Models.EscaneosServidores> EscaneosServidores { get; set; }
@@ -106,9 +106,6 @@ namespace AuditSentinel.Data
 
             modelBuilder.Entity<AuditSentinel.Models.PlantillasVulnerabilidades>()
                 .HasKey(pv => new { pv.IdPlantilla, pv.IdVulnerabilidad });
-
-            //modelBuilder.Entity<UsuariosRoles>()
-            //   .HasKey(ur => new { ur.IdUsuario, ur.IdRol });
 
             // establecer las relacion entre las tablas
             modelBuilder.Entity<AuditSentinel.Models.EscaneosServidores>()

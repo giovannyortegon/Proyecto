@@ -59,10 +59,50 @@ namespace AuditSentinel.Pages.Servidores
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            SistemasOperativos = Enum.GetValues(typeof(SistemaOperativo))
+                .Cast<SistemaOperativo>()
+                .Select(so => new SelectListItem
+                {
+                    Value = so.ToString(),
+                    Text = GetDisplayName(so)
+                })
+                .ToList();
+
+
+            // Validar nombre duplicado
+            bool nombreDuplicado = await _context.Servidores
+                .AnyAsync(s =>
+                    s.NombreServidor == Servidores.NombreServidor &&
+                    s.IdServidor != Servidores.IdServidor);
+
+            if (nombreDuplicado)
+            {
+                ModelState.AddModelError(
+                    "Servidores.NombreServidor",
+                    "Ya existe un servidor con este nombre."
+                );
+                return Page();
+            }
+
+            // Validar IP duplicada
+            bool ipDuplicada = await _context.Servidores
+                .AnyAsync(s =>
+                    s.IP == Servidores.IP &&
+                    s.IdServidor != Servidores.IdServidor);
+
+            if (ipDuplicada)
+            {
+                ModelState.AddModelError(
+                    "Servidores.IP",
+                    "Ya existe un servidor con esta IP."
+                );
+                return Page();
+            }
 
             _context.Attach(Servidores).State = EntityState.Modified;
 
@@ -83,6 +123,11 @@ namespace AuditSentinel.Pages.Servidores
             }
 
             return RedirectToPage("./Index");
+        }
+
+        private string GetDisplayName(SistemaOperativo so)
+        {
+            throw new NotImplementedException();
         }
 
         private bool ServidoresExists(int id)

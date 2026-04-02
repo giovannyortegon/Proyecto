@@ -70,50 +70,59 @@ namespace AuditSentinel.Services
 
                             if (escaneo != null)
                             {
-                                // Cambiamos a EnProgreso para que ningún otro hilo lo tome
-                                escaneo.Estado = EstadoEscaneo.EnProgreso;
-                                await context.SaveChangesAsync();
-
-                                var pruebas = escaneo.EscaneosPlantillas
-                                    .SelectMany(p => p.Plantillas.PlantillasVulnerabilidades)
-                                    .Select(pv => pv.Vulnerabilidades).ToList();
-
-                                for (int i = 0; i < pruebas.Count; i++)
+                                var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+                                EscaneosEnCurso.TryAdd(escaneo.IdEscaneo, cts);
+                                try
                                 {
-                                    var v = pruebas[i];
-
-                                    await SendJsonAsync(stream, new
-                                    {
-                                        type = "exec",
-                                        comando = v.Comando,
-                                        pattern = v.ResultadoEsperado,
-                                        vulnId = v.IdVulnerabilidad,
-                                        escaneoId = escaneo.IdEscaneo
-                                    });
-
-                                    var response = await ReceiveJsonDocumentAsync(stream);
-                                    bool matched = response.RootElement.GetProperty("matched").GetBoolean();
-
-                                    var resultado = new EscaneosVulnerabilidades
-                                    {
-                                        IdEscaneo = escaneo.IdEscaneo,
-                                        IdVulnerabilidad = v.IdVulnerabilidad,
-                                        estado = matched ? Estado.Activa : Estado.Inactiva,
-                                        FechaEscaneo = DateTime.Now
-                                    };
-
-                                    context.EscaneosVulnerabilidades.Add(resultado);
+                                    // Cambiamos a EnProgreso para que ningún otro hilo lo tome
+                                    escaneo.Estado = EstadoEscaneo.EnProgreso;
                                     await context.SaveChangesAsync();
 
-                                    // Notificar progreso
-                                    int progreso = (int)((double)(i + 1) / pruebas.Count * 100);
-                                    await _hubContext.Clients.Group($"Escaneo_{escaneo.IdEscaneo}").SendAsync("ReceiveUpdate", new
+                                    var pruebas = escaneo.EscaneosPlantillas
+                                        .SelectMany(p => p.Plantillas.PlantillasVulnerabilidades)
+                                        .Select(pv => pv.Vulnerabilidades).ToList();
+
+                                    for (int i = 0; i < pruebas.Count; i++)
                                     {
-                                        porcentaje = progreso,
-                                        ultimaVuln = v.NombreVulnerabilidad,
-                                        estado = matched ? "Activa" : "Inactiva",
-                                        finalizado = (progreso == 100) // Enviamos bandera de fin
-                                    });
+                                        var v = pruebas[i];
+
+                                        await SendJsonAsync(stream, new
+                                        {
+                                            type = "exec",
+                                            comando = v.Comando,
+                                            pattern = v.ResultadoEsperado,
+                                            vulnId = v.IdVulnerabilidad,
+                                            escaneoId = escaneo.IdEscaneo
+                                        });
+
+                                        var response = await ReceiveJsonDocumentAsync(stream);
+                                        bool matched = response.RootElement.GetProperty("matched").GetBoolean();
+
+                                        var resultado = new EscaneosVulnerabilidades
+                                        {
+                                            IdEscaneo = escaneo.IdEscaneo,
+                                            IdVulnerabilidad = v.IdVulnerabilidad,
+                                            estado = matched ? Estado.Activa : Estado.Inactiva,
+                                            FechaEscaneo = DateTime.Now
+                                        };
+
+                                        context.EscaneosVulnerabilidades.Add(resultado);
+                                        await context.SaveChangesAsync();
+
+                                        // Notificar progreso
+                                        int progreso = (int)((double)(i + 1) / pruebas.Count * 100);
+                                        await _hubContext.Clients.Group($"Escaneo_{escaneo.IdEscaneo}").SendAsync("ReceiveUpdate", new
+                                        {
+                                            porcentaje = progreso,
+                                            ultimaVuln = v.NombreVulnerabilidad,
+                                            estado = matched ? "Activa" : "Inactiva",
+                                            finalizado = (progreso == 100) // Enviamos bandera de fin
+                                        });
+                                    }
+                                }
+                                finally
+                                {
+                                    EscaneosEnCurso.TryRemove(escaneo.IdEscaneo, out _);
                                 }
 
                                 // 2. ACTUALIZAR A COMPLETADO AL FINALIZAR
@@ -150,6 +159,11 @@ namespace AuditSentinel.Services
             byte[] buffer = new byte[len];
             await s.ReadExactlyAsync(buffer, 0, len);
             return JsonDocument.Parse(System.Text.Encoding.UTF8.GetString(buffer));
+        }
+
+        internal static void EncolarEscaneo(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

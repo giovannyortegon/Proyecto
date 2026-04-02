@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuditSentinel.Pages.Reportes
 {
-    [Authorize(Roles = "Auditor,Analista,Administrador")]
+    [Authorize(Roles = "Analista,Administrador,Auditor")]
     public class EditModel : PageModel
     {
         private readonly ApplicationDBContext _context;
