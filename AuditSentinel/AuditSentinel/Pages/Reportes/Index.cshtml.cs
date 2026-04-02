@@ -8,16 +8,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuditSentinel.Pages.Reportes
 {
-    //[Authorize(Roles = "Analista,Administrador")]
+    [Authorize(Roles = "Analista,Administrador,Auditor")]
     public class IndexModel : PageModel
     {
         private readonly ApplicationDBContext _context;
-        //private readonly ExportService _exportService;
+        private readonly ExportService _exportService;
 
-        public IndexModel(ApplicationDBContext context)
+        public IndexModel(ApplicationDBContext context, ExportService exportService)
         {
             _context = context;
-            //_exportService = exportService;
+            _exportService = exportService;
         }
 
         // ── Filtros ──────────────────────────────────────────────────────
@@ -68,8 +68,15 @@ namespace AuditSentinel.Pages.Reportes
 
             GraficaLabels  = "[" + string.Join(",", grupos.Select(g => $"\"{g.Label}\""))  + "]";
             GraficaValores = "[" + string.Join(",", grupos.Select(g => g.Count.ToString())) + "]";
-            GraficaColores = "[" + string.Join(",", grupos.Select((g, i) => $"\"{paleta[i % paleta.Length]}\"")) + "]";
-
+            GraficaColores = "[" + string.Join(",", grupos.Select(g => {
+                var color = g.Label switch
+                {
+                    "Cumple" => "#28a745",  // verde
+                    "NoCumple" => "#dc3545",  // rojo
+                    "ParcialmenteCumple" => "#ffc107",  // amarillo
+                };
+                return $"\"{color}\"";
+            })) + "]";
             // ── Query filtrada para la tabla ─────────────────────────────
             var query = _context.Reportes
                 .Include(r => r.EscaneosReportes)
@@ -97,30 +104,30 @@ namespace AuditSentinel.Pages.Reportes
         }
 
         // ── Exportar ─────────────────────────────────────────────────────
-        //public async Task<IActionResult> OnGetExportarAsync(string format)
-        //{
-        //    var items = await _context.Reportes
-        //        .Include(r => r.EscaneosReportes)
-        //        .AsNoTracking()
-        //        .OrderByDescending(r => r.Creado)
-        //        .ToListAsync();
+        public async Task<IActionResult> OnGetExportarAsync(string format)
+        {
+            var items = await _context.Reportes
+                .Include(r => r.EscaneosReportes)
+                .AsNoTracking()
+                .OrderByDescending(r => r.Creado)
+                .ToListAsync();
 
-        //    var filePath = Path.Combine(Path.GetTempPath(), $"Reportes.{format}");
+            var filePath = Path.Combine(Path.GetTempPath(), $"Reportes.{format}");
 
-        //    switch (format.ToLower())
-        //    {
-        //        case "csv":
-        //            _exportService.ExportReportesToCsv(items, filePath);
-        //            return File(System.IO.File.ReadAllBytes(filePath), "text/csv", "Reportes.csv");
-        //        case "html":
-        //            _exportService.ExportReportesToHtml(items, filePath);
-        //            return File(System.IO.File.ReadAllBytes(filePath), "text/html", "Reportes.html");
-        //        case "pdf":
-        //            _exportService.ExportReportesToPdf(items, filePath);
-        //            return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", "Reportes.pdf");
-        //        default:
-        //            return BadRequest("Formato no soportado.");
-        //    }
-        //}
+            switch (format.ToLower())
+            {
+                case "csv":
+                    _exportService.ExportReportesToCsv(items, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "text/csv", "Reportes.csv");
+                case "html":
+                    _exportService.ExportReportesToHtml(items, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "text/html", "Reportes.html");
+                case "pdf":
+                    _exportService.ExportReportesToPdf(items, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", "Reportes.pdf");
+                default:
+                    return BadRequest("Formato no soportado.");
+            }
+        }
     }
 }

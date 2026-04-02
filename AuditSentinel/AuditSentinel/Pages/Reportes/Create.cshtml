@@ -1,9 +1,11 @@
 ﻿@page
+@using AuditSentinel.Models
 @using Microsoft.AspNetCore.Authorization
 @model AuditSentinel.Pages.Reportes.CreateModel
 @attribute [Authorize(Roles = "Administrador,Analista,Auditor")]
+
 @{
-    ViewData["Title"] = "Nuevo Reporte de Auditoría";
+    ViewData["Title"] = "Editar Reporte de Auditoría";
 }
 
 <div class="container-fluid py-4">
@@ -12,11 +14,11 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-1">
                     <li class="breadcrumb-item"><a asp-page="Index" class="text-decoration-none">Reportes</a></li>
-                    <li class="breadcrumb-item active">Nuevo Informe</li>
+                    <li class="breadcrumb-item active">Modificar Informe</li>
                 </ol>
             </nav>
             <h1 class="h3 mb-0 text-gray-800 fw-bold">
-                <i class="bi bi-file-earmark-bar-graph-fill text-primary me-2"></i>Generar Reporte de Auditoría
+                <i class="bi bi-file-earmark-ruled text-warning me-2"></i>Editar Reporte: <span class="text-muted small">#@Model.Reporte.IdReporte</span>
             </h1>
         </div>
         <a asp-page="Index" class="btn btn-outline-secondary shadow-sm">
@@ -25,41 +27,65 @@
     </div>
 
     <form method="post">
+        <input type="hidden" asp-for="Reporte.IdReporte" />
+
         <div class="row g-4">
+
+            @* ── COLUMNA IZQUIERDA ── *@
             <div class="col-lg-5">
                 <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header bg-white py-3 border-bottom border-primary border-3">
-                        <h6 class="m-0 font-weight-bold text-primary text-uppercase small">Configuración General</h6>
+                    <div class="card-header bg-white py-3 border-bottom border-warning border-3">
+                        <h6 class="m-0 font-weight-bold text-primary text-uppercase small">Identificación del Informe</h6>
                     </div>
                     <div class="card-body">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger border-0 small shadow-sm mb-4"></div>
 
                         <div class="mb-4">
-                            <label asp-for="Reporte.NombreReporte" class="form-label small fw-bold text-muted text-uppercase">Título del Informe <span class="text-danger">*</span></label>
+                            <label asp-for="Reporte.NombreReporte" class="form-label small fw-bold text-muted text-uppercase">
+                                Título del Reporte <span class="text-danger">*</span>
+                            </label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-end-0"><i class="bi bi-card-heading"></i></span>
-                                <input asp-for="Reporte.NombreReporte" class="form-control bg-light border-start-0 ps-0" placeholder="Ej: Auditoría Trimestral de Infraestructura" />
+                                <input asp-for="Reporte.NombreReporte"
+                                       class="form-control bg-light border-start-0 ps-0"
+                                       placeholder="Ej: Reporte Ejecutivo Q1" />
                             </div>
                             <span asp-validation-for="Reporte.NombreReporte" class="text-danger small"></span>
                         </div>
 
+                        @* ── CUMPLIMIENTO AUTOMÁTICO ── *@
                         <div class="mb-4">
-                            <label asp-for="Reporte.cumplimiento" class="form-label small fw-bold text-muted text-uppercase">Estado de Cumplimiento Sugerido</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-shield-check"></i></span>
-                                <select asp-for="Reporte.cumplimiento" class="form-select bg-light border-start-0 ps-0"
-                                        asp-items="Html.GetEnumSelectList<AuditSentinel.Models.Cumplimiento>()">
-                                    <option value="">-- Seleccionar Nivel --</option>
-                                </select>
+                            <label class="form-label small fw-bold text-muted text-uppercase">
+                                Estado de Cumplimiento Sugerido
+                            </label>
+
+                            @* Valor actual del reporte inyectado desde el servidor *@
+                            <input type="hidden"
+                                   asp-for="Reporte.cumplimiento"
+                                   id="inputCumplimiento"
+                                   value="@((int)Model.Reporte.cumplimiento)" />
+
+                            @* Panel visual — igual al Create *@
+                            <div id="cumplimientoDisplay"
+                                 class="rounded-3 px-4 py-3 d-flex align-items-center gap-3"
+                                 style="background:#f1f5f9; border: 2px dashed #cbd5e1; min-height: 56px;">
+                                <i class="bi bi-hourglass-split text-muted fs-5" id="cumplimientoIcono"></i>
+                                <div>
+                                    <div id="cumplimientoTexto" class="fw-bold text-muted">Cargando...</div>
+                                    <div id="cumplimientoSub" class="small text-muted"></div>
+                                </div>
                             </div>
-                            <span asp-validation-for="Reporte.cumplimiento" class="text-danger small"></span>
                         </div>
 
                         <div class="mb-0">
-                            <label asp-for="Reporte.Creado" class="form-label small fw-bold text-muted text-uppercase">Fecha de Emisión</label>
+                            <label asp-for="Reporte.Creado" class="form-label small fw-bold text-muted text-uppercase">
+                                Fecha de Emisión
+                            </label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-end-0"><i class="bi bi-calendar-date"></i></span>
-                                <input asp-for="Reporte.Creado" type="datetime-local" class="form-control bg-light border-start-0 ps-0" />
+                                <input asp-for="Reporte.Creado" type="datetime-local"
+                                       class="form-control bg-light border-start-0 ps-0"
+                                       value="@Model.Reporte.Creado.ToString("yyyy-MM-ddTHH:mm")" />
                             </div>
                             <span asp-validation-for="Reporte.Creado" class="text-danger small"></span>
                         </div>
@@ -67,27 +93,35 @@
                 </div>
             </div>
 
+            @* ── COLUMNA DERECHA ── *@
             <div class="col-lg-7">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
                         <h6 class="m-0 font-weight-bold text-primary text-uppercase small">Fuentes de Datos (Escaneos)</h6>
-                        <span class="badge bg-primary rounded-pill shadow-sm">Paso Crítico</span>
+                        <span class="badge bg-warning text-dark rounded-pill shadow-sm">Configuración de Reporte</span>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label small fw-bold text-muted text-uppercase">Seleccionar Escaneos para Consolidar <span class="text-danger">*</span></label>
+                            <label class="form-label small fw-bold text-muted text-uppercase">
+                                Escaneos Vinculados <span class="text-danger">*</span>
+                            </label>
 
-                            <select multiple class="form-select select-multiple-modern"
+                            <select multiple
+                                    id="selectEscaneos"
+                                    class="form-select select-multiple-modern"
                                     asp-for="SelectedEscaneos"
-                                    asp-items="Model.EscaneosList">
+                                    asp-items="Model.EscaneosList"
+                                    size="@Model.EscaneosList.Count">
                             </select>
 
                             <span asp-validation-for="SelectedEscaneos" class="text-danger small d-block mt-2 fw-bold"></span>
 
-                            <div class="alert alert-info border-0 mt-4 small d-flex align-items-start shadow-sm">
+                            <div class="alert alert-warning border-0 mt-4 small d-flex align-items-start shadow-sm">
                                 <i class="bi bi-info-circle-fill me-3 mt-1 fs-5"></i>
                                 <div>
-                                    <strong>Instrucciones:</strong> Mantenga presionada la tecla <strong>Ctrl</strong> (Windows) o <strong>Command</strong> (Mac) para seleccionar varios escaneos. Los datos de vulnerabilidades de estos escaneos se agruparán en este informe.
+                                    <strong>Instrucciones:</strong> Mantenga presionada la tecla <strong>Ctrl</strong> (Windows)
+                                    o <strong>Command</strong> (Mac) para seleccionar varios escaneos.
+                                    El cumplimiento se recalculará automáticamente.
                                 </div>
                             </div>
                         </div>
@@ -99,12 +133,13 @@
         <div class="card shadow-sm border-0 mt-4">
             <div class="card-body d-flex justify-content-between align-items-center py-3">
                 <p class="small text-muted mb-0 italic">
-                    <i class="bi bi-shield-fill-check me-1"></i> AuditSentinel Reporting Engine | Versión 2.5
+                    <i class="bi bi-shield-lock me-1"></i> AuditSentinel Reporting System v2.0
                 </p>
-                <div class="d-flex gap-3">
-                    <button type="submit" class="btn btn-primary btn-lg px-5 shadow fw-bold">
-                        <i class="bi bi-cloud-arrow-up me-2"></i> Generar Reporte Final
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-warning btn-lg px-5 shadow fw-bold">
+                        <i class="bi bi-save2 me-2"></i> Guardar Cambios
                     </button>
+                    <a asp-page="Index" class="btn btn-light px-4 border">Cancelar</a>
                 </div>
             </div>
         </div>
@@ -112,9 +147,10 @@
 </div>
 
 <style>
-    /* Estética personalizada para el selector múltiple */
     .select-multiple-modern {
-        height: 280px !important;
+        height: auto !important;
+        min-height: 60px;
+        overflow-y: visible !important;
         border-radius: 12px;
         background-color: #f8fafc;
         border: 2px dashed #cbd5e1;
@@ -123,38 +159,31 @@
     }
 
         .select-multiple-modern:focus {
-            border-color: #4e73df;
+            border-color: #f6c23e;
             border-style: solid;
             background-color: #fff;
-            box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.1);
+            box-shadow: 0 0 0 0.25rem rgba(246, 194, 62, 0.15);
         }
 
         .select-multiple-modern option {
             padding: 12px 15px;
             margin-bottom: 6px;
             border-radius: 8px;
-            transition: all 0.2s;
-            border-left: 4px solid transparent;
             font-weight: 500;
             color: #475569;
+            border-left: 4px solid transparent;
         }
 
-            .select-multiple-modern option:hover {
-                background-color: #f1f5f9;
-                border-left: 4px solid #94a3b8;
-            }
-
             .select-multiple-modern option:checked {
-                background: linear-gradient(135deg, #4e73df 0%, #224abe 100%) !important;
-                color: white !important;
-                border-left: 4px solid #1e3a8a;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                background: linear-gradient(135deg, #f6c23e 0%, #e5a50a 100%) !important;
+                color: #000 !important;
+                font-weight: bold;
+                border-left: 4px solid #d39e00;
             }
 
-    /* Estilos de input-group */
     .input-group-text {
         border-radius: 10px 0 0 10px;
-        color: #4e73df;
+        color: #f6c23e;
         background-color: #f8fafc;
         border-color: #dee2e6;
     }
@@ -164,16 +193,108 @@
     }
 
         .form-control:focus, .form-select:focus {
-            border-color: #4e73df;
+            border-color: #f6c23e;
             background-color: #fff;
         }
-
-    .breadcrumb-item a {
-        color: #4e73df;
-        font-weight: 500;
-    }
 </style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const selectEscaneos    = document.getElementById('selectEscaneos');
+        const inputCumplimiento = document.getElementById('inputCumplimiento');
+        const display           = document.getElementById('cumplimientoDisplay');
+        const displayTexto      = document.getElementById('cumplimientoTexto');
+        const displaySub        = document.getElementById('cumplimientoSub');
+        const displayIcono      = document.getElementById('cumplimientoIcono');
+
+        // Valores del enum desde el servidor
+        const CUMPLE              = @((int)AuditSentinel.Models.Cumplimiento.Cumple);
+        const NO_CUMPLE           = @((int)AuditSentinel.Models.Cumplimiento.NoCumple);
+        const PARCIALMENTE_CUMPLE = @((int)AuditSentinel.Models.Cumplimiento.ParcialmenteCumple);
+
+        // Al cambiar selección → recalcular
+        selectEscaneos.addEventListener('change', calcularCumplimiento);
+
+        // Al cargar → mostrar valor guardado en BD
+        window.addEventListener('DOMContentLoaded', mostrarValorActual);
+
+        function mostrarValorActual() {
+            const valor = parseInt(inputCumplimiento.value);
+            if (valor === CUMPLE) {
+                aplicarEstilo('#dcfce7', '2px solid #16a34a',
+                    'bi bi-shield-fill-check text-success fs-4',
+                    'fw-bold text-success', 'Cumple', 'Estado guardado en el reporte');
+            } else if (valor === NO_CUMPLE) {
+                aplicarEstilo('#fee2e2', '2px solid #dc2626',
+                    'bi bi-shield-fill-x text-danger fs-4',
+                    'fw-bold text-danger', 'No Cumple', 'Estado guardado en el reporte');
+            } else if (valor === PARCIALMENTE_CUMPLE) {
+                aplicarEstilo('#fef9c3', '2px solid #ca8a04',
+                    'bi bi-shield-fill-exclamation text-warning fs-4',
+                    'fw-bold text-warning', 'Parcialmente Cumple', 'Estado guardado en el reporte');
+            } else {
+                aplicarEstilo('#f1f5f9', '2px dashed #cbd5e1',
+                    'bi bi-hourglass-split text-muted fs-5',
+                    'fw-bold text-muted', 'Selecciona escaneos para calcular', '');
+            }
+        }
+
+        function calcularCumplimiento() {
+            const seleccionadas = Array.from(selectEscaneos.selectedOptions);
+
+            if (seleccionadas.length === 0) {
+                inputCumplimiento.value = CUMPLE;
+                aplicarEstilo('#f1f5f9', '2px dashed #cbd5e1',
+                    'bi bi-hourglass-split text-muted fs-5',
+                    'fw-bold text-muted', 'Selecciona escaneos para calcular', '');
+                return;
+            }
+
+            // Extraer estado del texto: "Nombre escaneo (Estado)"
+            const estados     = seleccionadas.map(opt => {
+                const match = opt.text.match(/\(([^)]+)\)$/);
+                return match ? match[1].trim() : '';
+            });
+
+            const total       = estados.length;
+            const completados = estados.filter(e => e === 'Completado').length;
+            const fallidos    = estados.filter(e => e === 'Fallido').length;
+
+            if (completados === total) {
+                // Todos Completado → Cumple
+                inputCumplimiento.value = CUMPLE;
+                aplicarEstilo('#dcfce7', '2px solid #16a34a',
+                    'bi bi-shield-fill-check text-success fs-4',
+                    'fw-bold text-success', 'Cumple',
+                    `Todos los escaneos completados (${completados}/${total})`);
+
+            } else if (fallidos === total) {
+                // Todos Fallido → No Cumple
+                inputCumplimiento.value = NO_CUMPLE;
+                aplicarEstilo('#fee2e2', '2px solid #dc2626',
+                    'bi bi-shield-fill-x text-danger fs-4',
+                    'fw-bold text-danger', 'No Cumple',
+                    `Todos los escaneos fallidos (${fallidos}/${total})`);
+
+            } else {
+                // Mezcla → Parcialmente Cumple
+                inputCumplimiento.value = PARCIALMENTE_CUMPLE;
+                aplicarEstilo('#fef9c3', '2px solid #ca8a04',
+                    'bi bi-shield-fill-exclamation text-warning fs-4',
+                    'fw-bold text-warning', 'Parcialmente Cumple',
+                    `${completados} completado(s), ${fallidos} fallido(s) de ${total}`);
+            }
+        }
+
+        function aplicarEstilo(bg, border, iconoClass, textoClass, texto, sub) {
+            display.style.background = bg;
+            display.style.border     = border;
+            displayIcono.className   = iconoClass;
+            displayTexto.className   = textoClass;
+            displayTexto.textContent = texto;
+            displaySub.textContent   = sub;
+        }
+    </script>
 }
