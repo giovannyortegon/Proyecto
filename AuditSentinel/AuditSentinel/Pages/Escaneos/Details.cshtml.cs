@@ -12,11 +12,13 @@ namespace AuditSentinel.Pages.Escaneos
     public class DetailsModel : PageModel
     {
         private readonly ApplicationDBContext _context;
+        private readonly ExportService _exportService;
         public string ErrorMensaje { get; set; }
 
-        public DetailsModel(ApplicationDBContext context)
+        public DetailsModel(ApplicationDBContext context, ExportService exportService)
         {
             _context = context;
+            _exportService = exportService;
         }
 
         public AuditSentinel.Models.Escaneos Escaneo { get; set; }
@@ -83,5 +85,41 @@ namespace AuditSentinel.Pages.Escaneos
 
             return RedirectToPage(new { id });
         }
+
+        public async Task<IActionResult> OnGetExportarAsync(int id, string format)
+        {
+            var escaneoCompleto = await _context.Escaneos
+                .Include(e => e.EscaneosServidores)
+                    .ThenInclude(es => es.Servidores)
+                .Include(e => e.EscaneosVulnerabilidades)
+                    .ThenInclude(ev => ev.Vulnerabilidades)
+                .Include(e => e.EscaneosPlantillas)
+                    .ThenInclude(ep => ep.Plantillas)
+                .FirstOrDefaultAsync(m => m.IdEscaneo == id);
+
+            if (escaneoCompleto == null) return NotFound();
+
+            var fileName = $"ReporteDetallado_Escaneo_{id}.{format}";
+            var filePath = Path.Combine(Path.GetTempPath(), fileName);
+
+            switch (format.ToLower())
+            {
+                //case "csv":
+                //    _exportService.ExportEscaneoToCsv(escaneoCompleto, filePath);
+                //    return File(System.IO.File.ReadAllBytes(filePath), "text/csv", fileName);
+
+                //case "html":
+                //    _exportService.ExportEscaneoToHtml(escaneoCompleto, filePath);
+                //    return File(System.IO.File.ReadAllBytes(filePath), "text/html", fileName);
+
+                case "pdf":
+                    _exportService.ExportEscaneoToPdf(escaneoCompleto, filePath);
+                    return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", fileName);
+
+                default:
+                    return BadRequest("Formato no soportado.");
+            }
+        }
+
     }
 }
