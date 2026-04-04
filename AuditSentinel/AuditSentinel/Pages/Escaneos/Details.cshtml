@@ -1,5 +1,9 @@
 ﻿@page "{id:int}"
+@using AuditSentinel.Models
+@using Microsoft.AspNetCore.Authorization
 @model AuditSentinel.Pages.Escaneos.DetailsModel
+@attribute [Authorize(Roles = "Analista,Administrador")]
+
 @{
     ViewData["Title"] = "Monitor de Escaneo";
 }
@@ -17,17 +21,17 @@
                 <i class="bi bi-activity text-primary"></i> Escaneo: @Model.Escaneo.NombreEscaneo
             </h1>
         </div>
-        <div class="btn-group shadow-sm">
-            <a asp-page="Edit" asp-route-id="@Model.Escaneo.IdEscaneo" class="btn btn-white bg-white border">
-                <i class="bi bi-pencil"></i> Editar
+        <div class="d-flex gap-2">
+            <a asp-page="Edit" asp-route-id="@Model.Escaneo.IdEscaneo"
+               class="btn btn-primary shadow-sm fw-bold">
+                <i class="bi bi-pencil-square me-1"></i> Editar
             </a>
-            <a asp-page="Index" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Volver
+            <a asp-page="Index" class="btn btn-outline-secondary shadow-sm">
+                <i class="bi bi-arrow-left me-1"></i> Volver
             </a>
         </div>
     </div>
 
-    @* Fila de Identificación y Progreso *@
     <div class="card shadow-sm mb-4 border-0 border-start border-primary border-4">
         <div class="card-body">
             <div class="row align-items-center">
@@ -35,8 +39,16 @@
                     <div class="text-xs fw-bold text-primary text-uppercase mb-1">ID Operación</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">#@Model.Escaneo.IdEscaneo</div>
                     <div class="mt-2">
-                        <span id="txtEstado" class="badge rounded-pill @(Model.Escaneo.Estado.ToString() == "Completado" ? "bg-success" : "bg-info") px-3">
-                            @Model.Escaneo.Estado
+                        <span class="badge rounded-pill px-3 @(Model.Escaneo.Estado == EstadoEscaneo.Pendiente ? "bg-warning text-dark" :
+                                    Model.Escaneo.Estado == EstadoEscaneo.EnProgreso ? "bg-primary" :
+                                    Model.Escaneo.Estado == EstadoEscaneo.Completado ? "bg-success" :
+                                    Model.Escaneo.Estado == EstadoEscaneo.Fallido ? "bg-danger" :
+                                    "bg-secondary")">
+
+                            @(Model.Escaneo.Estado == EstadoEscaneo.Pendiente ? "Pendiente" :
+                                                        Model.Escaneo.Estado == EstadoEscaneo.EnProgreso ? "En Progreso" :
+                                                        Model.Escaneo.Estado.ToString())
+
                         </span>
                     </div>
                 </div>
@@ -58,22 +70,43 @@
 
                 <div class="col-lg-3 text-center">
                     <div id="btnGroupEscaneo">
-                        <button id="btnStart" class="btn btn-primary btn-lg w-100 shadow-sm @(Model.Escaneo.Estado == AuditSentinel.Models.EstadoEscaneo.EnProgreso ? "d-none" : "")"
-                                onclick="iniciarEscaneo()">
-                            <i class="bi bi-play-circle-fill me-2"></i> Ejecutar Scan
-                        </button>
+                            <form method="post" >
+                                <input type="hidden" name="id" value="@Model.Escaneo.IdEscaneo" />
 
-                        <button id="btnStop" class="btn btn-outline-danger btn-lg w-100 @(Model.Escaneo.Estado == AuditSentinel.Models.EstadoEscaneo.EnProgreso ? "" : "d-none")"
-                                onclick="detenerEscaneo()">
-                            <i class="bi bi-stop-circle-fill me-2"></i> Abortar
-                        </button>
+                            @if (TempData["Error"] != null)
+                            {
+                                <div class="alert alert-danger">
+                                    @TempData["Error"]
+                                </div>
+                            }
+
+                            @if (Model.Escaneo.Estado == EstadoEscaneo.Pendiente || Model.Escaneo.Estado == EstadoEscaneo.EnProgreso                                                        )
+                                {
+                                    <button type="submit"
+                                            asp-page-handler="Detener"
+                                            class="btn btn-danger btn-lg w-100">
+                                        <i class="bi bi-stop-circle-fill me-2"></i>
+                                        Detener Escaneo
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="submit"
+                                            asp-page-handler="Iniciar"
+                                            class="btn btn-primary btn-lg w-100">
+                                        <i class="bi bi-play-circle-fill me-2"></i>
+                                        Iniciar Escaneo
+                                    </button>
+                                }
+
+                                @Html.AntiForgeryToken()
+                            </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    @* Fila de Información General (Servidores, Reglas, Consola) *@
     <div class="row g-4 mb-4">
         <div class="col-md-4">
             <div class="card shadow-sm h-100 border-0">
@@ -84,7 +117,7 @@
                     <div class="list-group list-group-flush">
                         @foreach (var s in Model.Escaneo.EscaneosServidores)
                         {
-                            <div class="list-group-item border-0 border-bottom">
+                            <div class="list-group-item border-0">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="fw-bold">@s.Servidores.NombreServidor</span>
                                     <code class="small px-2 py-1 bg-light rounded text-primary">@s.Servidores.IP</code>
@@ -129,9 +162,9 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive" style="max-height: 280px;">
-                        <table class="table table-dark table-sm table-hover mb-0" style="font-family: 'Courier New', Courier, monospace; font-size: 0.8rem;">
+                        <table class="table-dark table-sm table-hover mb-0" style="font-family: 'Courier New', Courier, monospace; font-size: 0.8rem;">
                             <tbody id="logTableBody">
-                                <tr><td class="text-center text-muted p-4">Sistema listo para monitoreo...</td></tr>
+                                <tr><td class="text-center text-terminal p-4">Sistema listo para monitoreo...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -140,15 +173,24 @@
         </div>
     </div>
 
-    @* SECCIÓN DE RESULTADOS CON PAGINACIÓN Y SERVIDOR *@
     @if (Model.Escaneo.Estado == AuditSentinel.Models.EstadoEscaneo.Completado)
     {
-        <div class="card shadow-sm border-0 animate__animated animate__fadeIn">
-            <div class="card-header bg-white py-3 border-bottom">
-                <h5 class="mb-0 text-primary fw-bold">
-                    <i class="bi bi-list-check me-2"></i>Detalle de Hallazgos por Servidor
-                </h5>
-            </div>
+     <div class="card shadow-sm border-0 animate__animated animate__fadeIn">
+        <div class="card-body bg-white p-md-2 border-bottom d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-primary fw-bold">
+                <i class="bi bi-list-check me-2"></i>
+                Detalle de Hallazgos por Servidor
+            </h5>
+
+            <a asp-page-handler="Exportar"
+               asp-route-id="@Model.Escaneo.IdEscaneo"
+               asp-route-format="pdf"
+               class="btn  text-dark border btn-sm py-2">
+                <i class="bi bi-file-earmark-pdf me-1"></i>
+                Informe PDF
+            </a>
+        </div>
+
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="tablaVulnerabilidades" class="table table-hover align-middle w-100">
@@ -212,8 +254,6 @@
     }
 </div>
 
-@Html.AntiForgeryToken()
-
 @section Scripts {
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -223,6 +263,9 @@
 
     <script>
         $(document).ready(function () {
+            if ($.fn.DataTable.isDataTable('#tablaVulnerabilidades')) {
+                $('#tablaVulnerabilidades').DataTable().destroy();
+            }
             $('#tablaVulnerabilidades').DataTable({
                 "pageLength": 5,
                 "lengthChange": false,
@@ -233,6 +276,7 @@
             });
         });
 
+        /* ========== SIGNALR ========== */
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/escaneoHub")
             .withAutomaticReconnect()
@@ -247,7 +291,7 @@
             const tbody = document.getElementById('logTableBody');
             if (tbody) {
                 if (tbody.innerText.includes("Sistema listo")) tbody.innerHTML = "";
-                const logRow = `<tr><td class="p-2 border-secondary">[DETECCIÓN] ${data.ultimaVuln} -> <span class="${data.estado == 'Activa' ? 'text-danger fw-bold' : 'text-success'}">${data.estado}</span></td></tr>`;
+                const logRow = `<tr><td class="text-terminal p-2 border-secondary">[DETECCIÓN] ${data.ultimaVuln} -> <span class="${data.estado == 'Activa' ? 'text-danger fw-bold' : 'text-success'}">${data.estado}</span></td></tr>`;
                 tbody.insertAdjacentHTML('afterbegin', logRow);
             }
 
@@ -261,16 +305,10 @@
             if (el) actualizarBadgeEstado(el, isOnline);
         });
 
-        async function iniciarEscaneo() {
-            document.getElementById('btnStart').classList.add('d-none');
-            document.getElementById('btnStop').classList.remove('d-none');
-            document.getElementById('pBar').classList.add('progress-bar-animated');
-            document.getElementById('txtEstado').innerText = "Ejecutando...";
-
-            await fetch(`?handler=Iniciar&id=@Model.Escaneo.IdEscaneo`, {
-                method: 'POST',
-                headers: { "RequestVerificationToken": document.querySelector('input[name="__RequestVerificationToken"]').value }
-            });
+        /* ========== ACCIONES ========== */
+            function toggleButtons(enProceso) {
+            document.getElementById('btnStart').hidden = enProceso;
+            document.getElementById('btnStop').hidden = !enProceso;
         }
 
         function actualizarBadgeEstado(el, isOnline) {
@@ -290,9 +328,24 @@
                     </text>
             }
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+                    const error = '@Request.Query["error"]';
+
+                    if (error) {
+                        alert(error);
+                    }
+                });
+
     </script>
 
     <style>
+
+        .text-terminal {
+            color: #00ff66 !important; /* verde terminal */ 
+            font-family: 'Courier New', Courier, monospace;
+        }
+
         .bg-danger-soft {
             background-color: #fee2e2;
             color: #dc2626;

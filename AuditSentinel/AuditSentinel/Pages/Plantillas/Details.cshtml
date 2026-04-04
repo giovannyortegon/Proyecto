@@ -1,5 +1,7 @@
 ﻿@page "{id:int}"
+@using Microsoft.AspNetCore.Authorization
 @model AuditSentinel.Pages.Plantillas.DetailsModel
+@attribute [Authorize(Roles = "Analista,Administrador")]
 @{
     ViewData["Title"] = "Especificaciones de Plantilla";
 }

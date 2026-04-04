@@ -2,124 +2,221 @@
 @model AuditSentinel.Pages.Error.NotFoundModel
 @{
     Layout = null;
-    ViewData["Title"] = "404 - Página no encontrada";
+    ViewData["Title"] = "404 - Recurso no localizado";
 }
 
-@* <section class="container py-5">
-    <h1 class="display-6">404 - Página no encontrada</h1>
-    <p class="lead">
-        La URL solicitada no existe o fue movida. Verifica la dirección o usa el menú de navegación.
-    </p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-blue: #0a58ca;
+            --light-bg: #ffffff; /* Fondo Blanco Puro */
+            --accent-cyan: #0dcaf0; /* Cian más visible en fondo claro */
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --terminal-box-bg: #f1f5f9;
+        }
 
-    @if (!string.IsNullOrEmpty(Model.OriginalPath))
-    {
-        <p><strong>Ruta original:</strong> @Model.OriginalPath</p>
-    }
-    @if (!string.IsNullOrEmpty(Model.OriginalQueryString))
-    {
-        <p><strong>Query:</strong> @Model.OriginalQueryString</p>
-    }
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: var(--light-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text-dark);
+            overflow: hidden;
+        }
 
-    <a class="btn btn-primary" asp-page="/Index">Ir al inicio</a>
-</section> *@
-<style>
-    body {
-        margin: 0;
-        height: 100vh;
-        background: linear-gradient(135deg, #1e3a8a, #0f172a);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: 'Segoe UI', 'Comic Sans MS', sans-serif;
-        color: #e0f2ff;
-    }
+        /* Rejilla de fondo técnica sutil en gris claro */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 45px 45px;
+            z-index: -1;
+        }
 
-    .error-wrapper {
-        text-align: center;
-    }
+        /* Contenedor principal claro */
+        .error-container {
+            text-align: center;
+            padding: 4rem;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
+            max-width: 550px;
+            width: 90%;
+            position: relative;
+        }
 
-    .error-code {
-        font-size: 6rem;
-        font-weight: 900;
-        text-shadow: 4px 4px #020617;
-    }
+        .error-code {
+            font-size: 9rem;
+            font-weight: 900;
+            line-height: 0.8;
+            margin: 0;
+            color: var(--text-dark);
+            letter-spacing: -5px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+        }
 
-    .search-area {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 2rem 0;
-    }
+        /* Caja de Escaneo */
+        .radar-box {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 2.5rem auto;
+            border: 2px solid rgba(13, 202, 240, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(13, 202, 240, 0.02);
+        }
 
-    .circle {
-        width: 90px;
-        height: 90px;
-        border: 8px solid #e0f2ff;
-        border-radius: 50%;
-        position: relative;
-    }
+            .radar-box::after {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                border: 2px solid var(--accent-cyan);
+                border-radius: 50%;
+                animation: pulse 2.5s infinite;
+            }
 
-    .circle::after {
-        content: '';
-        position: absolute;
-        width: 60px;
-        height: 8px;
-        background: #e0f2ff;
-        bottom: -30px;
-        right: -40px;
-        transform: rotate(45deg);
-        border-radius: 5px;
-    }
+        .bi-search {
+            font-size: 2.8rem;
+            color: var(--accent-cyan);
+            animation: scan-move 4s infinite ease-in-out;
+        }
 
-    .oops {
-        font-size: 3rem;
-        font-weight: bold;
-        margin-top: 1rem;
-        text-shadow: 3px 3px #020617;
-    }
+        .oops {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-top: 1rem;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
 
-    .message {
-        font-size: 1.5rem;
-        margin-top: .5rem;
-        text-shadow: 2px 2px #020617;
-    }
+        .message {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin: 1.2rem 0 2.5rem;
+            line-height: 1.6;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-    .path {
-        margin-top: 1rem;
-        font-size: 0.95rem;
-        opacity: 0.85;
-    }
+        /* Caja de ruta estilo terminal clara */
+        .path-box {
+            background: var(--terminal-box-bg);
+            padding: 0.85rem 1.25rem;
+            border-radius: 0.75rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            color: var(--primary-blue); /* Texto azul para terminal clara */
+            border: 1px solid #e2e8f0;
+            margin-bottom: 3rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
 
-    a {
-        display: inline-block;
-        margin-top: 2rem;
-        color: #ffffff;
-        font-weight: bold;
-        text-decoration: none;
-        border-bottom: 2px solid #ffffff;
-    }
+        .bi-terminal {
+            color: var(--text-muted);
+        }
 
-    a:hover {
-        opacity: 0.85;
-    }
-</style>
-<div class="error-wrapper">
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            background: var(--primary-blue);
+            color: #fff;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(10, 88, 202, 0.2);
+        }
 
-    <div class="error-code">404</div>
+            .btn-back:hover {
+                background: #084298;
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(10, 88, 202, 0.3);
+                color: #fff;
+            }
 
-    <div class="search-area">
-        <div class="circle"></div>
-    </div>
+        /* Animaciones escapadas para CSHTML */
+        @@keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
 
-    <div class="oops">Upps!</div>
-    <div class="message">No encontramos la página que buscas</div>
+            100% {
+                transform: scale(1.7);
+                opacity: 0;
+            }
+        }
 
-    @if (!string.IsNullOrEmpty(Model.OriginalPath))
-    {
-        <div class="path">
-            Ruta solicitada: @Model.OriginalPath
+        @@keyframes scan-move {
+            0%, 100% {
+                transform: rotate(-8deg) scale(1);
+                filter: brightness(1);
+            }
+
+            50% {
+                transform: rotate(8deg) scale(1.1);
+                filter: brightness(1.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+
+    <div class="error-container">
+        <div class="error-code">404</div>
+
+        <div class="radar-box">
+            <i class="bi bi-search"></i>
         </div>
-    }
 
-    <a asp-page="/Index">Volver al inicio</a>
-</div>
+        <div class="oops">Objetivo no encontrado</div>
+
+        <p class="message">
+            El escaneo de directorios ha finalizado sin resultados. Es posible que el recurso haya sido purgado o la ruta sea incorrecta.
+        </p>
+
+        @if (!string.IsNullOrEmpty(Model.OriginalPath))
+        {
+            <div class="path-box">
+                <i class="bi bi-terminal"></i>
+                <span>root@@audit-sentinel:~# @Model.OriginalPath</span>
+            </div>
+        }
+
+        <br />
+
+        <a href="/" class="btn-back">
+            <i class="bi bi-cpu me-2"></i> Volver a Inicio
+        </a>
+    </div>
+</body>
+</html>

@@ -1,5 +1,7 @@
 ﻿@page "{id:int}"
+@using Microsoft.AspNetCore.Authorization
 @model AuditSentinel.Pages.Plantillas.EditModel
+@attribute [Authorize(Roles = "Analista,Administrador")]
 @{
     ViewData["Title"] = "Modificar Plantilla";
 }
@@ -32,11 +34,12 @@
                         <h6 class="m-0 font-weight-bold text-primary">Detalles de la Plantilla</h6>
                     </div>
                     <div class="card-body">
-                        <div class="mb-4">
+                        <div class="mb-0 mt-4">
                             <label asp-for="Plantilla.NombrePlantilla" class="form-label small fw-bold text-muted text-uppercase">Nombre de la Plantilla</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-bookmark-fill text-warning"></i></span>
-                                <input asp-for="Plantilla.NombrePlantilla" class="form-control bg-light border-start-0 ps-0" />
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-cpu"></i></span>
+                                <select asp-for="Plantilla.NombrePlantilla" asp-items="Model.OpcionesSistemas" class="form-select bg-light border-start-0 ps-0">
+                                </select>
                             </div>
                             <span asp-validation-for="Plantilla.NombrePlantilla" class="text-danger small"></span>
                         </div>

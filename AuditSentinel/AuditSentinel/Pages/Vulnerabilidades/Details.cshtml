@@ -1,5 +1,7 @@
 ﻿@page "{id:int}"
+@using Microsoft.AspNetCore.Authorization
 @model AuditSentinel.Pages.Vulnerabilidades.DetailsModel
+@attribute [Authorize(Roles = "Analista,Administrador")]
 @{
     ViewData["Title"] = "Detalles de la Vulnerabilidad";
 }

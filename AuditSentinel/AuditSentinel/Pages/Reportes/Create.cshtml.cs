@@ -1,5 +1,4 @@
-﻿
-using AuditSentinel.Data;
+﻿using AuditSentinel.Data;
 using AuditSentinel.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +14,8 @@ namespace AuditSentinel.Pages.Reportes
         private readonly ApplicationDBContext _context;
         public CreateModel(ApplicationDBContext context) => _context = context;
 
-        [BindProperty] public AuditSentinel.Models.Reportes Reporte { get; set; } = new();
+        [BindProperty]
+        public AuditSentinel.Models.Reportes Reporte { get; set; } = new();
 
         public List<SelectListItem> EscaneosList { get; set; } = new();
         [BindProperty] public int[] SelectedEscaneos { get; set; } = Array.Empty<int>();
@@ -35,7 +35,7 @@ namespace AuditSentinel.Pages.Reportes
         public async Task OnGetAsync()
         {
             await LoadEscaneosAsync();
-            // Creado tiene default DateTime.Now en el modelo
+
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -51,7 +51,7 @@ namespace AuditSentinel.Pages.Reportes
                 return Page();
             }
 
-            // Validar que los escaneos seleccionados existan (evita FK 547)
+            // Validar que los escaneos seleccionados existan 
             var escaneosValidos = await _context.Escaneos
                 .Where(e => SelectedEscaneos.Contains(e.IdEscaneo))
                 .Select(e => e.IdEscaneo)

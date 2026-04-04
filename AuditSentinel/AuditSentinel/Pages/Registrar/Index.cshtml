@@ -2,7 +2,6 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @model AuditSentinel.Pages.Usuarios.IndexModel
-
 @attribute [Authorize(Roles = "Administrador")] 
 
 @{
@@ -61,7 +60,7 @@
                                     </td>
                                     <td>
                                         <span class="badge bg-light text-primary border border-primary-subtle">
-                                            @@@u.UserName
+                                            @u.UserName
                                         </span>
                                     </td>
                                     <td class="text-muted">@u.Email</td>

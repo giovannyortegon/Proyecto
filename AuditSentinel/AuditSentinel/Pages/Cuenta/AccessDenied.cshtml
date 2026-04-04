@@ -1,0 +1,87 @@
+﻿@page
+@model AuditSentinel.Pages.Cuenta.AccessDeniedModel
+
+@{
+    ViewData["Title"] = "Acceso Denegado - AuditSentinel";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden p-5 text-center animate-shake" style="max-width: 500px;">
+
+        <div class="access-denied-icon mb-4">
+            <div class="lock-circle bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 120px; height: 120px;">
+                <i class="bi bi-shield-slash-fill text-danger" style="font-size: 4.5rem;"></i>
+            </div>
+        </div>
+
+        <h1 class="h2 fw-bold text-dark mb-2">Área Restringida</h1>
+        <p class="text-muted mb-4">
+            Tus credenciales actuales no tienen los permisos de nivel de administrador o auditor requeridos para visualizar este recurso.
+        </p>
+
+        <div class="alert alert-secondary border-0 bg-light rounded-3 py-2 px-3 mb-4 small">
+            <i class="bi bi-exclamation-triangle-fill me-2 text-warning"></i>
+            Error 403: Forbidden Access
+        </div>
+
+        <div class="d-grid gap-2">
+            <a href="/" class="btn btn-primary btn-lg shadow-blue fw-bold rounded-3">
+                <i class="bi bi-house-door me-2"></i>Ir al Panel Principal
+            </a>
+            <button onclick="history.back()" class="btn btn-link text-decoration-none text-muted small mt-2">
+                <i class="bi bi-arrow-left me-1"></i> Regresar a la página anterior
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Efecto de vibración sutil al cargar (alerta de seguridad) */
+    .animate-shake {
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @@keyframes shake {
+        10%, 90% {
+            transform: translate3d(-1px, 0, 0);
+        }
+
+        20%, 80% {
+            transform: translate3d(2px, 0, 0);
+        }
+
+        30%, 50%, 70% {
+            transform: translate3d(-4px, 0, 0);
+        }
+
+        40%, 60% {
+            transform: translate3d(4px, 0, 0);
+        }
+    }
+
+    /* Estilos del círculo y el icono */
+    .lock-circle {
+        border: 2px dashed rgba(220, 53, 69, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .card:hover .lock-circle {
+        transform: scale(1.05);
+        background-color: rgba(220, 53, 69, 0.15) !important;
+    }
+
+    /* Coherencia con el color primario del Sidebar */
+    .btn-primary {
+        background-color: #0a58ca;
+        border-color: #0a58ca;
+    }
+
+        .btn-primary:hover {
+            background-color: #084298;
+            box-shadow: 0 8px 20px rgba(10, 88, 202, 0.3);
+        }
+
+    .shadow-blue {
+        box-shadow: 0 5px 15px rgba(10, 88, 202, 0.2);
+    }
+</style>

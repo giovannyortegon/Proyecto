@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AuditSentinel.Pages.Registrar
 {
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public class RegistrarModel : PageModel
     {
         private readonly UserManager<AuditSentinel.Models.Usuarios> _userManager;
@@ -70,7 +70,7 @@ namespace AuditSentinel.Pages.Registrar
                 return Page();
             }
 
-            // 3) Asignación de Roles (lista)
+            // Asignación de Roles (lista)
             //    - Limpia nulos/espacios
             var rolesSolicitados = (Registro.Rol ?? new List<string>())
                                   .Where(r => !string.IsNullOrWhiteSpace(r))
@@ -80,7 +80,7 @@ namespace AuditSentinel.Pages.Registrar
 
             if (rolesSolicitados.Count > 0)
             {
-                // 3.1) Asegurar que cada rol exista
+                //  Asegurar que cada rol exista
                 foreach (var rol in rolesSolicitados)
                 {
                     var exists = await _roleManager.RoleExistsAsync(rol);
@@ -96,7 +96,7 @@ namespace AuditSentinel.Pages.Registrar
                     }
                 }
 
-                // 3.2) Agregar todos los roles de una vez (AddToRolesAsync) o en bucle
+                //  Agregar todos los roles de una vez (AddToRolesAsync) o en bucle
                 var addToRolesResult = await _userManager.AddToRolesAsync(user, rolesSolicitados);
                 if (!addToRolesResult.Succeeded)
                 {

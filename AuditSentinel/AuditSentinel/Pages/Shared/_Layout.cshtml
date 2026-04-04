@@ -1,12 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<AuditSentinel.Models.Usuarios> SignInManager
 @inject UserManager<AuditSentinel.Models.Usuarios> UserManager
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="~/shield-lock-blue.ico">
     <title>@ViewData["Title"] - AuditSentinel</title>
     <script type="importmap"></script>
 
@@ -24,9 +26,29 @@
     <link rel="stylesheet" href="~/AuditSentinel.styles.css" asp-append-version="true" />
  
 </head>
-
-
 <body>
+    <!-- Modal de aviso de inactividad -->
+    <div id="inactivityModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:9999;">
+        <div style="max-width:480px; margin:10% auto; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,.2); font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial;">
+            <div style="padding:16px 20px; border-bottom:1px solid #eee; font-weight:600; font-size:18px;">
+                ¿Sigues ahí?
+            </div>
+            <div style="padding:18px 20px; line-height:1.4; color:#333;">
+                Por seguridad, tu sesión está a punto de expirar por inactividad.
+                <div style="margin-top:10px; font-size:14px; color:#666;">
+                    Expira en <span id="countdown" style="font-weight:700; color:#c62828;">02:00</span>.
+                </div>
+            </div>
+            <div style="padding:12px 20px; display:flex; gap:10px; justify-content:flex-end; border-top:1px solid #eee;">
+                <button id="staySignedInBtn" style="background:#1976d2; color:#fff; border:none; padding:10px 14px; border-radius:6px; cursor:pointer;">
+                    Seguir conectado
+                </button>
+                <button id="logoutNowBtn" style="background:#e0e0e0; color:#333; border:none; padding:10px 14px; border-radius:6px; cursor:pointer;">
+                    Cerrar sesión ahora
+                </button>
+            </div>
+        </div>
+    </div>
     @* Sidebar y contenido principal en dos columnas flex *@
     <div class="d-flex">
         @* Incluir partial del sidebar *@
@@ -39,6 +61,7 @@
                 </main>
             </div>
         </div>
+
 
        
     </div>
@@ -70,6 +93,131 @@
                 }
             });
         })();
+
+    // contador de deslogeo
+
+        (function () {
+            // === CONFIGURACIÓN ===
+            // Debe ser igual al ExpireTimeSpan de tus cookies de autenticación (en minutos)
+            const IDLE_LIMIT_MINUTES = 20; // <-- AJUSTA ESTO a tu valor real
+            const WARNING_BEFORE_MS = 2 * 60 * 1000; // 2 minutos antes
+            const KEEP_ALIVE_URL = "/Cuenta/MantenerActivo"; // endpoint del paso 1
+            const LOGOUT_URL = "/Cuenta/LogoutInactividad";        // tu ruta de logout
+            const LOGIN_URL = "/Cuenta/Login";          // opcional: redirigir al login si expira
+
+            // === ESTADO ===
+            let lastActivity = Date.now();
+            let warningShown = false;
+            let countdownInterval = null;
+
+            // Sincronizar entre pestañas (opcional pero recomendado)
+            const LS_KEY = "auditSentinel.lastActivity";
+            try {
+              // Inicializa con el mayor (más reciente) entre reloj local y LS
+              const ls = localStorage.getItem(LS_KEY);
+              if (ls) {
+                lastActivity = Math.max(lastActivity, Number(ls));
+              }
+            } catch (e) { /* ignore */ }
+
+            // Detectar actividad del usuario
+            const activityEvents = ["mousemove", "keydown", "click", "scroll", "touchstart"];
+            activityEvents.forEach(ev => {
+              window.addEventListener(ev, () => {
+                lastActivity = Date.now();
+                try {
+                  localStorage.setItem(LS_KEY, String(lastActivity));
+                } catch (e) { /* ignore */ }
+
+                // Si estaba el modal abierto y el usuario se mueve, aún no renovamos:
+                // Esperamos que presione "Seguir conectado" o que siga usando la app.
+                if (warningShown) {
+                  // Opcional: podrías auto-ocultar el modal al detectar actividad.
+                }
+              }, { passive: true });
+            });
+
+            // Escucha cambios de actividad desde otras pestañas
+            window.addEventListener("storage", (e) => {
+              if (e.key === LS_KEY && e.newValue) {
+                lastActivity = Math.max(lastActivity, Number(e.newValue));
+              }
+            });
+
+            // Elementos del modal
+            const modal = document.getElementById("inactivityModal");
+            const countdownEl = document.getElementById("countdown");
+            const stayBtn = document.getElementById("staySignedInBtn");
+            const logoutBtn = document.getElementById("logoutNowBtn");
+
+
+            // Funciones de UI
+            function showModal() {
+              if (!modal) return;
+              modal.style.display = "block";
+              warningShown = true;
+            }
+            function hideModal() {
+              if (!modal) return;
+              modal.style.display = "none";
+              warningShown = false;
+            }
+            function formatMMSS(ms) {
+              const total = Math.max(0, Math.floor(ms / 1000));
+              const mm = String(Math.floor(total / 60)).padStart(2, "0");
+              const ss = String(total % 60).padStart(2, "0");
+              return `${mm}:${ss}`;
+            }
+
+            // Botón: Seguir conectado → hace ping para renovar y reinicia contadores
+            if (stayBtn) {
+              stayBtn.addEventListener("click", async () => {
+                try {
+                  // Hacemos un GET autenticado al servidor
+                  await fetch(KEEP_ALIVE_URL, { method: "GET", credentials: "include", cache: "no-store" });
+                  // Renovamos "actividad"
+                  lastActivity = Date.now();
+                  try { localStorage.setItem(LS_KEY, String(lastActivity)); } catch (e) {}
+                  hideModal();
+                } catch (err) {
+                  // Si falla, probablemente la sesión ya expiró: ir a Login
+                  window.location.href = LOGIN_URL;
+                }
+              });
+            }
+
+            // Botón: Cerrar sesión ahora
+            if (logoutBtn) {
+              logoutBtn.addEventListener("click", () => {
+                window.location.href = LOGOUT_URL;
+              });
+            }
+
+            // Bucle de chequeo cada segundo
+            const IDLE_LIMIT_MS = IDLE_LIMIT_MINUTES * 60 * 1000;
+            setInterval(() => {
+              const now = Date.now();
+              const inactiveMs = now - lastActivity;
+              const remainingMs = IDLE_LIMIT_MS - inactiveMs;
+
+              // Mostrar aviso cuando resten 2 minutos
+              if (remainingMs <= WARNING_BEFORE_MS && remainingMs > 0) {
+                if (!warningShown) {
+                  showModal();
+                }
+                if (countdownEl) {
+                  countdownEl.textContent = formatMMSS(remainingMs);
+                }
+              }
+
+              // Si se acabó el tiempo, cerrar sesión
+              if (remainingMs <= 0) {
+                // Evita bucles
+                hideModal();
+                window.location.href = LOGOUT_URL;
+              }
+            }, 1000);
+          })();
  
     </script>
 

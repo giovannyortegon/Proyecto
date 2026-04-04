@@ -4,9 +4,13 @@ namespace AuditSentinel.Models
 {
     public enum NivelRiesgo
     {
+        [Display(Name = "Bajo")]
         Bajo,
+        [Display(Name = "Medio")]
         Medio,
+        [Display(Name = "Alto")]
         Alto,
+        [Display(Name = "Critico")]
         Critico
     }
     public class Vulnerabilidades

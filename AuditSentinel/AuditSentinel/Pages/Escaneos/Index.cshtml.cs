@@ -18,12 +18,12 @@ namespace AuditSentinel.Pages.Escaneos
     public class IndexModel : PageModel
     {
         private readonly ApplicationDBContext _context;
-        private readonly ExportService _exportService;
+        //private readonly ExportService _exportService;
 
-        public IndexModel(ApplicationDBContext context, ExportService exportService)
+        public IndexModel(ApplicationDBContext context)
         {
             _context = context;
-            _exportService = exportService;
+            //_exportService = exportService;
         }
 
         public string? Search { get; set; }
@@ -62,28 +62,28 @@ namespace AuditSentinel.Pages.Escaneos
                 .ToListAsync();
         }
 
-        public async Task<IActionResult> OnGetExportarAsync(string format)
-        {
-            var results = await _context.Escaneos
-                .OrderByDescending(e => e.FechaEscaneo)
-                .ToListAsync();
+        //public async Task<IActionResult> OnGetExportarAsync(string format)
+        //{
+        //    var results = await _context.Escaneos
+        //        .OrderByDescending(e => e.FechaEscaneo)
+        //        .ToListAsync();
 
-            var filePath = Path.Combine(Path.GetTempPath(), $"Escaneos.{format}");
+        //    var filePath = Path.Combine(Path.GetTempPath(), $"Escaneos.{format}");
 
-            switch (format.ToLower())
-            {
-                case "csv":
-                    _exportService.ExportToCsv(results, filePath);
-                    return File(System.IO.File.ReadAllBytes(filePath), "text/csv", "Escaneos.csv");
-                case "html":
-                    _exportService.ExportToHtml(results, filePath);
-                    return File(System.IO.File.ReadAllBytes(filePath), "text/html", "Escaneos.html");
-                case "pdf":
-                    _exportService.ExportToPdf(results, filePath);
-                    return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", "Escaneos.pdf");
-                default:
-                    return BadRequest("Formato no soportado.");
-            }
-        }
+        //    switch (format.ToLower())
+        //    {
+        //        case "csv":
+        //            _exportService.ExportToCsv(results, filePath);
+        //            return File(System.IO.File.ReadAllBytes(filePath), "text/csv", "Escaneos.csv");
+        //        case "html":
+        //            _exportService.ExportToHtml(results, filePath);
+        //            return File(System.IO.File.ReadAllBytes(filePath), "text/html", "Escaneos.html");
+        //        case "pdf":
+        //            _exportService.ExportToPdf(results, filePath);
+        //            return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", "Escaneos.pdf");
+        //        default:
+        //            return BadRequest("Formato no soportado.");
+        //    }
+        //}
     }
 }

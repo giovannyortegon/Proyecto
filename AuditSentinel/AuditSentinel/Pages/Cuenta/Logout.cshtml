@@ -1,5 +1,8 @@
 ﻿@page
 @model AuditSentinel.Pages.Cuenta.LogoutModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+
 @{
     ViewData["Title"] = "Cerrar Sesión";
 }
@@ -19,8 +22,7 @@
                 ¿Estás seguro de que deseas finalizar tu sesión en <strong>AuditSentinel</strong>?
                 Se cerrará el acceso a los módulos de auditoría.
             </p>
-
-            <form method="post">
+            <form method="post" asp-page="/Cuenta/Logout" ">
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-danger btn-lg shadow-sm fw-bold">
                         <i class="bi bi-check-circle me-2"></i>Sí, Cerrar Sesión

@@ -1,6 +1,5 @@
-﻿using AuditSentinel;
+﻿using AuditSentinel.Models;
 using System.ComponentModel.DataAnnotations;
-using Xunit;
 
 namespace AuditSentinel.Test
 {
